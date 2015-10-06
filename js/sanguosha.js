@@ -9,6 +9,8 @@
         this.timer = null;
         this.$roles_div = $('.container .role');
         this.a_o_roles = [];
+        this.i_now = 0;
+        this.can_play = false;//英雄选择完毕就可以开始玩了
         this.init();
     }
     Staff.prototype = {
@@ -18,13 +20,37 @@
             this.set_roles_rand();
             //console.log(this.a_o_roles);
             this.assign_role();
+            this.chose_hero();
+            this.bind();
+            this.play();
+        },
+        play : function(){
+            var _this = this;
+            this.timer = setInterval(function(){
+                var index = _this.i_now%8;
+                var $cur_role_div = _this.$roles_div.eq(index);
+                _this.a_o_roles[index].change_bg(index);
+                _this.i_now++;
+
+                if($cur_role_div.hasClass('me')){
+                    _this.pause();
+                }else{
+                    _this.a_o_roles[index].action(index);
+                }
+            },1000);
+        },
+        pause : function(){
+            clearInterval(this.timer);
+            this.timer = null;
+        },
+        chose_hero : function(){
+
         },
         assign_role : function(){
             var _this = this;
             this.$roles_div.each(function(index){
                 var flag = _this.a_o_roles[index].get_flag();
                 $(this).find('.rolename').text(flag);
-
             });
         },
         get_roles : function(){
@@ -37,6 +63,24 @@
             }
         },
         assign_hero_rand : function(){
+
+        },
+        bind : function(){
+            var _this = this;
+            //点击弃牌按钮
+            $('.btns .next').click(function(){
+                _this.play();
+            });
+
+            //点击暂停按钮
+            $('.btns .pause').hover(function(){
+                $(this).text('继续');
+                _this.pause();
+            },function(){
+                $(this).text('暂停');
+                _this.play();
+            });
+
 
         }
     }
@@ -64,8 +108,11 @@
         get_flag : function(){
             return this.flag;
         },
-        action : function(){
-            console.log(this.name+'在行动...');
+        action : function(index){
+            console.log(this.name+'在行动...'+index);
+        },
+        change_bg : function(index){
+            $('.role').removeClass('active').eq(index).addClass('active');
         }
     }
     function Zhugong(){
@@ -89,6 +136,6 @@
 
 
     sanguosha.init = function(){
-        new Staff();
+        window.staff = new Staff();
     }
 })(window,jQuery);

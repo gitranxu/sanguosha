@@ -8,6 +8,7 @@ ul{list-style: none;}
 .container .nomarginleft{margin-left: 0;}
 .container .marginbottom10{margin-bottom: 10px;}
 .container .marginbottom30{margin-bottom: 30px;}
+.container .marginleft4{margin-left: 4px;}
 
 .container{width:580px;margin:10px auto;position: relative;}
 .role{height:120px;width:100px;background:orchid;margin-left: 20px;position: relative;}
@@ -20,5 +21,11 @@ background: #ff85ea;color:#fff;border-radius: 4px;cursor:pointer;
     position:absolute;top:0px;left:84px;z-index: 2;}
 .role.active{height: 116px;width:96px;border:2px solid #772299;border-radius: 6px;}
 
+.myzone{position:relative;}
+.btns{height: 24px;padding: 3px 0;background: olive;position: absolute;
+    top: -30px;left:0px;width:480px;}
+.btn{height: 24px;line-height: 24px;width:60px;text-align: center;color: #fff;
+background: green;cursor: pointer;}
+.btn.disable{background: rgb(162, 151, 151);cursor: default;}
 .zhuangbei{float: left;width:100px;background: orange;height:120px;}
 .paiqu{float: left;width:380px;height:120px;background: limegreen;}

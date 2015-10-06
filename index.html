@@ -14,7 +14,7 @@
             <div class="role fl">
                 <div class="rolename"></div>
             </div>
-            <div class="role active fl">
+            <div class="role fl">
                 <div class="rolename"></div>
             </div>
             <div class="role fl">
@@ -30,7 +30,7 @@
             </div>
             <div class="info">aaaa</div>
         </div>
-        <div class="clear">
+        <div class="myzone clear">
             <div class="role me nomarginleft fr">
                 <div class="rolename"></div>
             </div>
@@ -39,6 +39,13 @@
             </div>
             <div class="paiqu">
                 牌区
+            </div>
+            <div class="btns clear">
+                <div class="btn fl pause">暂停</div>
+                <div class="btn fl help marginleft4">帮助</div>
+                <div class="btn next fr marginleft4">弃牌</div>
+                <div class="btn cancel fr marginleft4">取消</div>
+                <div class="btn ok fr disable">确定</div>
             </div>
         </div>
         <div class="role role8">
@@ -54,10 +61,7 @@
         sanguosha.init();
 
         $('.sc').click(function(){
-            sanguosha.init();
-        });
-        $('.jx').click(function(){
-            sanguosha.init();
+            staff.pause();
         });
     });
 </script>
