@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document中文</title>
+    <link rel="stylesheet" href="./css/index.css"/>
+</head>
+<body>
+    <div class="container">
+        <div class="clear marginbottom10">
+            <div class="role fl nomarginleft">
+                <div class="rolename"></div>
+            </div>
+            <div class="role fl">
+                <div class="rolename"></div>
+            </div>
+            <div class="role active fl">
+                <div class="rolename"></div>
+            </div>
+            <div class="role fl">
+                <div class="rolename"></div>
+            </div>
+            <div class="role fl">
+                <div class="rolename"></div>
+            </div>
+        </div>
+        <div class="clear marginbottom30">
+            <div class="role fr">
+                <div class="rolename"></div>
+            </div>
+            <div class="info">aaaa</div>
+        </div>
+        <div class="clear">
+            <div class="role me nomarginleft fr">
+                <div class="rolename"></div>
+            </div>
+            <div class="zhuangbei">
+                装备区
+            </div>
+            <div class="paiqu">
+                牌区
+            </div>
+        </div>
+        <div class="role role8">
+            <div class="rolename"></div>
+        </div>
+    </div>
+    <div class="sc">开始</div>
+    <div class="jx">继续</div>
+    <script src="./js/jquery-1.9.1.min.js"></script>
+    <script src="./js/sanguosha.js"></script>
+<script>
+    $().ready(function(){
+        sanguosha.init();
+
+        $('.sc').click(function(){
+            sanguosha.init();
+        });
+        $('.jx').click(function(){
+            sanguosha.init();
+        });
+    });
+</script>
+</body>
+</html>
