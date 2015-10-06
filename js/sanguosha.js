@@ -26,17 +26,17 @@
         },
         play : function(){
             var _this = this;
+            clearInterval(this.timer);
             this.timer = setInterval(function(){
                 var index = _this.i_now%8;
-                var $cur_role_div = _this.$roles_div.eq(index);
+                _this.$cur_role_div = _this.$roles_div.eq(index);
                 _this.a_o_roles[index].change_bg(index);
-                _this.i_now++;
-
-                if($cur_role_div.hasClass('me')){
+                if(_this.$cur_role_div.hasClass('me')){
                     _this.pause();
                 }else{
                     _this.a_o_roles[index].action(index);
                 }
+                _this.i_now++;
             },1000);
         },
         pause : function(){
@@ -73,12 +73,21 @@
             });
 
             //点击暂停按钮
-            $('.btns .pause').hover(function(){
-                $(this).text('继续');
-                _this.pause();
-            },function(){
-                $(this).text('暂停');
-                _this.play();
+            $('.btns .pause').click(function(){
+                var $this = $(this);
+                if($this.text()=='暂停'){
+                    $this.text('恢复');
+                    _this.pause();
+                }else{
+                    $this.text('暂停');
+                    if(!_this.$cur_role_div.hasClass('me')){
+                        _this.play();
+                        console.log('可以恢复');
+                    }else{
+                        console.log('不可以恢复');
+                    }
+                }
+                
             });
 
 
@@ -109,7 +118,7 @@
             return this.flag;
         },
         action : function(index){
-            console.log(this.name+'在行动...'+index);
+            //console.log(this.name+'在行动...'+index);
         },
         change_bg : function(index){
             $('.role').removeClass('active').eq(index).addClass('active');
@@ -132,6 +141,72 @@
     }
     Fanze.prototype = new Role();
 
+
+    //英雄：有各自的英雄技能
+    //英雄类中有装备区，有判定区，装备区及判断区不放在角色类中，角色类只是判断如何操作英雄
+    function Hero(){
+        this.cur_blood = 3;//默认当前血量
+        this.max_blood = 3;//默认最大血量
+    }
+    Hero.prototype = {
+        constructor : Hero,
+        sha : function(){
+            console.log('杀...');
+        },
+        shan : function(){
+            console.log('闪...');
+        },
+        del_blood : function(){
+            this.blood--;
+
+        },
+        add_blood : function(){
+            this.cur_blood++;
+        },
+        get_cur_blood : function(){
+            return this.cur_blood;
+        },
+        get_max_blood : function(){
+            return this.max_blood;
+        }
+    }
+
+    //桃是否可用应该牌类自己有一个是否可用的方法
+    function Card($card_div){
+        this.$card_div = $card_div;//代表棋牌本身的html元素
+    }
+    Card.prototype = {
+        constructor : Card,
+        //如果不可以用，则棋牌本身自己加一个disable属性,这个方法是当轮到自己的时候棋牌进行调用的，如果一个角色要死的时候，不会调用这个方法，给别人喂桃是另外的方法
+        can_use : function(){console.log('父类中的牌类是否可用的方法，看到这句话，说明子类没有实现这个方法...')}//该方法每个特定的牌类自己去具体实现
+    }
+
+    function Peach($card_div){
+        Card.call(this,$card_div);
+    }
+    Peach.prototype = new Card();
+    Peach.prototype.can_use = function(hero){
+        if(hero.get_cur_blood() >= hero.get_max_blood()){
+            this.$card_div.addClass('disable');
+        }
+    }
+
+    function Sha($card_div){
+        Card.call(this,$card_div);
+    }
+    Sha.prototype = new Card();
+    Sha.prototype.can_use = function(hero){
+        //如果英雄的状态为麻木，则不能使用
+        if(hero.mamu_status){
+            this.$card_div.addClass('disable');
+        }
+    }
+
+    function Shan($card_div){
+        Card.call(this,$card_div);
+    }
+    Shan.prototype = new Card();
+    Shan.prototype.can_use = function(hero){}
 
 
 
