@@ -29,3 +29,6 @@ background: green;cursor: pointer;}
 .btn.disable{background: rgb(162, 151, 151);cursor: default;}
 .zhuangbei{float: left;width:100px;background: orange;height:120px;}
 .paiqu{float: left;width:380px;height:120px;background: limegreen;}
+
+.status{width: 50px;float: left;}
+.lebusishu,.bingliangcunduan,.shandian{color: green;font-size: 12px;float: left;width: 16px;height: 16px;}
