@@ -34,3 +34,5 @@ function Shan($card_div){
 }
 Shan.prototype = new Card();
 Shan.prototype.can_use = function(hero){}
+
+//装备牌，可以放到装备区，可以增加座位的攻击范围或防御范围，座位中还应包括提前就已算好的与其他座位的距离，

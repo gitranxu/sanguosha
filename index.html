@@ -12,7 +12,7 @@
     <div class="btn blcd_f marginbottom10 width120">兵粮寸断判假</div>
     <div class="container" id="sanguosha">
         <div class="clear marginbottom10">
-            <div class="role fl nomarginleft">
+            <div class="seat fl nomarginleft">
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -24,7 +24,7 @@
                 </div>
                 
             </div>
-            <div class="role fl">
+            <div class="seat fl">
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -35,7 +35,7 @@
                     <div class="fanpai">翻</div>
                 </div>
             </div>
-            <div class="role fl">
+            <div class="seat fl">
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -46,7 +46,7 @@
                     <div class="fanpai">翻</div>
                 </div>
             </div>
-            <div class="role fl">
+            <div class="seat fl">
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -57,7 +57,7 @@
                     <div class="fanpai">翻</div>
                 </div>
             </div>
-            <div class="role fl">
+            <div class="seat fl">
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="clear marginbottom30">
-            <div class="role fr">
+            <div class="seat fr">
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -81,15 +81,15 @@
                     <div class="fanpai">翻</div>
                 </div>
             </div>
-            <div class="info">
-                <div id="info_tmp"></div>
+            <div class="log">
+                <div id="log_tmp"></div>
                 <div class="content">
                     
                 </div>
             </div>
         </div>
         <div class="myzone clear">
-            <div class="role me nomarginleft fr">
+            <div class="seat me nomarginleft fr">
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -114,7 +114,7 @@
                 <div class="btn ok fr disable">确定</div>
             </div>
         </div>
-        <div class="role role8">
+        <div class="seat seat8">
             <div class="rolename"></div>
             <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -125,48 +125,50 @@
                     <div class="fanpai">翻</div>
                 </div>
         </div>
-        <div class="info_left_ctr">
-            <div class="info_left">
-                <div id="info_left_tmp"></div>
+        <div class="log_left_ctr">
+            <div class="log_left">
+                <div id="log_left_tmp"></div>
                 <div class="content">
                     
                 </div>
             </div>
         </div>
-        <div class="info_right_ctr">
-            <div class="info_right">
+        <div class="log_right_ctr">
+            <div class="log_right">
                 <div class="content"></div>
             </div>
         </div>
     </div>
 
     <script src="./js/jquery-1.9.1.min.js"></script>
-    <script src="./js/sanguosha.js"></script>
-
+    <script src="./js/Staff.js"></script>
+    
     <script src="./js/tools.js"></script>
     <script src="./js/PandingZone.js"></script>
     <script src="./js/Role.js"></script>
     <script src="./js/Hero.js"></script>
     <script src="./js/Card.js"></script>
+    <script src="./js/Seat.js"></script>
+    <script src="./js/Step.js"></script>
 <script>
     $().ready(function(){
         sanguosha.init();
 
         $('.lbss_t').click(function(){
-            staff1.a_o_roles[5].get_panding_zone().set_lebusishu_success(true);
-            staff1.a_o_roles[5].get_panding_zone().lebusishu_show();
+            staff1.a_seat[5].get_panding_zone().set_lebusishu_success(true);
+            staff1.a_seat[5].get_panding_zone().lebusishu_show();
         });
         $('.lbss_f').click(function(){
-            staff1.a_o_roles[5].get_panding_zone().set_lebusishu_success(false);
-            staff1.a_o_roles[5].get_panding_zone().lebusishu_show();
+            staff1.a_seat[5].get_panding_zone().set_lebusishu_success(false);
+            staff1.a_seat[5].get_panding_zone().lebusishu_show();
         });
         $('.blcd_t').click(function(){
-            staff1.a_o_roles[5].get_panding_zone().set_bingliangcunduan_success(true);
-            staff1.a_o_roles[5].get_panding_zone().bingliangcunduan_show();
+            staff1.a_seat[5].get_panding_zone().set_bingliangcunduan_success(true);
+            staff1.a_seat[5].get_panding_zone().bingliangcunduan_show();
         });
         $('.blcd_f').click(function(){
-            staff1.a_o_roles[5].get_panding_zone().set_bingliangcunduan_success(false);
-            staff1.a_o_roles[5].get_panding_zone().bingliangcunduan_show();
+            staff1.a_seat[5].get_panding_zone().set_bingliangcunduan_success(false);
+            staff1.a_seat[5].get_panding_zone().bingliangcunduan_show();
         });
     });
 </script>

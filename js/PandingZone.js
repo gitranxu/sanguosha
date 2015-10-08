@@ -1,6 +1,8 @@
 //判定类,显示，隐藏
-function PandingZone(o_role){
-    this.o_role = o_role;
+function PandingZone(seat,role){
+    this.seat = seat;
+    this.staff = this.seat.get_staff();
+    this.role = role;
     this.lebusishu_flag = false;//乐不思蜀
     this.bingliangcunduan_flag = false;//兵粮寸断
     this.shandian_flag = false;//闪电，这是是否在显示区进行显示的标志,false不显示
@@ -61,43 +63,43 @@ PandingZone.prototype = {
         this.shandian_success = b;
     },
     lebusishu_show : function(){
-        this.o_role.get_div().find('.lebusishu').show();
+        this.seat.get_div().find('.lebusishu').show();
         this.lebusishu_flag = true;//会进行乐不思蜀的判定
     },
     lebusishu_hide : function(){
-        this.o_role.get_div().find('.lebusishu').hide();
+        this.seat.get_div().find('.lebusishu').hide();
         this.lebusishu_flag = false;//不会进行乐不思蜀的判定
     },
     bingliangcunduan_show : function(){
-        this.o_role.get_div().find('.bingliangcunduan').show();
+        this.seat.get_div().find('.bingliangcunduan').show();
         this.bingliangcunduan_flag = true;//会进行兵粮寸断的判定
     },
     bingliangcunduan_hide : function(){
-        this.o_role.get_div().find('.bingliangcunduan').hide();
+        this.seat.get_div().find('.bingliangcunduan').hide();
         this.bingliangcunduan_flag = false;//不会进行兵粮寸断的判定
     },
     shandian_show : function(){
-        this.o_role.get_div().find('.shandian').show();
+        this.seat.get_div().find('.shandian').show();
         this.shandian_flag = true;//会进行闪电的判定
     },
     shandian_hide : function(){
-        this.o_role.get_div().find('.shandian').hide();
+        this.seat.get_div().find('.shandian').hide();
         this.shandian_flag = false;//不会进行闪电的判定
     },
     bingliangcunduan_validate : function(){
         if(this.bingliangcunduan_success){//判定成功
-            this.o_role.staff.set_$info(this.o_role.get_name()+'兵粮寸断判定成功','green');
+            this.staff.set_$log(this.role.get_name()+'兵粮寸断判定成功','green');
         }else{
-            this.o_role.staff.set_$info(this.o_role.get_name()+'兵粮寸断判定不成功','red');
+            this.staff.set_$log(this.role.get_name()+'兵粮寸断判定不成功','red');
         }
         //不管判定是否成功，最后都要将这个小图标隐藏掉
         this.bingliangcunduan_hide();
     },
     lebusishu_validate : function(){
         if(this.lebusishu_success){//判定成功
-            this.o_role.staff.set_$info(this.o_role.get_name()+'乐不思蜀判定成功','green');
+            this.staff.set_$log(this.role.get_name()+'乐不思蜀判定成功','green');
         }else{
-            this.o_role.staff.set_$info(this.o_role.get_name()+'乐不思蜀判定不成功','red');
+            this.staff.set_$log(this.role.get_name()+'乐不思蜀判定不成功','red');
         }
         //不管判定是否成功，最后都要将这个小图标隐藏掉
         this.lebusishu_hide();

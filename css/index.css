@@ -14,22 +14,22 @@ ul{list-style: none;}
 .btn.marginbottom10{margin-bottom: 10px;}
 
 .container{width:580px;margin:10px auto;position: relative;}
-.role{height:120px;width:100px;background:orchid;margin-left: 20px;position: relative;}
+.seat{height:120px;width:100px;background:orchid;margin-left: 20px;position: relative;}
 .rolename{position: absolute;top:0;right:0;width:20px;height:20px;
     background:cornflowerblue;color:#fff;line-height: 20px;text-align: center;}
-.role8{position: absolute;top: 130px;left: -20px;}
-.info{margin-left: 120px;font-size: 12px;line-height: 14px;height: 120px;color: #fffccc;position: relative;overflow: hidden;}
+.seat8{position: absolute;top: 130px;left: -20px;}
+.log{margin-left: 120px;font-size: 12px;line-height: 14px;height: 120px;color: #fffccc;position: relative;overflow: hidden;}
 .content{position: absolute;top: 0;left: 0;width: 100%;}
-.info_right .content{top: -378px;}
-.info_left_ctr{position: absolute;top: 0;left: -190px;width: 170px;height: 100%;background: orange;}
-.info_right_ctr{position: absolute;top: 0;right: -190px;width: 170px;height: 100%;background: orange;}
-.info_left{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;}
-.info_right{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;}
+.log_right .content{top: -378px;}
+.log_left_ctr{position: absolute;top: 0;left: -190px;width: 170px;height: 100%;background: orange;}
+.log_right_ctr{position: absolute;top: 0;right: -190px;width: 170px;height: 100%;background: orange;}
+.log_left{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;}
+.log_right{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;}
 
 .sc{width:60px;height:40px;line-height: 40px;text-align: center;
 background: #ff85ea;color:#fff;border-radius: 4px;cursor:pointer;
     position:absolute;top:0px;left:84px;z-index: 2;}
-.role.active{height: 116px;width:96px;border:2px solid #772299;border-radius: 6px;}
+.seat.active{height: 116px;width:96px;border:2px solid #772299;border-radius: 6px;}
 
 .myzone{position:relative;}
 .btns{height: 24px;padding: 3px 0;background: olive;position: absolute;
