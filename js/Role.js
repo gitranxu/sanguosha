@@ -1,0 +1,119 @@
+//角色：主公（游戏的关键，成功与否的标志），忠臣，反贼，内奸，角色类会控制怎样杀来杀去
+//角色类中有判定区，即（乐不思蜀，兵粮寸断，闪电），在开始，判定，摸牌，出牌，弃牌各阶段切换时用于判定
+function Role(name,flag){
+    this.name = name;
+    this.flag = flag;
+    this.$div = null;
+    this.panding_zone = new PandingZone(this);
+}
+Role.prototype = {
+    constructor : Role,
+    get_name : function(){
+        return this.name;
+    },
+    get_flag : function(){
+        return this.flag;
+    },
+    get_div : function(){
+        return this.$div;
+    },
+    set_div : function($div){
+        this.$div = $div;
+    },
+    change_bg : function(index){
+        $('.role').removeClass('active').eq(index).addClass('active');
+    },
+    get_panding_zone : function(){
+        return this.panding_zone;
+    },
+    set_staff : function(staff){
+        this.staff = staff;
+    },
+
+    steps : function(index){
+        //可能都需要在出牌阶段开始时暂停，出牌阶段结束时继续
+        //console.log(this.name+'回合开始');
+        this.staff.set_$info(this.name+'回合开始');
+        this.staff.pause();
+
+        var _this = this;
+        setTimeout(function(){
+            _this.staff.play();
+            _this.panding_step();//判定阶段
+        },2000);
+        
+    },
+    panding_step : function(){
+        //console.log(this.name+'判定阶段');
+        this.staff.set_$info(this.name+'判定阶段');
+        this.panding_zone.validate();
+        //判定阶段需要判断判定区是否有牌，如果有兵粮寸断且判定不成功，则跳过摸牌阶段
+
+        this.mepai_step();//摸牌阶段
+    },
+    mepai_step : function(){
+        if(this.panding_zone.get_bingliangcunduan_success()){
+            this.staff.set_$info(this.name+'摸牌阶段开始');
+            this.staff.set_$info(this.name+'摸牌阶段结束');
+        }else{
+            this.staff.set_$info('兵粮寸断判定为假，跳过摸牌阶段','yellow');
+        }
+        this.chupai_step();//出牌阶段
+    },
+    chupai_step : function(){
+        this.staff.pause();//这里应该加一个暂停
+        //中间还要区分是自动出牌（自动出牌方法最后加一个继续的方法以让游戏继续），还是手动出牌（手动出牌不需要加继续的方法，而是通过点击弃牌按钮手动触发）
+        if(this.panding_zone.get_lebusishu_success()){
+            this.staff.set_$info(this.name+'出牌阶段');
+            if(this.staff.is_me){
+                this.me_chupai_step();
+            }else{
+                this.auto_chupai_step();
+            }
+        }else{
+            this.staff.set_$info('乐不思蜀判定为假，跳过出牌阶段','yellow');
+            this.qipai_step();
+        }
+        
+    },
+    qipai_step : function(){
+        if(this.panding_zone.get_skipqipai()){
+            this.staff.set_$info('跳过弃牌阶段','yellow');
+        }else{
+            this.staff.set_$info(this.name+'弃牌阶段开始');
+            this.staff.set_$info(this.name+'弃牌阶段结束');
+        }
+        
+        this.panding_zone.reset();//回合结束前将这次的判定条件重置一下,以备下次开始之前重新判定
+        this.staff.set_$info(this.name+'回合结束');
+
+        this.staff.play();//最后加一个继续
+    },
+    auto_chupai_step : function(){
+        var _this = this;
+        this.staff.set_$info('自动出牌阶段思考3秒钟...');
+        setTimeout(function(){
+            _this.qipai_step();//弃牌阶段
+        },3000);
+    },
+    me_chupai_step : function(){
+        //this.qipai_step();//弃牌阶段应该是点击取消按钮后手动触发
+        this.staff.set_$info('我自己的出牌阶段');
+    }
+}
+function Zhugong(){
+    Role.call(this,'主公','主');
+}
+Zhugong.prototype = new Role();
+function Zhongchen(){
+    Role.call(this,'忠臣','忠');
+}
+Zhongchen.prototype = new Role();
+function Neijian(){
+    Role.call(this,'内奸','内');
+}
+Neijian.prototype = new Role();
+function Fanze(){
+    Role.call(this,'反贼','反');
+}
+Fanze.prototype = new Role();
