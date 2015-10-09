@@ -1,11 +1,12 @@
 (function(window,$,undefined){
     window.sanguosha = window.sanguosha || {};
 
-    /*舞台类，只管定时轮询就可以了，舞台类中还有弃牌堆，洗牌，发牌等方法*/
+    /*舞台类，只管定时轮询就可以了，舞台类中还有棋牌管理类*/
     //随机定角色，电脑随机选英雄，到我这再弹出选英雄的界面
     //角色：主公（游戏的关键，成功与否的标志），忠臣，反贼，内奸，角色类会控制怎样杀来杀去
     //英雄：有各自的英雄技能
     function Staff(){
+        this.card_manager = new CardManager(this);
         this.timer = null;
         this.a_seat = [];
         this.i_now = 0;
@@ -15,6 +16,7 @@
         this.$log = $('.log .content');//用于显示日志的div
         this.$log_left = $('.log_left .content');//用于显示日志的div
         this.$log_right = $('.log_right .content');//用于显示日志的div
+        this.paiqu_card_move_time = 100;//点中牌后完成上下移动所需时间
         this.init();
     }
     Staff.prototype = {
@@ -23,9 +25,32 @@
             this.assign_role_to_seat_rand();//给每个座位类随机分配角色
             this.init_seat_div();//角色所在座位的DIV信息初始化
 
+            this.card_manager.generate_cards();//生成所有的手牌，回头还要生成英雄牌
             //this.chose_hero();
-            //this.bind();
+            this.test();
+            this.card_manager.xipai();
+            this.test1();
+            this.card_manager.fapai();//每个座位类分到初始的4张牌
+
+            this.bind();
             this.play();
+        },
+        test : function(){
+            var cards = this.card_manager.get_cards();
+            $('#test').append('现在有牌：'+cards.length+' 个.');
+            //$('#test').append(cards[0].get_name());get_dots
+            for(var card in cards){
+                $('#test').append(cards[card].get_name()+':'+cards[card].get_huase()+':'+cards[card].get_dots()+',');
+            }
+        },
+        test1 : function(){
+            var cards = this.card_manager.get_cards();
+            $('#test1').append('洗后有牌：'+cards.length+' 个.');
+            //$('#test1').append(cards[0].get_name());
+            //console.log(JSON.stringify(cards));
+            for(var card in cards){
+                $('#test1').append(cards[card].get_name()+':'+cards[card].get_huase()+':'+cards[card].get_dots()+',');
+            }
         },
         play : function(){
             var _this = this;
@@ -63,12 +88,58 @@
                 this.a_seat.push(seat);
             }
         },
+        get_card_manager : function(){
+            return this.card_manager;
+        },
+        get_a_seat : function(){
+            return this.a_seat;
+        },
         bind : function(){
             var _this = this;
             //点击弃牌按钮
             $('.btns .next').click(function(){
                 //点击弃牌按钮后就进入弃牌阶段了
-                _this.a_o_roles[_this.i_now].qipai_step();
+                //_this.a_o_roles[_this.i_now].qipai_step();
+            });
+
+            $('#xianyin').click(function(){
+                var ishide = $('#log_left_ctr').is(':hidden');
+                if(ishide){
+                    $(this).text('隐');
+                    $('#log_left_ctr,#log_right_ctr').show();
+                }else{
+                    $(this).text('显');
+                    $('#log_left_ctr,#log_right_ctr').hide();
+                }
+            });
+
+            //牌区中的每张牌点击的时候
+            $('.paiqu').delegate('.cardul > li', {
+                'click':function(){
+                    this.index = this.index || 0;
+                    if(this.index%2==0){
+                        $(this).animate({top: 0}, _this.paiqu_card_move_time,function(){
+                            $(this).addClass('ready_to_out');
+                        });
+                    }else{
+                        $(this).animate({top: 10}, _this.paiqu_card_move_time,function(){
+                            $(this).removeClass('ready_to_out');
+                        });
+                    }
+                    
+                    this.index++; 
+                },
+                'mouseenter':function(){
+                    $(this).find('.card').addClass('now');
+                },
+                'mouseleave':function(){
+                    $(this).find('.card').removeClass('now');
+                }
+            });
+
+            //点击确定按钮时，会将选中的牌打入到弃牌区，同时将牌放入到弃牌堆，再调用一下layout_my_cards方法。确定按钮不管选中的牌能不能打出
+            $('.myzone .btns .ok').click(function(){
+
             });
 
         },

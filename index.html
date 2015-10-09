@@ -6,10 +6,6 @@
     <link rel="stylesheet" href="./css/index.css"/>
 </head>
 <body>
-    <div class="btn lbss_t marginbottom10 width120">乐不思蜀判真</div>
-    <div class="btn lbss_f marginbottom10 width120">乐不思蜀判假</div>
-    <div class="btn blcd_t marginbottom10 width120">兵粮寸断判真</div>
-    <div class="btn blcd_f marginbottom10 width120">兵粮寸断判假</div>
     <div class="container" id="sanguosha">
         <div class="clear marginbottom10">
             <div class="seat fl nomarginleft">
@@ -82,9 +78,14 @@
                 </div>
             </div>
             <div class="log">
+                <div id="xianyin">显</div>
                 <div id="log_tmp"></div>
                 <div class="content">
                     
+                </div>
+                <div class="cards">
+                    <ul class="cardul floatul clear">
+                    </ul>
                 </div>
             </div>
         </div>
@@ -104,7 +105,10 @@
                 装备区
             </div>
             <div class="paiqu">
-                牌区
+                <div class="cards">
+                    <ul class="cardul floatul clear">
+                    </ul>
+                </div>
             </div>
             <div class="btns clear">
                 <div class="btn fl pause">暂停</div>
@@ -125,7 +129,7 @@
                     <div class="fanpai">翻</div>
                 </div>
         </div>
-        <div class="log_left_ctr">
+        <div class="log_left_ctr" id="log_left_ctr">
             <div class="log_left">
                 <div id="log_left_tmp"></div>
                 <div class="content">
@@ -133,12 +137,21 @@
                 </div>
             </div>
         </div>
-        <div class="log_right_ctr">
+        <div class="log_right_ctr" id="log_right_ctr">
             <div class="log_right">
                 <div class="content"></div>
             </div>
         </div>
     </div>
+    <div id="test"></div>
+    <div id="test1"></div>
+    <div class="btn lbss_t fl marginleft10 width120">乐不思蜀判真</div>
+    <div class="btn lbss_f fl marginleft10 width120">乐不思蜀判假</div>
+    <div class="btn blcd_t fl marginleft10 width120">兵粮寸断判真</div>
+    <div class="btn blcd_f fl marginleft10 width120">兵粮寸断判假</div>
+
+    <div class="btn cardlayout1 fl marginleft10 width120">测牌布局到定位</div>
+    <div class="btn cardlayout2 fl marginleft10 width120">测牌布局到浮动</div>
 
     <script src="./js/jquery-1.9.1.min.js"></script>
     <script src="./js/Staff.js"></script>
@@ -148,6 +161,7 @@
     <script src="./js/Role.js"></script>
     <script src="./js/Hero.js"></script>
     <script src="./js/Card.js"></script>
+    <script src="./js/CardManager.js"></script>
     <script src="./js/Seat.js"></script>
     <script src="./js/Step.js"></script>
 <script>
@@ -169,6 +183,24 @@
         $('.blcd_f').click(function(){
             staff1.a_seat[5].get_panding_zone().set_bingliangcunduan_success(false);
             staff1.a_seat[5].get_panding_zone().bingliangcunduan_show();
+        });
+
+        $('.cardlayout1').click(function(){
+            var s = staff1.get_card_manager();
+            s.layout_my_cards();
+            //s.layout_log_cards();
+
+            //console.log(s);
+            /*var $cards = $('.paiqu .cards');
+            var $lis = $cards.find('.cardul > li');
+            s.show_cards($cards,$lis);*/
+        });
+        $('.cardlayout2').click(function(){
+            var s = staff1.get_card_manager();
+            //console.log(s);
+            var $cards = $('.paiqu .cards');
+            var $lis = $cards.find('.cardul > li');
+            s.test($lis);
         });
     });
 </script>
