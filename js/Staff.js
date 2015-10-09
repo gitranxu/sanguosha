@@ -27,9 +27,9 @@
 
             this.card_manager.generate_cards();//生成所有的手牌，回头还要生成英雄牌
             //this.chose_hero();
-            this.test();
+            //this.test();
             this.card_manager.xipai();
-            this.test1();
+            //this.test1();
             this.card_manager.fapai();//每个座位类分到初始的4张牌
 
             this.bind();

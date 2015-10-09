@@ -110,6 +110,8 @@ Card.prototype = {
 }
 
 //opt包含huase,dots,color,no这四个信息
+//杀，主动点击时，如果不是【制衡】，则会触发检查方法，该方法检查是否有满足条件的攻击对象，如果有继续等待满足条件的对象是否进一步满足出牌的条件，如果都满足了，则让确定按钮变的可用
+//被动点击情况【被决斗】【被南蛮】
 function Sha(opt,$card_div){
     Card.call(this,opt,$card_div);
     this.name = '杀';
@@ -123,6 +125,35 @@ Sha.prototype.can_use = function(hero){
         this.$card_div.addClass('disable');
     }
 }
+
+function Huosha(opt,$card_div){
+    Card.call(this,opt,$card_div);
+    this.name = '火杀';
+    this.img_code = 'c11';
+    this.init_div();
+}
+Huosha.prototype = new Sha();
+Huosha.prototype.can_use = function(hero){
+    //如果英雄的状态为麻木，则不能使用
+    if(hero.mamu_status){
+        this.$card_div.addClass('disable');
+    }
+}
+
+function Leisha(opt,$card_div){
+    Card.call(this,opt,$card_div);
+    this.name = '雷杀';
+    this.img_code = 'c12';
+    this.init_div();
+}
+Leisha.prototype = new Sha();
+Leisha.prototype.can_use = function(hero){
+    //如果英雄的状态为麻木，则不能使用
+    if(hero.mamu_status){
+        this.$card_div.addClass('disable');
+    }
+}
+
 
 function Shan(opt,$card_div){
     Card.call(this,opt,$card_div);

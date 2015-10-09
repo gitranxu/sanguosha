@@ -9,58 +9,6 @@ CardManager.prototype = {
 	get_cards : function(){
 		return this.cards;
 	},
-	get_init_data : function(){
-		//classtype:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓
-		return [{huase:'heitao',dots:1,color:'black',classtype:8},
-		{huase:'hongtao',dots:1,color:'red',classtype:15},
-		{huase:'meihua',dots:1,color:'black',classtype:8},
-		{huase:'fangpian',dots:1,color:'red',classtype:8},
-
-		{huase:'heitao',dots:1,color:'black',classtype:21},
-		{huase:'hongtao',dots:1,color:'red',classtype:10},
-		{huase:'meihua',dots:1,color:'black',classtype:261},
-		{huase:'fangpian',dots:1,color:'red',classtype:261},
-		
-		{huase:'heitao',dots:1,color:'black',classtype:265},
-		{huase:'hongtao',dots:1,color:'red',classtype:16},
-		{huase:'meihua',dots:1,color:'black',classtype:231},
-		{huase:'fangpian',dots:1,color:'red',classtype:270},
-
-		{huase:'heitao',dots:2,color:'black',classtype:232},
-		{huase:'hongtao',dots:2,color:'red',classtype:2},
-		{huase:'meihua',dots:2,color:'black',classtype:1},
-		{huase:'fangpian',dots:2,color:'red',classtype:2},
-
-		{huase:'heitao',dots:2,color:'black',classtype:262},
-		{huase:'hongtao',dots:2,color:'red',classtype:2},
-		{huase:'meihua',dots:2,color:'black',classtype:232},
-		{huase:'fangpian',dots:2,color:'red',classtype:2},
-
-		{huase:'heitao',dots:2,color:'black',classtype:234},
-		{huase:'hongtao',dots:2,color:'red',classtype:17},
-		{huase:'meihua',dots:2,color:'black',classtype:234},
-		{huase:'fangpian',dots:2,color:'red',classtype:3},
-
-		{huase:'heitao',dots:2,color:'black',classtype:264},
-		{huase:'meihua',dots:2,color:'black',classtype:233},
-
-		{huase:'heitao',dots:3,color:'black',classtype:5},
-		{huase:'hongtao',dots:3,color:'red',classtype:3},
-		{huase:'meihua',dots:3,color:'black',classtype:1},
-		{huase:'fangpian',dots:3,color:'red',classtype:2},
-
-		{huase:'heitao',dots:3,color:'black',classtype:6},
-		{huase:'hongtao',dots:3,color:'red',classtype:13},
-		{huase:'meihua',dots:3,color:'black',classtype:5},
-		{huase:'fangpian',dots:3,color:'red',classtype:6},
-
-		{huase:'heitao',dots:3,color:'black',classtype:4},
-		{huase:'hongtao',dots:3,color:'red',classtype:11},
-		{huase:'meihua',dots:3,color:'black',classtype:4},
-		{huase:'fangpian',dots:3,color:'red',classtype:3}
-		];
-		//classtype:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺
-	},
 	generate_cards : function(){
 		var a_data = this.get_init_data();
 		for(var i = 0,j = a_data.length;i < j;i++){
@@ -71,37 +19,6 @@ CardManager.prototype = {
 			}
 		}
 	},
-	get_class : function(opt,no,$card_div){
-		var ct = opt.classtype;
-		opt.no = no;
-		switch(ct){
-			case 1:
-				return new Sha(opt,$card_div);
-			case 2:
-				return new Shan(opt,$card_div);
-			case 3:
-				return new Peach(opt,$card_div);
-			case 272:
-				return new Yuxi(opt,$card_div);
-			case 271:
-				return null;
-			case 270:
-				return null;
-			case 261:
-				return new Zhugeliannu(opt,$card_div);
-			default:
-				return null;
-		}
-	},
-	/*
-		<li><div class="card red_card">
-            <div class="huase hongtao"></div>
-            <div class="dots">A</div>
-            <div class="bg c1"></div>
-            <div class="name">八卦阵阵</div>
-            <div class="user">孙尚香</div>
-        </div></li>
-	*/
 	create_div : function(){
 		var html = '<li><div class="card no_se_card" id="cardwu">'+
 						'<div class="huase"></div>'+
@@ -161,15 +78,11 @@ CardManager.prototype = {
 	fapai : function(){
 		var a_seat = this.staff.get_a_seat();
 		for(var i = 0,j = a_seat.length;i < j;i++){
-			var a_pai = this.get_a_pai(1);
+			var a_pai = this.get_a_pai(4);
 			a_seat[i].set_pai_list(a_pai);
 			//如果是自己的座位，则需要将牌显示到牌区中
 			var is_me = a_seat[i].get_div().hasClass('me');
 			a_seat[i].cards_to_cardzone(is_me);
-			/*if(is_me){
-				a_seat[i].cards_to_cardzone(is_me);
-				this.layout_my_cards();
-			}*/
 		}
 	},
 	//从牌堆顶部顺序取得n张牌，并返回该数组
@@ -193,5 +106,236 @@ CardManager.prototype = {
 	test : function($lis){
 		tools.trans_to_float($lis);
 		tools.trans_to_absolute($lis);
+	},
+	get_class : function(opt,no,$card_div){
+		var ct = opt.classtype;
+		opt.no = no;
+		switch(ct){
+			case 1:
+				return new Sha(opt,$card_div);
+			case 11:
+				return new Huosha(opt,$card_div);
+			case 12:
+				return new Leisha(opt,$card_div);
+			case 2:
+				return new Shan(opt,$card_div);
+			case 3:
+				return new Peach(opt,$card_div);
+			case 272:
+				return new Yuxi(opt,$card_div);
+			case 271:
+				return null;
+			case 270:
+				return null;
+			case 261:
+				return new Zhugeliannu(opt,$card_div);
+			default:
+				return null;
+		}
+	},
+	get_init_data : function(){
+		return [{huase:'heitao',dots:1,color:'black',classtype:8},
+		{huase:'hongtao',dots:1,color:'red',classtype:15},
+		{huase:'meihua',dots:1,color:'black',classtype:8},
+		{huase:'fangpian',dots:1,color:'red',classtype:8},
+
+		{huase:'heitao',dots:1,color:'black',classtype:21},
+		{huase:'hongtao',dots:1,color:'red',classtype:10},
+		{huase:'meihua',dots:1,color:'black',classtype:261},
+		{huase:'fangpian',dots:1,color:'red',classtype:261},
+		
+		{huase:'heitao',dots:1,color:'black',classtype:265},
+		{huase:'hongtao',dots:1,color:'red',classtype:16},
+		{huase:'meihua',dots:1,color:'black',classtype:231},
+		{huase:'fangpian',dots:1,color:'red',classtype:270},
+
+		{huase:'heitao',dots:2,color:'black',classtype:232},
+		{huase:'hongtao',dots:2,color:'red',classtype:2},
+		{huase:'meihua',dots:2,color:'black',classtype:1},
+		{huase:'fangpian',dots:2,color:'red',classtype:2},
+
+		{huase:'heitao',dots:2,color:'black',classtype:262},
+		{huase:'hongtao',dots:2,color:'red',classtype:2},
+		{huase:'meihua',dots:2,color:'black',classtype:232},
+		{huase:'fangpian',dots:2,color:'red',classtype:2},
+
+		{huase:'heitao',dots:2,color:'black',classtype:234},
+		{huase:'hongtao',dots:2,color:'red',classtype:17},
+		{huase:'meihua',dots:2,color:'black',classtype:234},
+		{huase:'fangpian',dots:2,color:'red',classtype:3},
+
+		{huase:'heitao',dots:2,color:'black',classtype:264},
+		{huase:'meihua',dots:2,color:'black',classtype:233},
+
+		{huase:'heitao',dots:3,color:'black',classtype:5},
+		{huase:'hongtao',dots:3,color:'red',classtype:3},
+		{huase:'meihua',dots:3,color:'black',classtype:1},
+		{huase:'fangpian',dots:3,color:'red',classtype:2},
+
+		{huase:'heitao',dots:3,color:'black',classtype:6},
+		{huase:'hongtao',dots:3,color:'red',classtype:13},
+		{huase:'meihua',dots:3,color:'black',classtype:5},
+		{huase:'fangpian',dots:3,color:'red',classtype:6},
+
+		{huase:'heitao',dots:3,color:'black',classtype:4},
+		{huase:'hongtao',dots:3,color:'red',classtype:11},
+		{huase:'meihua',dots:3,color:'black',classtype:4},
+		{huase:'fangpian',dots:3,color:'red',classtype:3},
+
+		{huase:'heitao',dots:4,color:'black',classtype:5},
+		{huase:'hongtao',dots:4,color:'red',classtype:3},
+		{huase:'meihua',dots:4,color:'black',classtype:1},
+		{huase:'fangpian',dots:4,color:'red',classtype:2},
+
+		{huase:'heitao',dots:4,color:'black',classtype:6},
+		{huase:'hongtao',dots:4,color:'red',classtype:13},
+		{huase:'meihua',dots:4,color:'black',classtype:5},
+		{huase:'fangpian',dots:4,color:'red',classtype:6},
+
+		{huase:'heitao',dots:4,color:'black',classtype:12},
+		{huase:'hongtao',dots:4,color:'red',classtype:17},
+		{huase:'meihua',dots:4,color:'black',classtype:20},
+		{huase:'fangpian',dots:4,color:'red',classtype:11},
+
+		{huase:'heitao',dots:5,color:'black',classtype:267},
+		{huase:'hongtao',dots:5,color:'red',classtype:271},
+		{huase:'meihua',dots:5,color:'black',classtype:1},
+		{huase:'fangpian',dots:5,color:'red',classtype:2},
+
+		{huase:'heitao',dots:5,color:'black',classtype:241},
+		{huase:'hongtao',dots:5,color:'red',classtype:251},
+		{huase:'meihua',dots:5,color:'black',classtype:242},
+		{huase:'fangpian',dots:5,color:'red',classtype:266},
+
+		{huase:'heitao',dots:5,color:'black',classtype:12},
+		{huase:'hongtao',dots:5,color:'red',classtype:3},
+		{huase:'meihua',dots:5,color:'black',classtype:12},
+		{huase:'fangpian',dots:5,color:'red',classtype:11},
+
+		{huase:'heitao',dots:6,color:'black',classtype:19},
+		{huase:'hongtao',dots:6,color:'red',classtype:3},
+		{huase:'meihua',dots:6,color:'black',classtype:1},
+		{huase:'fangpian',dots:6,color:'red',classtype:1},
+
+		{huase:'heitao',dots:6,color:'black',classtype:263},
+		{huase:'hongtao',dots:6,color:'red',classtype:19},
+		{huase:'meihua',dots:6,color:'black',classtype:19},
+		{huase:'fangpian',dots:6,color:'red',classtype:2},
+
+		{huase:'heitao',dots:6,color:'black',classtype:12},
+		{huase:'hongtao',dots:6,color:'red',classtype:3},
+		{huase:'meihua',dots:6,color:'black',classtype:12},
+		{huase:'fangpian',dots:6,color:'red',classtype:2},
+
+		{huase:'heitao',dots:7,color:'black',classtype:1},
+		{huase:'hongtao',dots:7,color:'red',classtype:3},
+		{huase:'meihua',dots:7,color:'black',classtype:1},
+		{huase:'fangpian',dots:7,color:'red',classtype:1},
+
+		{huase:'heitao',dots:7,color:'black',classtype:14},
+		{huase:'hongtao',dots:7,color:'red',classtype:7},
+		{huase:'meihua',dots:7,color:'black',classtype:14},
+		{huase:'fangpian',dots:7,color:'red',classtype:2},
+
+		{huase:'heitao',dots:7,color:'black',classtype:12},
+		{huase:'hongtao',dots:7,color:'red',classtype:11},
+		{huase:'meihua',dots:7,color:'black',classtype:12},
+		{huase:'fangpian',dots:7,color:'red',classtype:2},
+
+		{huase:'heitao',dots:8,color:'black',classtype:1},
+		{huase:'hongtao',dots:8,color:'red',classtype:3},
+		{huase:'meihua',dots:8,color:'black',classtype:1},
+		{huase:'fangpian',dots:8,color:'red',classtype:1},
+
+		{huase:'heitao',dots:8,color:'black',classtype:1},
+		{huase:'hongtao',dots:8,color:'red',classtype:7},
+		{huase:'meihua',dots:8,color:'black',classtype:1},
+		{huase:'fangpian',dots:8,color:'red',classtype:2},
+
+		{huase:'heitao',dots:8,color:'black',classtype:12},
+		{huase:'hongtao',dots:8,color:'red',classtype:2},
+		{huase:'meihua',dots:8,color:'black',classtype:12},
+		{huase:'fangpian',dots:8,color:'red',classtype:2},
+
+		{huase:'heitao',dots:9,color:'black',classtype:1},
+		{huase:'hongtao',dots:9,color:'red',classtype:3},
+		{huase:'meihua',dots:9,color:'black',classtype:1},
+		{huase:'fangpian',dots:9,color:'red',classtype:1},
+
+		{huase:'heitao',dots:9,color:'black',classtype:1},
+		{huase:'hongtao',dots:9,color:'red',classtype:7},
+		{huase:'meihua',dots:9,color:'black',classtype:1},
+		{huase:'fangpian',dots:9,color:'red',classtype:2},
+
+		{huase:'heitao',dots:9,color:'black',classtype:4},
+		{huase:'hongtao',dots:9,color:'red',classtype:2},
+		{huase:'meihua',dots:9,color:'black',classtype:4},
+		{huase:'fangpian',dots:9,color:'red',classtype:4},
+
+		{huase:'heitao',dots:10,color:'black',classtype:1},
+		{huase:'hongtao',dots:10,color:'red',classtype:1},
+		{huase:'meihua',dots:10,color:'black',classtype:1},
+		{huase:'fangpian',dots:10,color:'red',classtype:1},
+
+		{huase:'heitao',dots:10,color:'black',classtype:1},
+		{huase:'hongtao',dots:10,color:'red',classtype:1},
+		{huase:'meihua',dots:10,color:'black',classtype:1},
+		{huase:'fangpian',dots:10,color:'red',classtype:2},
+
+		{huase:'heitao',dots:10,color:'black',classtype:20},
+		{huase:'hongtao',dots:10,color:'red',classtype:11},
+		{huase:'meihua',dots:10,color:'black',classtype:18},
+		{huase:'fangpian',dots:10,color:'red',classtype:2},
+
+		{huase:'heitao',dots:11,color:'black',classtype:6},
+		{huase:'hongtao',dots:11,color:'red',classtype:1},
+		{huase:'meihua',dots:11,color:'black',classtype:1},
+		{huase:'fangpian',dots:11,color:'red',classtype:2},
+
+		{huase:'heitao',dots:11,color:'black',classtype:16},
+		{huase:'hongtao',dots:11,color:'red',classtype:7},
+		{huase:'meihua',dots:11,color:'black',classtype:1},
+		{huase:'fangpian',dots:11,color:'red',classtype:2},
+
+		{huase:'heitao',dots:11,color:'black',classtype:18},
+		{huase:'hongtao',dots:11,color:'red',classtype:2},
+		{huase:'meihua',dots:11,color:'black',classtype:18},
+		{huase:'fangpian',dots:11,color:'red',classtype:2},
+
+		{huase:'heitao',dots:12,color:'black',classtype:5},
+		{huase:'hongtao',dots:12,color:'red',classtype:3},
+		{huase:'meihua',dots:12,color:'black',classtype:9},
+		{huase:'fangpian',dots:12,color:'red',classtype:3},
+
+		{huase:'heitao',dots:12,color:'black',classtype:268},
+		{huase:'hongtao',dots:12,color:'red',classtype:5},
+		{huase:'meihua',dots:12,color:'black',classtype:16},
+		{huase:'fangpian',dots:12,color:'red',classtype:269},
+
+		{huase:'heitao',dots:12,color:'black',classtype:18},
+		{huase:'hongtao',dots:12,color:'red',classtype:2},
+		{huase:'meihua',dots:12,color:'black',classtype:18},
+		{huase:'fangpian',dots:12,color:'red',classtype:17},
+
+		{huase:'hongtao',dots:12,color:'red',classtype:21},
+		{huase:'fangpian',dots:12,color:'red',classtype:16},
+
+		{huase:'heitao',dots:13,color:'black',classtype:14},
+		{huase:'hongtao',dots:13,color:'red',classtype:2},
+		{huase:'meihua',dots:13,color:'black',classtype:9},
+		{huase:'fangpian',dots:13,color:'red',classtype:1},
+
+		{huase:'heitao',dots:13,color:'black',classtype:252},
+		{huase:'hongtao',dots:13,color:'red',classtype:243},
+		{huase:'meihua',dots:13,color:'black',classtype:16},
+		{huase:'fangpian',dots:13,color:'red',classtype:253},
+
+		{huase:'heitao',dots:13,color:'black',classtype:16},
+		{huase:'hongtao',dots:13,color:'red',classtype:16},
+		{huase:'meihua',dots:13,color:'black',classtype:18},
+		{huase:'fangpian',dots:13,color:'red',classtype:244}
+
+		];
+		//classtype:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺 273金火罐炮 241绝影 242的卢 243爪黄飞电 244骅骝 251赤兔 252大宛 253紫驹
 	}
 }
