@@ -16,6 +16,8 @@ Step.prototype = {
         this.staff.pause();
         if(!this.is_me){
             this.seat.cards_to_cardzone_computer();
+        }else{
+            $('.computer .cardul').empty();
         }
 
         var _this = this;
