@@ -14,6 +14,9 @@ Step.prototype = {
         this.is_me = this.seat.get_div().hasClass('me');
         this.seat.get_div().addClass('active');//设置当前座位类div，加上active类
         this.staff.pause();
+        if(!this.is_me){
+            this.seat.cards_to_cardzone_computer();
+        }
 
         var _this = this;
         setTimeout(function(){

@@ -23,7 +23,7 @@
         constructor : Staff,
         init : function(){
             this.assign_role_to_seat_rand();//给每个座位类随机分配角色
-            this.init_seat_div();//角色所在座位的DIV信息初始化
+            this.seat_init();//初始化座位信息
 
             this.card_manager.generate_cards();//生成所有的手牌，回头还要生成英雄牌
             //this.chose_hero();
@@ -31,6 +31,9 @@
             this.card_manager.xipai();
             //this.test1();
             this.card_manager.fapai();//每个座位类分到初始的4张牌
+
+            //定位主公，将当前座位指定到公主所在座位
+            this.index_to_zhugong();
 
             this.bind();
             this.play();
@@ -66,10 +69,9 @@
             clearInterval(this.timer);
             this.timer = null;
         },
-        init_seat_div : function(){
+        seat_init : function(){
             for(var i = 0,j = this.a_seat.length;i < j;i++){
-                var flag = this.a_seat[i].get_role().get_flag();
-                this.a_seat[i].get_div().find('.rolename').text(flag);
+                this.a_seat[i].init();//在座位初始化
             }
         },
         get_all_roles : function(){
@@ -83,9 +85,20 @@
                 var o_rand_role = tools.get_rand_from_arr(a_o_roles)[0];
                 var seat = new Seat(this,o_rand_role);
                 seat.set_div($seats_div.eq(i));
-                //seat.set_role(o_rand_role);
                 seat.set_no(i);
                 this.a_seat.push(seat);
+            }
+        },
+        index_to_zhugong : function(){
+            this.i_now = this.i_count%8;
+            var code = this.a_seat[this.i_now].get_role().get_code();
+            this.i_count++;
+            this.i_next = this.i_count%8;
+            if(code==1){
+                this.i_count--;//找到后，微调一下指针
+                return;
+            }else{
+                this.index_to_zhugong();
             }
         },
         get_card_manager : function(){

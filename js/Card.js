@@ -93,7 +93,6 @@ Card.prototype = {
         if(this.$div){
             //console.log(this.$div.html()+'----before---'+this.color);
             this.$div.find('.card').removeClass('no_se_card').addClass(this.color+'_card').attr('id','card'+this.no);
-            console.log(this.huase+'-----');
             this.$div.find('.huase').addClass(this.huase);
             this.$div.find('.dots').text(this.dots);
             this.$div.find('.bg').addClass(this.img_code);

@@ -49,9 +49,7 @@ CardManager.prototype = {
 			tools.adjust_position($lis,i_cuowei+i_last_cuowei);
 		}
 	},
-	layout_my_cards : function(){//自己牌区一屏最多显示10张，加减自己牌区的牌都调用
-		var $cards = $('.paiqu .cards');
-        var $lis = $cards.find('.cardul > li');
+	layout_paiqu_cards : function($cards,$lis){//自己牌区一屏最多显示10张，加减自己牌区的牌都调用
         this.show_cards($cards,$lis);
 	},
 	layout_log_cards : function(){//显示区中的牌20张也是一屏显示,这个方法是点击确定将li放到log中后再调用
@@ -82,7 +80,12 @@ CardManager.prototype = {
 			a_seat[i].set_pai_list(a_pai);
 			//如果是自己的座位，则需要将牌显示到牌区中
 			var is_me = a_seat[i].get_div().hasClass('me');
-			a_seat[i].cards_to_cardzone(is_me);
+			if(is_me){
+				a_seat[i].cards_to_cardzone_me();
+			}else{
+				a_seat[i].cards_to_cardzone_computer();
+			}
+			
 		}
 	},
 	//从牌堆顶部顺序取得n张牌，并返回该数组

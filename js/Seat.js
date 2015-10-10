@@ -21,6 +21,30 @@ function Seat(staff,role){
 }
 Seat.prototype = {
 	constructor : Seat,
+	init : function(){
+		this.set_div_info();
+		this.compute_distance();//计算当作座位与其他座位的距离
+	},
+	//初始化座位所属DIV信息
+	set_div_info : function(){
+        this.$div.find('.rolename').text(this.role.get_flag());
+	},
+	//根据座位数组[0,1,2,3,4,5,6,7]等，计算其他座位与当前座位的最短距离，一个方向（从左往右），当向一个方向计算找到的距离小于数组长度的一半时就说明找到了正确的距离，当扫描距离超过一半找到时，最短距离等于座位数减去找到的距离,只需遍历一次就可以
+	compute_distance: function(){
+		var result = {};
+		var a_seat = this.staff.get_a_seat();
+		for(var i = 0,j = a_seat.length;i < j;i++){
+			var other_no = a_seat[i].get_no();
+			if(other_no!=this.no){
+				var dist = Math.abs(other_no - this.no);
+				if(dist > j/2){
+					dist = j - dist;
+				}
+				result[other_no] = dist;
+			}
+		}
+		this.distance = result;
+	},
 	set_div : function($div){
 		this.$div = $div;
 	},
@@ -57,19 +81,31 @@ Seat.prototype = {
 		}
 	},
 	//将座位中的牌列表放到牌区中去(当然，基本上自动的不会用到，不过在测试的时候可以用用)
-	cards_to_cardzone : function(is_me){
-		if(is_me){
-			if(this.pai_list){
-				var ul = $('.myzone .cards .cardul');
-				for(var i = 0,j = this.pai_list.length;i < j;i++){
-					ul.append(this.pai_list[i].get_div());
-				}
-				this.staff.get_card_manager().layout_my_cards();
-			}else{
-				console.log('this.pai_list为空....');
+	cards_to_cardzone_me : function(){
+		if(this.pai_list){
+			var $cards = $('.myzone .cards');
+			var $ul = $cards.find('.cardul');
+			for(var i = 0,j = this.pai_list.length;i < j;i++){
+				$ul.append(this.pai_list[i].get_div());
 			}
+			var $lis = $cards.find('.cardul > li');
+			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
 		}else{
-			console.log('回头可以考虑让自动的将牌放到某个div中，自动的共用一个');
+			console.log('this.pai_list为空me....');
+		}
+	},
+	cards_to_cardzone_computer : function(){
+		if(this.pai_list){
+			var $cards = $('.computer .cards');
+			var $ul = $cards.find('.cardul');
+			$ul.empty();//在用之前把上一个的清空
+			for(var i = 0,j = this.pai_list.length;i < j;i++){
+				$ul.append(this.pai_list[i].get_div());
+			}
+			var $lis = $cards.find('.cardul > li');
+			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
+		}else{
+			console.log('this.pai_list为空auto....');
 		}
 	}
 }
