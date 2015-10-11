@@ -25,6 +25,7 @@ function Seat(staff,role){
 	this.can_attack_seats = [];//本座位可以攻击的其他座位的数组,主要用于电脑攻击分析
 	this.my_attack_seats = [];//我自己的攻击目标，主要是自己用
 	this.chu_pai_mult = false;//出牌时能否多选，默认不能
+	this.chu_pai_num = 1;//出牌数，在能够出牌多选的时候使用，用于判断可以同时出几张牌
 }
 Seat.prototype = {
 	constructor : Seat,
@@ -245,6 +246,12 @@ Seat.prototype = {
 	},
 	set_chu_pai_mult : function(chu_pai_mult){
 		this.chu_pai_mult = chu_pai_mult;
+	},
+	chu_pai_num : function(){
+		return this.chu_pai_num;
+	},
+	chu_pai_num : function(chu_pai_num){
+		this.chu_pai_num = chu_pai_num;
 	},
 	//两种情况，第一次时直接赋值，以后都是数组合并,注参数都是手牌数组
 	set_pai_list : function(pai_list){
