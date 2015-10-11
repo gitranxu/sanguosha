@@ -21,11 +21,22 @@ function Card(opt,$card_div){
     this.can_sha = opt.can_sha;//可以杀吗*/
 
 }
+//can_use方法是判断牌本身是否可用，can_out方法是判断点击牌后确认按钮是否可用
 Card.prototype = {
     constructor : Card,
     //如果不可以用，则棋牌本身自己加一个disable属性,这个方法是当轮到自己的时候棋牌进行调用的，如果一个角色要死的时候，不会调用这个方法，给别人喂桃是另外的方法
     can_use : function(){//该方法每个特定的牌类自己去具体实现
         console.log('父类中的牌类是否可用的方法，看到这句话，说明子类没有实现这个方法...')
+    },
+    can_out : function(){
+        console.log('是否可以出牌，如果可以，则确认按钮能用，否则不能用');
+    },
+    use : function(seat){},//点击确认后调用card的use方法
+    after_up : function(){//鼠标点击升上来后添加的效果
+
+    },
+    after_down : function(){//鼠标点击落回去后要还原的效果
+
     },
     get_name : function(){
         return this.name;
@@ -35,6 +46,9 @@ Card.prototype = {
     },
     get_dots : function(){
         return this.dots;
+    },
+    get_no : function(){
+        return this.no;
     },
     /*set_can_shan : function(){
         return this.can_shan;
@@ -92,8 +106,9 @@ Card.prototype = {
     init_div : function(){
         if(this.$div){
             //console.log(this.$div.html()+'----before---'+this.color);
-            this.$div.find('.card').removeClass('no_se_card').addClass(this.color+'_card').attr('id','card'+this.no);
-            this.$div.find('.huase').addClass(this.huase);
+            this.$div.attr('id',this.no);
+            this.$div.find('.card').removeClass('no_se_card').addClass(this.color+'_card');
+            this.$div.find('.huase img').attr('src','./img/v'+this.huase+'.png');
             this.$div.find('.dots').text(this.dots);
             this.$div.find('.bg').addClass(this.img_code);
             this.$div.find('.name').text(this.name);
@@ -123,6 +138,9 @@ Sha.prototype.can_use = function(hero){
     if(hero.mamu_status){
         this.$card_div.addClass('disable');
     }
+}
+Sha.prototype.after_up = function(){
+    
 }
 
 function Huosha(opt,$card_div){
@@ -188,6 +206,10 @@ Weapon.prototype.get_attack_num = function(){
 Weapon.prototype.set_attack_num = function(attack_num){
     this.attack_num = attack_num;
 }
+Weapon.prototype.use = function(seat){
+
+}
+
 
 function Yuxi(opt,$card_div){
     Weapon.call(this,opt,$card_div);

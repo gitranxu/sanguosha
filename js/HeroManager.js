@@ -58,14 +58,15 @@ HeroManager.prototype = {
 		for(var i = 0,j = a_order.length;i < j;i++){
 			(function(k){
 				var seat = a_seat[a_order[k]];
-				setTimeout(function(){
-					if(!seat.get_div().attr('hero')){
-						var hero = tools.get_rand_from_arr(_this.cards)[0];
-						var no = seat.get_no();
-							_this.staff.set_$log('玩家'+(no+1)+'选择了英雄:'+hero.get_name());
-						seat.set_hero(hero);
-					}
-				},800*(k+1));
+				if(!seat.get_div().attr('hero')){
+					setTimeout(function(){
+							var hero = tools.get_rand_from_arr(_this.cards)[0];
+							var no = seat.get_no();
+								_this.staff.set_$log('玩家'+(no+1)+'选择了英雄:'+hero.get_name());
+							seat.set_hero(hero);
+						
+					},800*(k+1));
+				}
 			})(i);
 		}
 

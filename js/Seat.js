@@ -15,7 +15,7 @@ function Seat(staff,role){
 	this.jin_status = false;//默认不禁
 	this.fan_status = false;//默认不翻
 	this.pai_list = null;//手牌列表
-	this.distance = null;
+	//this.distance = null;
 	this.attack_distance = 0;//攻击距离默认为0
 	this.defense_distance = 0;//防御距离默认为0
 	this.skill_attack_distance = 0;//技能攻击距离
@@ -24,6 +24,7 @@ function Seat(staff,role){
 	this.no = null;//座位号，可以用这个来计算距离
 	this.can_attack_seats = [];//本座位可以攻击的其他座位的数组,主要用于电脑攻击分析
 	this.my_attack_seats = [];//我自己的攻击目标，主要是自己用
+	this.chu_pai_mult = false;//出牌时能否多选，默认不能
 }
 Seat.prototype = {
 	constructor : Seat,
@@ -111,7 +112,8 @@ Seat.prototype = {
 	//当被杀标红时，点击座位，则把这个座位类放入攻击目标中，当放弃出牌或已出牌时，将攻击目标置空
 	//如果是我自己，则最后回标红，如果是电脑，不用标红
 	compute_distance: function(is_me){
-		var result = {};
+		//var result = {};
+		//计算的目的有两个，1标红，2放到can_attack_seats中
 		this.can_attack_seats = [];//先进行一下置空处理
 		var attack_dist = this.weapon_distance + this.attack_distance + this.skill_attack_distance;//攻击距离等于得到武器的攻击距离，得到攻击马距离，得到技能加成攻击距离
 
@@ -129,7 +131,7 @@ Seat.prototype = {
 				//第三步，得到座位的技能防御距离
 				var skill_defense_distance = a_seat[i].get_skill_defense_distance();
 				var defense_dist = dist+fangyuma_dist+skill_defense_distance
-				result[other_no] = defense_dist;
+				//result[other_no] = defense_dist;
 				if(attack_dist>=defense_dist){//如果可以攻击的话
 					if(is_me){//如果是我自己，则满足条件的需要标红
 						a_seat[i].get_div().addClass('can_attack');
@@ -140,7 +142,7 @@ Seat.prototype = {
 				
 			}
 		}
-		this.distance = result;
+		//this.distance = result;
 	},
 	for_attack : function(){
 		this.compute_distance(true);
@@ -238,6 +240,12 @@ Seat.prototype = {
 		this.update_div_hero_info(hero);
 		this.$div.attr('hero',hero.get_name());
 	},
+	get_chu_pai_mult : function(){
+		return this.chu_pai_mult;
+	},
+	set_chu_pai_mult : function(chu_pai_mult){
+		this.chu_pai_mult = chu_pai_mult;
+	},
 	//两种情况，第一次时直接赋值，以后都是数组合并,注参数都是手牌数组
 	set_pai_list : function(pai_list){
 		if(this.pai_list){
@@ -251,6 +259,7 @@ Seat.prototype = {
 		if(this.pai_list){
 			var $cards = $('.myzone .cards');
 			var $ul = $cards.find('.cardul');
+			$ul.empty();//先置空一下
 			for(var i = 0,j = this.pai_list.length;i < j;i++){
 				$ul.append(this.pai_list[i].get_div());
 			}
@@ -259,6 +268,32 @@ Seat.prototype = {
 		}else{
 			console.log('this.pai_list为空me....');
 		}
+	},
+	remove_pai_by_id : function(id){
+		var index = -1;
+		for(var i = 0,j = this.pai_list.length;i < j;i++){
+			if(this.pai_list[i].get_no()==id){
+				index = i;
+				break;
+			}
+		}
+
+		var pai_for_out = this.pai_list.splice(index,1);
+		$('.log .cards .cardul').append(pai_for_out[0].get_div());
+	},
+	remove_pai : function(){
+		var _this = this;
+		$('.myzone .ready_to_out').each(function(){
+			var id = $(this).attr('id');
+			_this.remove_pai_by_id(id);
+		});
+	},
+	chu_pai : function(){
+		$('.log .cards .cardul').empty();//清空展示区的牌
+		this.remove_pai();
+		this.cards_to_cardzone_me();
+		this.staff.get_card_manager().layout_log_cards();
+
 	},
 	cards_to_cardzone_computer : function(){
 		if(this.pai_list){

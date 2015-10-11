@@ -10,6 +10,7 @@
         this.hero_manager = new HeroManager(this);
         this.timer = null;
         this.a_seat = [];
+        this.me_seat = null;
         this.i_now = 0;
         this.i_next = 0;
         this.i_count = 0;
@@ -82,6 +83,9 @@
         seat_init : function(){
             for(var i = 0,j = this.a_seat.length;i < j;i++){
                 this.a_seat[i].init();//在座位初始化
+                if(this.a_seat[i].get_div().hasClass('me')){
+                    this.me_seat = this.a_seat[i];
+                }
             }
         },
         get_all_roles : function(){
@@ -149,20 +153,27 @@
                         alert('轮到您时请再出牌!');
                         return;
                     }
-                    this.index = this.index || 0;
-                    if(this.index%2==0){
-                        $(this).animate({top: 0}, _this.paiqu_card_move_time,function(){
-                            $(this).addClass('ready_to_out');
-                            _this.a_seat[_this.i_now].for_attack();//准备攻击
-                        });
+                    
+                    if($(this).hasClass('ready_to_out')){
+                        $(this).removeClass('ready_to_out');
                     }else{
-                        $(this).animate({top: 10}, _this.paiqu_card_move_time,function(){
+                        $(this).addClass('ready_to_out');
+                        if(!_this.a_seat[_this.i_now].get_chu_pai_mult()){//如果不允许多选
+                            $(this).siblings().removeClass('ready_to_out');
+                        }
+                    }
+
+                    /*if(_this.a_seat[_this.i_now].get_chu_pai_mult()){//如果允许多选
+
+                    }else{//只能单选
+                        if($(this).hasClass('ready_to_out')){
                             $(this).removeClass('ready_to_out');
                             _this.a_seat[_this.i_now].cancel_attack();//取消攻击
-                        });
-                    }
-                    
-                    this.index++; 
+                        }else{
+                            $(this).addClass('ready_to_out').siblings().removeClass('ready_to_out');
+                            _this.a_seat[_this.i_now].for_attack();//准备攻击
+                        }
+                    }*/
                 },
                 'mouseenter':function(){
                     $(this).find('.card').addClass('now');
@@ -180,6 +191,13 @@
 
             //点击确定按钮时，会将选中的牌打入到弃牌区，同时将牌放入到弃牌堆，再调用一下layout_my_cards方法。确定按钮不管选中的牌能不能打出
             $('.myzone .btns .ok').click(function(){
+                _this.me_seat.chu_pai();
+                //1.通过ID得到card对象
+                //2.将该对象从seat的pai_list中去除
+                //3.调用seat的cards_to_cardzone_me方法更新牌区中的牌
+                //4.将div中ID的card在展示区进行展示
+                //每次点击确认按钮时都要先把上次的展示区中的清掉,自动的也有类似的功能
+
 
             });
 
@@ -196,10 +214,23 @@
                 }
                 var no = parseInt($('.chose_heros td.active').attr('no'));
                 var hero = _this.hero_manager.get_rand9heros()[no];
-                    _this.set_$log('您('+_this.a_seat[6].get_role().get_name()+')选择了'+hero.get_name());
-                _this.a_seat[6].set_hero(hero);
+                    _this.set_$log('您('+_this.me_seat.get_role().get_name()+')选择了'+hero.get_name());
+                _this.me_seat.set_hero(hero);
                 $('.chose_heros').hide();
                 _this.hero_manager.other_chose_hero();
+            });
+            $('.c_quxiao').click(function(){//点击取消的话，意思是从这9个当中随机选择一个
+                var rand_no = tools.get_rand_between_two_num(0,9);
+                var hero = _this.hero_manager.get_rand9heros()[rand_no];
+                    _this.set_$log('您('+_this.me_seat.get_role().get_name()+')选择【随机】了'+hero.get_name());
+                _this.me_seat.set_hero(hero);
+                $('.chose_heros td').removeClass('active');
+                $('.chose_heros td:eq('+rand_no+')').addClass('active');
+                setTimeout(function(){
+                    $('.chose_heros').hide();
+                    _this.hero_manager.other_chose_hero();
+                },400);
+                
             });
 
         },

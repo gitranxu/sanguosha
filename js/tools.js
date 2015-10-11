@@ -8,16 +8,15 @@ var tools = {
     },
     trans_to_float : function($lis){
     	$lis.parent().removeClass('absoluteul').addClass('floatul');
-    	$lis.each(function(){//浮动时将index重置为0
+    	/*$lis.each(function(){//浮动时将index重置为0
     		this.index = 0;
-    	});
+    	});*/
     	//console.log('trans_to_float');
     },
     trans_to_absolute : function($lis){
     	for(var i = $lis.length-1;i >= 0;i--){
     		var $theli = $lis.eq(i);
     		$theli.css({
-    			top : $theli.position().top,
     			left : $theli.position().left,
     			zIndex : i+2
     		});
@@ -31,9 +30,9 @@ var tools = {
     	//console.log(i_cuowei);
     	$lis.each(function(index){
     		if(index!=0){
-    			var i_total_cuowei = $(this).position().left-i_cuowei*index;
-    			//$(this).css({left:i_total_cuowei});//常规效果
-    			$(this).animate({left: i_total_cuowei},100*index);//效果爽到爆
+    			var i_total_cuowei = Math.abs($(this).position().left-i_cuowei*index);
+    			$(this).css({left:i_total_cuowei});//常规效果
+    			//$(this).animate({left: i_total_cuowei},15*index);//效果爽到爆,动画有待改善
     		}
     	});
     }
