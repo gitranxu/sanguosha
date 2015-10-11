@@ -76,8 +76,7 @@ CardManager.prototype = {
 	fapai : function(){
 		var a_seat = this.staff.get_a_seat();
 		for(var i = 0,j = a_seat.length;i < j;i++){
-			var a_pai = this.get_a_pai(4);
-			a_seat[i].set_pai_list(a_pai);
+			this.aftermepai(4,a_seat[i]);
 			//如果是自己的座位，则需要将牌显示到牌区中
 			var is_me = a_seat[i].get_div().hasClass('me');
 			if(is_me){
@@ -87,6 +86,10 @@ CardManager.prototype = {
 			}
 			
 		}
+	},
+	aftermepai : function(num,seat){//每次摸牌后，要合并座位的pai_list并更新牌数
+		seat.set_pai_list(this.get_a_pai(num));
+		seat.update_div_pai_num();
 	},
 	//从牌堆顶部顺序取得n张牌，并返回该数组
 	get_a_pai : function(n){

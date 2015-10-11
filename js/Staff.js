@@ -7,6 +7,7 @@
     //英雄：有各自的英雄技能
     function Staff(){
         this.card_manager = new CardManager(this);
+        this.hero_manager = new HeroManager(this);
         this.timer = null;
         this.a_seat = [];
         this.i_now = 0;
@@ -26,7 +27,7 @@
             this.seat_init();//初始化座位信息
 
             this.card_manager.generate_cards();//生成所有的手牌，回头还要生成英雄牌
-            //this.chose_hero();
+            
             //this.test();
             this.card_manager.xipai();
             //this.test1();
@@ -34,9 +35,11 @@
 
             //定位主公，将当前座位指定到公主所在座位
             this.index_to_zhugong();
+            //this.generate_heros();
+            this.hero_manager.chose_hero();//开始选择英雄
 
             this.bind();
-            this.play();
+            //this.play();
         },
         test : function(){
             var cards = this.card_manager.get_cards();
@@ -55,6 +58,13 @@
                 $('#test1').append(cards[card].get_name()+':'+cards[card].get_huase()+':'+cards[card].get_dots()+',');
             }
         },
+        /*generate_heros : function(){
+            console.log('生成一个英雄列表，每次随机取出9个供选择，完事儿再放回去，再随机取9个，一直到完');
+        },
+        chose_hero : function(){
+            //这里先假定选的都是周瑜
+            this.a_seat[0].set_hero(new Zhouyu());
+        },*/
         play : function(){
             var _this = this;
             clearInterval(this.timer);
@@ -95,6 +105,7 @@
             this.i_count++;
             this.i_next = this.i_count%8;
             if(code==1){
+                this.a_seat[this.i_now].get_div().find('.rolename').attr('iszhugong','1');
                 this.i_count--;//找到后，微调一下指针
                 return;
             }else{
@@ -106,6 +117,9 @@
         },
         get_a_seat : function(){
             return this.a_seat;
+        },
+        get_i_now : function(){
+            return this.i_now;
         },
         bind : function(){
             var _this = this;
@@ -129,14 +143,22 @@
             //牌区中的每张牌点击的时候
             $('.paiqu').delegate('.cardul > li', {
                 'click':function(){
+                    //这里应该加一个判断，如果用户点击时，与当前i_now不一致，就直接返回
+                    var s = $('.seat').index($('.seat.me'));
+                    if(s!=_this.i_now){
+                        alert('轮到您时请再出牌!');
+                        return;
+                    }
                     this.index = this.index || 0;
                     if(this.index%2==0){
                         $(this).animate({top: 0}, _this.paiqu_card_move_time,function(){
                             $(this).addClass('ready_to_out');
+                            _this.a_seat[_this.i_now].for_attack();//准备攻击
                         });
                     }else{
                         $(this).animate({top: 10}, _this.paiqu_card_move_time,function(){
                             $(this).removeClass('ready_to_out');
+                            _this.a_seat[_this.i_now].cancel_attack();//取消攻击
                         });
                     }
                     
@@ -150,9 +172,34 @@
                 }
             });
 
+            //当can_attack的座位被点击的时候，就将其加入我的攻击目标中
+            $('.container').delegate('.can_attack', 'click', function(event) {
+                //这里需要取到武器的攻击个数
+                _this.a_seat[_this.i_now].can_attack_click($(this));
+            });
+
             //点击确定按钮时，会将选中的牌打入到弃牌区，同时将牌放入到弃牌堆，再调用一下layout_my_cards方法。确定按钮不管选中的牌能不能打出
             $('.myzone .btns .ok').click(function(){
 
+            });
+
+            //点击供选择的英雄
+            $('.chose_heros').delegate('td', 'click', function(event) {
+                $('.chose_heros td').removeClass('active');
+                $(this).addClass('active');
+                $('.c_queren').removeClass('disable');
+            });
+
+            $('.c_queren').click(function(){
+                if($(this).hasClass('disable')){
+                    return;
+                }
+                var no = parseInt($('.chose_heros td.active').attr('no'));
+                var hero = _this.hero_manager.get_rand9heros()[no];
+                    _this.set_$log('您('+_this.a_seat[6].get_role().get_name()+')选择了'+hero.get_name());
+                _this.a_seat[6].set_hero(hero);
+                $('.chose_heros').hide();
+                _this.hero_manager.other_chose_hero();
             });
 
         },

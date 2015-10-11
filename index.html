@@ -9,6 +9,8 @@
     <div class="container" id="sanguosha">
         <div class="clear marginbottom10">
             <div class="seat fl nomarginleft">
+                <img src="" class="bg2" alt="">
+                <div class="bloodzone"></div>
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -18,9 +20,11 @@
                     <div class="jinyan">禁</div>
                     <div class="fanpai">翻</div>
                 </div>
-                
+                <div class="zhuangbei zbzone"></div>
             </div>
             <div class="seat fl">
+                <img src="" class="bg2" alt="">
+                <div class="bloodzone"></div>
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -30,8 +34,11 @@
                     <div class="jinyan">禁</div>
                     <div class="fanpai">翻</div>
                 </div>
+                <div class="zhuangbei zbzone"></div>
             </div>
             <div class="seat fl">
+                <img src="" class="bg2" alt="">
+                <div class="bloodzone"></div>
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -41,8 +48,11 @@
                     <div class="jinyan">禁</div>
                     <div class="fanpai">翻</div>
                 </div>
+                <div class="zhuangbei zbzone"></div>
             </div>
             <div class="seat fl">
+                <img src="" class="bg2" alt="">
+                <div class="bloodzone"></div>
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -52,8 +62,11 @@
                     <div class="jinyan">禁</div>
                     <div class="fanpai">翻</div>
                 </div>
+                <div class="zhuangbei zbzone"></div>
             </div>
             <div class="seat fl">
+                <img src="" class="bg2" alt="">
+                <div class="bloodzone"></div>
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -63,10 +76,13 @@
                     <div class="jinyan">禁</div>
                     <div class="fanpai">翻</div>
                 </div>
+                <div class="zhuangbei zbzone"></div>
             </div>
         </div>
         <div class="clear marginbottom30">
             <div class="seat fr">
+                <img src="" class="bg2" alt="">
+                <div class="bloodzone"></div>
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -76,6 +92,7 @@
                     <div class="jinyan">禁</div>
                     <div class="fanpai">翻</div>
                 </div>
+                <div class="zhuangbei zbzone"></div>
             </div>
             <div class="log">
                 <div id="xianyin">显</div>
@@ -91,6 +108,8 @@
         </div>
         <div class="myzone clear">
             <div class="seat me nomarginleft fr">
+                <img src="" class="bg2" alt="">
+                <div class="bloodzone"></div>
                 <div class="rolename"></div>
                 <div class="status clear">
                     <div class="lebusishu">乐</div>
@@ -100,10 +119,11 @@
                     <div class="jinyan">禁</div>
                     <div class="fanpai">翻</div>
                 </div>
+                <div class="zhuangbei myzb">
+                    <div class="myzbzone zbzone"></div>
+                </div>
             </div>
-            <div class="zhuangbei">
-                装备区
-            </div>
+            
             <div class="paiqu">
                 <div class="cards">
                     <ul class="cardul floatul clear">
@@ -119,15 +139,18 @@
             </div>
         </div>
         <div class="seat seat8">
+            <img src="" class="bg2" alt="">
+            <div class="bloodzone"></div>
             <div class="rolename"></div>
             <div class="status clear">
-                    <div class="lebusishu">乐</div>
-                    <div class="bingliangcunduan">断</div>
-                    <div class="shandian">闪</div>
-                    <div class="mabi">麻</div>
-                    <div class="jinyan">禁</div>
-                    <div class="fanpai">翻</div>
-                </div>
+                <div class="lebusishu">乐</div>
+                <div class="bingliangcunduan">断</div>
+                <div class="shandian">闪</div>
+                <div class="mabi">麻</div>
+                <div class="jinyan">禁</div>
+                <div class="fanpai">翻</div>
+            </div>
+            <div class="zhuangbei zbzone"></div>
         </div>
         <div class="log_left_ctr" id="log_left_ctr">
             <div class="log_left">
@@ -148,6 +171,30 @@
                 </ul>
             </div>
         </div>
+        <div class="chose_heros">
+            <table cellspacing="0" cellpadding="0">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="c_btns">
+                <div class="btn disable c_queren" style="margin-bottom:2px;">确认</div>
+                <div class="btn c_quxiao">取消</div>
+            </div>
+            
+        </div>
     </div>
     <div id="test"></div>
     <div id="test1"></div>
@@ -158,6 +205,7 @@
 
     <div class="btn cardlayout1 fl marginleft10 width120">测牌布局到定位</div>
     <div class="btn cardlayout2 fl marginleft10 width120">测牌布局到浮动</div>
+    <div class="btn test fl marginleft10 width120">测攻击目标</div>
 
     <script src="./js/jquery-1.9.1.min.js"></script>
     <script src="./js/Staff.js"></script>
@@ -166,10 +214,12 @@
     <script src="./js/PandingZone.js"></script>
     <script src="./js/Role.js"></script>
     <script src="./js/Hero.js"></script>
+    <script src="./js/HeroManager.js"></script>
     <script src="./js/Card.js"></script>
     <script src="./js/CardManager.js"></script>
     <script src="./js/Seat.js"></script>
     <script src="./js/Step.js"></script>
+    <script src="./js/Skill.js"></script>
 <script>
     $().ready(function(){
         sanguosha.init();
@@ -207,6 +257,10 @@
             var $cards = $('.paiqu .cards');
             var $lis = $cards.find('.cardul > li');
             s.test($lis);
+        });
+
+        $('.test').click(function(){
+            staff1.a_seat[6].test();
         });
     });
 </script>

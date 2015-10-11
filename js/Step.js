@@ -38,6 +38,10 @@ Step.prototype = {
     mepai_step : function(){
         if(this.panding_zone.get_bingliangcunduan_success()){
             this.staff.set_$log(this.name+'摸牌阶段开始');
+            //英姿，英魂，再起等技能是否发动,这里应该是调用英雄的技能的摸牌阶段的方法，这个阶段的方法的返回值大概有三种情况，直接返回摸牌数量没有其他效果或多加一个让他们摸弃牌效果或再起效果
+//--继续先把英雄信息显示完整
+ 
+
             this.staff.set_$log(this.name+'摸牌阶段结束');
         }else{
             this.staff.set_$log('兵粮寸断判定为假，跳过摸牌阶段','yellow');

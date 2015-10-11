@@ -5,6 +5,7 @@ body{background:mediumslateblue;font-family: "微软雅黑"}
 ul{list-style: none;}
 .fl{float:left;}
 .fr{float:right;}
+.hid{display: none;}
 .container .nomarginleft{margin-left: 0;}
 .container .marginbottom10{margin-bottom: 10px;}
 .container .marginbottom30{margin-bottom: 30px;}
@@ -15,7 +16,18 @@ ul{list-style: none;}
 .btn.marginbottom10{margin-bottom: 10px;}
 
 .container{width:600px;margin:130px auto;position: relative;}
-.seat{height:120px;width:104px;background:orchid;margin-left: 20px;position: relative;}
+.seat{height:116px;width:100px;border: 2px solid rgba(6, 32, 8, 0.35);background:orchid;margin-left: 20px;position: relative;overflow: hidden;}
+.seat.me{overflow: visible;}
+.can_attack{border: 2px solid #ff9900;}
+.attack_selected{border: 2px solid #ff3400;}
+
+.bg2{position: absolute;top: 0px;left: 0px;height: 100%;}
+.me .bg2{width: 100px;}
+.bloodzone{position: absolute;top:20px;right: 1px;z-index: 3;height: 80px;}
+.bloodul > li{height: 16px;position: relative;}
+.bloodmax{position: absolute;top: 0px;left: 0px;width: 16px;text-align: center;font-size: 12px;color: rgb(231, 248, 255);z-index: 4;}
+.bloodcur{position: absolute;bottom: 0px;left: 0px;width: 16px;text-align: center;font-size: 12px;color: rgb(231, 248, 255);}
+.bloodul > li img{width: 16px;}
 .rolename{position: absolute;top:0;right:0;width:20px;height:20px;
     background:cornflowerblue;color:#fff;line-height: 20px;text-align: center;}
 .seat8{position: absolute;top: 130px;left: -20px;}
@@ -28,20 +40,43 @@ ul{list-style: none;}
 .log_left{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;}
 .log_right{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;}
 .computer{position: absolute;top: -145px;left: 102px;width: 392px;}
+.chose_heros{position: absolute;top: 50%;left: 50%;width: 200px;height: 100px;margin-left: -100px;margin-top: -64px;background: #e3be63;display: none;}
+.chose_heros table{height: 100%;width: 100%;border-right: 1px solid #e07d09;border-bottom: 1px solid #e07d09;}
+.chose_heros table td{border-left: 1px solid #e07d09;border-top: 1px solid #e07d09;text-align: center;color: blue;font-size: 14px;width: 33%;cursor: pointer;}
+.chose_heros table td.active{background: #602a02;}
 
 .sc{width:60px;height:40px;line-height: 40px;text-align: center;
 background: #ff85ea;color:#fff;border-radius: 4px;cursor:pointer;
     position:absolute;top:0px;left:84px;z-index: 2;}
-.seat.active{height: 116px;width:100px;border:2px solid #772299;border-radius: 6px;}
+.seat.active{height: 116px;width:100px;border:2px solid #E4E11A;}
 
 .myzone{position:relative;}
 .btns{height: 24px;padding: 3px 0;background: olive;position: absolute;
-    top: -30px;left:0px;width:496px;}
+    top: -30px;left:0px;width:496px;display: none;}
 .btn{height: 24px;line-height: 24px;width:60px;text-align: center;color: #fff;
 background: green;cursor: pointer;}
 .btn.disable{background: rgb(162, 151, 151);cursor: default;}
-.zhuangbei{float: left;width:100px;background: orange;height:120px;}
-.paiqu{float: left;width:396px;height:120px;background: limegreen;}
+
+.c_btns{position: absolute;bottom: 0px; right: -63px;}
+
+.zhuangbei{color: rgb(105, 249, 46);}
+.seat .zhuangbei{position: absolute;top:56px;left: 0px;height: 60px;width: 100%;z-index: 2;}
+.seat .zhuangbei.myzb{top: -2px;left: -497px;height:120px;width: 100%;background: #7c7c7c;}
+
+.zhuangbei.zbzone li{font-size: 12px;line-height: 15px;padding-left: 16px;}
+.myzbzone{position: absolute;left: 0;bottom: 0;width: 100%;}
+.zhuangbei.myzb li{font-size: 12px;}
+.huase_zb img{height: 10px;}
+.dots_zb{margin-left: -2px;}
+.shecheng_zb{margin-left: -1px;}
+.shecheng_zb.ma{margin-left: -4px;}
+.vaiqu{position: absolute;top: 0px;left: 0px;z-index: 4;}
+.vaiqu img{height: 60px;}
+.aiquul{position: relative;z-index: 3;}
+.bg1{position: absolute;top: 0;left: 0;width: 100%;height: 100%;background: black;opacity: .7;}
+.card_num{position: absolute;bottom: 0;right: 0;height: 14px;width: 16px;font-size: 12px;color: #fff;background: mediumslateblue;line-height: 14px;text-align: center;z-index: 4;}
+
+.paiqu{float: right;width:396px;height:120px;background: limegreen;}
 .cards{margin: 29px 20px 0 20px;overflow: hidden;}
 .log .cards{margin: 0 20px 0 20px;}
 .cardul{position: relative;width: 1200px;height: 87px;padding-top: 10px;}

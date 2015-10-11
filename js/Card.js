@@ -177,23 +177,35 @@ Peach.prototype.can_use = function(hero){
 }
 
 
-function Yuxi(opt,$card_div){
+function Weapon(opt,$card_div){
     Card.call(this,opt,$card_div);
+    this.attack_num = 1;//武器的攻击个数，默认为1，方天画戟在最后一张牌是杀的情况下，这个数字会变成3
+}
+Weapon.prototype = new Card();
+Weapon.prototype.get_attack_num = function(){
+    return this.attack_num;
+}
+Weapon.prototype.set_attack_num = function(attack_num){
+    this.attack_num = attack_num;
+}
+
+function Yuxi(opt,$card_div){
+    Weapon.call(this,opt,$card_div);
     this.name = '玉玺';
     this.img_code = 'c272';
     this.init_div();
 }
-Yuxi.prototype = new Card();
+Yuxi.prototype = new Weapon();
 Yuxi.prototype.can_use = function(hero){
 }
 
 function Zhugeliannu(opt,$card_div){
-    Card.call(this,opt,$card_div);
+    Weapon.call(this,opt,$card_div);
     this.name = '诸葛连弩';
     this.img_code = 'c261';
     this.init_div();
 }
-Zhugeliannu.prototype = new Card();
+Zhugeliannu.prototype = new Weapon();
 Zhugeliannu.prototype.can_use = function(hero){
 }
 
