@@ -9,23 +9,24 @@ CardManager.prototype = {
 	get_cards : function(){
 		return this.cards;
 	},
+	get_drop_cards : function(){
+		return this.drop_cards;
+	},
 	generate_cards : function(){
 		var a_data = this.get_init_data();
 		for(var i = 0,j = a_data.length;i < j;i++){
 			var $card_div = this.create_div();
-			var qipai = this.get_class(a_data[i],i,$card_div);
-			if(qipai){
-				this.cards.push(qipai);
-			}
+			a_data[i].set_div($card_div);
+			this.cards.push(a_data[i]);
 		}
 	},
 	create_div : function(){
-		var html = '<li><div class="card no_se_card" id="cardwu">'+
+		var html = '<li><div class="bg3"></div><div class="card" id="cardwu">'+
 						'<div class="huase"><img src="" alt=""></div>'+
 						'<div class="dots">G</div>'+
 						'<div class="bg"></div>'+
 						'<div class="name"></div>'+
-						'<div class="user">孙悟空</div>'+
+						'<div class="user"></div>'+
 					'</div></li>';
 		return $(html);
 	},
@@ -54,16 +55,15 @@ CardManager.prototype = {
         var $lis = $cards.find('.cardul > li');
         this.show_cards($cards,$lis);
 	},
-	//从牌堆中取出1张牌
-	get_1_rand_card : function(){
 
-	},
-	//洗牌，将牌堆中的牌打乱
+	//洗牌，将牌堆中的牌打乱，同时将牌的所属英雄名去掉
 	xipai : function(){
 		var tmp = this.cards;
 		this.cards = [];
 		for(var i = 0,j = tmp.length;i < j;i++){
-			this.cards.push(tools.get_rand_from_arr(tmp)[0]);
+			var card = tools.get_rand_from_arr(tmp)[0];
+			card.remove_hero_name();
+			this.cards.push(card);
 		}
 	},
 	re_xipai : function(){
@@ -73,7 +73,7 @@ CardManager.prototype = {
 	fapai : function(){
 		var a_seat = this.staff.get_a_seat();
 		for(var i = 0,j = a_seat.length;i < j;i++){
-			this.aftermepai(10,a_seat[i]);
+			this.aftermepai(4,a_seat[i]);
 			//如果是自己的座位，则需要将牌显示到牌区中
 			var is_me = a_seat[i].get_div().hasClass('me');
 			if(is_me){
@@ -87,12 +87,18 @@ CardManager.prototype = {
 	aftermepai : function(num,seat){//每次摸牌后，要合并座位的pai_list并更新牌数
 		seat.set_pai_list(this.get_a_pai(num));
 		seat.update_div_pai_num();
+		this.update_div_pai_count();//更新剩余的牌数
+	},
+	update_div_pai_count : function(){
+		$('#leave_pai_num').text(this.cards.length);
+		//console.log('剩余'+this.cards.length+'张牌');
 	},
 	//从牌堆顶部顺序取得n张牌，并返回该数组
 	get_a_pai : function(n){
 		var result = [];
 		for(var i = 0;i < n;i++){
 			var pop_card = this.cards.pop();
+			pop_card.set_staff(this.staff);
 			if(pop_card){
 				console.log('成功取出牌');
 				result.push(pop_card);
@@ -106,12 +112,20 @@ CardManager.prototype = {
 		console.log('取了'+result.length+'张牌!');
 		return result;
 	},
+	cards_can_use : function(){
+		//这里要得到禁，麻情况
+		var mabi = true;
+		var pai_list = this.staff.get_cur_seat().get_pai_list();
+		for(var i = 0,j = pai_list.length;i < j;i++){
+			pai_list[i].get_card_action().can_use({can_sha:true,can_nanman:true,mabi:mabi});
+		}
+	},
 	test : function($lis){
 		tools.trans_to_float($lis);
 		tools.trans_to_absolute($lis);
 	},
-	get_class : function(opt,no,$card_div){
-		var ct = opt.classtype;
+	/*get_class : function(opt,no,$card_div){
+		var ct = opt.img_code;
 		opt.no = no;
 		switch(ct){
 			case 1:
@@ -135,210 +149,211 @@ CardManager.prototype = {
 			default:
 				return null;
 		}
-	},
+	},*/
 	get_init_data : function(){
-		return [{huase:'heitao',dots:1,color:'black',classtype:8},
-		{huase:'hongtao',dots:1,color:'red',classtype:15},
-		{huase:'meihua',dots:1,color:'black',classtype:8},
-		{huase:'fangkuai',dots:1,color:'red',classtype:8},
+		//img_code:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺 273金火罐炮 241绝影 242的卢 243爪黄飞电 244骅骝 251赤兔 252大宛 253紫驹
+		return [new Card({huase:'heitao',dots:1,color:'black',img_code:8},new Juedou()),
+		new Card({huase:'hongtao',dots:1,color:'red',img_code:15},new Sha()),
+		new Card({huase:'meihua',dots:1,color:'black',img_code:8},new Sha()),
+		new Card({huase:'fangkuai',dots:1,color:'red',img_code:8},new Sha()),
 
-		{huase:'heitao',dots:1,color:'black',classtype:21},
-		{huase:'hongtao',dots:1,color:'red',classtype:10},
-		{huase:'meihua',dots:1,color:'black',classtype:261},
-		{huase:'fangkuai',dots:1,color:'red',classtype:261},
+		new Card({huase:'heitao',dots:1,color:'black',img_code:21},new Sha()),
+		new Card({huase:'hongtao',dots:1,color:'red',img_code:10},new Sha()),
+		new Card({huase:'meihua',dots:1,color:'black',img_code:261},new Sha()),
+		new Card({huase:'fangkuai',dots:1,color:'red',img_code:261},new Sha()),
 		
-		{huase:'heitao',dots:1,color:'black',classtype:265},
-		{huase:'hongtao',dots:1,color:'red',classtype:16},
-		{huase:'meihua',dots:1,color:'black',classtype:231},
-		{huase:'fangkuai',dots:1,color:'red',classtype:270},
+		new Card({huase:'heitao',dots:1,color:'black',img_code:265},new Sha()),
+		new Card({huase:'hongtao',dots:1,color:'red',img_code:16},new Sha()),
+		new Card({huase:'meihua',dots:1,color:'black',img_code:231},new Sha()),
+		new Card({huase:'fangkuai',dots:1,color:'red',img_code:270},new Sha()),
 
-		{huase:'heitao',dots:2,color:'black',classtype:232},
-		{huase:'hongtao',dots:2,color:'red',classtype:2},
-		{huase:'meihua',dots:2,color:'black',classtype:1},
-		{huase:'fangkuai',dots:2,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:2,color:'black',img_code:232},new Sha()),
+		new Card({huase:'hongtao',dots:2,color:'red',img_code:2},new Sha()),
+		new Card({huase:'meihua',dots:2,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:2,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:2,color:'black',classtype:262},
-		{huase:'hongtao',dots:2,color:'red',classtype:2},
-		{huase:'meihua',dots:2,color:'black',classtype:232},
-		{huase:'fangkuai',dots:2,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:2,color:'black',img_code:262},new Sha()),
+		new Card({huase:'hongtao',dots:2,color:'red',img_code:2},new Sha()),
+		new Card({huase:'meihua',dots:2,color:'black',img_code:232},new Sha()),
+		new Card({huase:'fangkuai',dots:2,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:2,color:'black',classtype:234},
-		{huase:'hongtao',dots:2,color:'red',classtype:17},
-		{huase:'meihua',dots:2,color:'black',classtype:234},
-		{huase:'fangkuai',dots:2,color:'red',classtype:3},
+		new Card({huase:'heitao',dots:2,color:'black',img_code:234},new Sha()),
+		new Card({huase:'hongtao',dots:2,color:'red',img_code:17},new Sha()),
+		new Card({huase:'meihua',dots:2,color:'black',img_code:234},new Sha()),
+		new Card({huase:'fangkuai',dots:2,color:'red',img_code:3},new Sha()),
 
-		{huase:'heitao',dots:2,color:'black',classtype:264},
-		{huase:'meihua',dots:2,color:'black',classtype:233},
+		new Card({huase:'heitao',dots:2,color:'black',img_code:264},new Sha()),
+		new Card({huase:'meihua',dots:2,color:'black',img_code:233},new Sha()),
 
-		{huase:'heitao',dots:3,color:'black',classtype:5},
-		{huase:'hongtao',dots:3,color:'red',classtype:3},
-		{huase:'meihua',dots:3,color:'black',classtype:1},
-		{huase:'fangkuai',dots:3,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:3,color:'black',img_code:5},new Sha()),
+		new Card({huase:'hongtao',dots:3,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:3,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:3,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:3,color:'black',classtype:6},
-		{huase:'hongtao',dots:3,color:'red',classtype:13},
-		{huase:'meihua',dots:3,color:'black',classtype:5},
-		{huase:'fangkuai',dots:3,color:'red',classtype:6},
+		new Card({huase:'heitao',dots:3,color:'black',img_code:6},new Sha()),
+		new Card({huase:'hongtao',dots:3,color:'red',img_code:13},new Sha()),
+		new Card({huase:'meihua',dots:3,color:'black',img_code:5},new Sha()),
+		new Card({huase:'fangkuai',dots:3,color:'red',img_code:6},new Sha()),
 
-		{huase:'heitao',dots:3,color:'black',classtype:4},
-		{huase:'hongtao',dots:3,color:'red',classtype:11},
-		{huase:'meihua',dots:3,color:'black',classtype:4},
-		{huase:'fangkuai',dots:3,color:'red',classtype:3},
+		new Card({huase:'heitao',dots:3,color:'black',img_code:4},new Sha()),
+		new Card({huase:'hongtao',dots:3,color:'red',img_code:11},new Sha()),
+		new Card({huase:'meihua',dots:3,color:'black',img_code:4},new Sha()),
+		new Card({huase:'fangkuai',dots:3,color:'red',img_code:3},new Sha()),
 
-		{huase:'heitao',dots:4,color:'black',classtype:5},
-		{huase:'hongtao',dots:4,color:'red',classtype:3},
-		{huase:'meihua',dots:4,color:'black',classtype:1},
-		{huase:'fangkuai',dots:4,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:4,color:'black',img_code:5},new Sha()),
+		new Card({huase:'hongtao',dots:4,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:4,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:4,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:4,color:'black',classtype:6},
-		{huase:'hongtao',dots:4,color:'red',classtype:13},
-		{huase:'meihua',dots:4,color:'black',classtype:5},
-		{huase:'fangkuai',dots:4,color:'red',classtype:6},
+		new Card({huase:'heitao',dots:4,color:'black',img_code:6},new Sha()),
+		new Card({huase:'hongtao',dots:4,color:'red',img_code:13},new Sha()),
+		new Card({huase:'meihua',dots:4,color:'black',img_code:5},new Sha()),
+		new Card({huase:'fangkuai',dots:4,color:'red',img_code:6},new Sha()),
 
-		{huase:'heitao',dots:4,color:'black',classtype:12},
-		{huase:'hongtao',dots:4,color:'red',classtype:17},
-		{huase:'meihua',dots:4,color:'black',classtype:20},
-		{huase:'fangkuai',dots:4,color:'red',classtype:11},
+		new Card({huase:'heitao',dots:4,color:'black',img_code:12},new Sha()),
+		new Card({huase:'hongtao',dots:4,color:'red',img_code:17},new Sha()),
+		new Card({huase:'meihua',dots:4,color:'black',img_code:20},new Sha()),
+		new Card({huase:'fangkuai',dots:4,color:'red',img_code:11},new Sha()),
 
-		{huase:'heitao',dots:5,color:'black',classtype:267},
-		{huase:'hongtao',dots:5,color:'red',classtype:271},
-		{huase:'meihua',dots:5,color:'black',classtype:1},
-		{huase:'fangkuai',dots:5,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:5,color:'black',img_code:267},new Sha()),
+		new Card({huase:'hongtao',dots:5,color:'red',img_code:271},new Sha()),
+		new Card({huase:'meihua',dots:5,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:5,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:5,color:'black',classtype:241},
-		{huase:'hongtao',dots:5,color:'red',classtype:251},
-		{huase:'meihua',dots:5,color:'black',classtype:242},
-		{huase:'fangkuai',dots:5,color:'red',classtype:266},
+		new Card({huase:'heitao',dots:5,color:'black',img_code:241},new Sha()),
+		new Card({huase:'hongtao',dots:5,color:'red',img_code:251},new Sha()),
+		new Card({huase:'meihua',dots:5,color:'black',img_code:242},new Sha()),
+		new Card({huase:'fangkuai',dots:5,color:'red',img_code:266},new Sha()),
 
-		{huase:'heitao',dots:5,color:'black',classtype:12},
-		{huase:'hongtao',dots:5,color:'red',classtype:3},
-		{huase:'meihua',dots:5,color:'black',classtype:12},
-		{huase:'fangkuai',dots:5,color:'red',classtype:11},
+		new Card({huase:'heitao',dots:5,color:'black',img_code:12},new Sha()),
+		new Card({huase:'hongtao',dots:5,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:5,color:'black',img_code:12},new Sha()),
+		new Card({huase:'fangkuai',dots:5,color:'red',img_code:11},new Sha()),
 
-		{huase:'heitao',dots:6,color:'black',classtype:19},
-		{huase:'hongtao',dots:6,color:'red',classtype:3},
-		{huase:'meihua',dots:6,color:'black',classtype:1},
-		{huase:'fangkuai',dots:6,color:'red',classtype:1},
+		new Card({huase:'heitao',dots:6,color:'black',img_code:19},new Sha()),
+		new Card({huase:'hongtao',dots:6,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:6,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:6,color:'red',img_code:1},new Sha()),
 
-		{huase:'heitao',dots:6,color:'black',classtype:263},
-		{huase:'hongtao',dots:6,color:'red',classtype:19},
-		{huase:'meihua',dots:6,color:'black',classtype:19},
-		{huase:'fangkuai',dots:6,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:6,color:'black',img_code:263},new Sha()),
+		new Card({huase:'hongtao',dots:6,color:'red',img_code:19},new Sha()),
+		new Card({huase:'meihua',dots:6,color:'black',img_code:19},new Sha()),
+		new Card({huase:'fangkuai',dots:6,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:6,color:'black',classtype:12},
-		{huase:'hongtao',dots:6,color:'red',classtype:3},
-		{huase:'meihua',dots:6,color:'black',classtype:12},
-		{huase:'fangkuai',dots:6,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:6,color:'black',img_code:12},new Sha()),
+		new Card({huase:'hongtao',dots:6,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:6,color:'black',img_code:12},new Sha()),
+		new Card({huase:'fangkuai',dots:6,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:7,color:'black',classtype:1},
-		{huase:'hongtao',dots:7,color:'red',classtype:3},
-		{huase:'meihua',dots:7,color:'black',classtype:1},
-		{huase:'fangkuai',dots:7,color:'red',classtype:1},
+		new Card({huase:'heitao',dots:7,color:'black',img_code:1},new Sha()),
+		new Card({huase:'hongtao',dots:7,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:7,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:7,color:'red',img_code:1},new Sha()),
 
-		{huase:'heitao',dots:7,color:'black',classtype:14},
-		{huase:'hongtao',dots:7,color:'red',classtype:7},
-		{huase:'meihua',dots:7,color:'black',classtype:14},
-		{huase:'fangkuai',dots:7,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:7,color:'black',img_code:14},new Sha()),
+		new Card({huase:'hongtao',dots:7,color:'red',img_code:7},new Sha()),
+		new Card({huase:'meihua',dots:7,color:'black',img_code:14},new Sha()),
+		new Card({huase:'fangkuai',dots:7,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:7,color:'black',classtype:12},
-		{huase:'hongtao',dots:7,color:'red',classtype:11},
-		{huase:'meihua',dots:7,color:'black',classtype:12},
-		{huase:'fangkuai',dots:7,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:7,color:'black',img_code:12},new Sha()),
+		new Card({huase:'hongtao',dots:7,color:'red',img_code:11},new Sha()),
+		new Card({huase:'meihua',dots:7,color:'black',img_code:12},new Sha()),
+		new Card({huase:'fangkuai',dots:7,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:8,color:'black',classtype:1},
-		{huase:'hongtao',dots:8,color:'red',classtype:3},
-		{huase:'meihua',dots:8,color:'black',classtype:1},
-		{huase:'fangkuai',dots:8,color:'red',classtype:1},
+		new Card({huase:'heitao',dots:8,color:'black',img_code:1},new Sha()),
+		new Card({huase:'hongtao',dots:8,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:8,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:8,color:'red',img_code:1},new Sha()),
 
-		{huase:'heitao',dots:8,color:'black',classtype:1},
-		{huase:'hongtao',dots:8,color:'red',classtype:7},
-		{huase:'meihua',dots:8,color:'black',classtype:1},
-		{huase:'fangkuai',dots:8,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:8,color:'black',img_code:1},new Sha()),
+		new Card({huase:'hongtao',dots:8,color:'red',img_code:7},new Sha()),
+		new Card({huase:'meihua',dots:8,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:8,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:8,color:'black',classtype:12},
-		{huase:'hongtao',dots:8,color:'red',classtype:2},
-		{huase:'meihua',dots:8,color:'black',classtype:12},
-		{huase:'fangkuai',dots:8,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:8,color:'black',img_code:12},new Sha()),
+		new Card({huase:'hongtao',dots:8,color:'red',img_code:2},new Sha()),
+		new Card({huase:'meihua',dots:8,color:'black',img_code:12},new Sha()),
+		new Card({huase:'fangkuai',dots:8,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:9,color:'black',classtype:1},
-		{huase:'hongtao',dots:9,color:'red',classtype:3},
-		{huase:'meihua',dots:9,color:'black',classtype:1},
-		{huase:'fangkuai',dots:9,color:'red',classtype:1},
+		new Card({huase:'heitao',dots:9,color:'black',img_code:1},new Sha()),
+		new Card({huase:'hongtao',dots:9,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:9,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:9,color:'red',img_code:1},new Sha()),
 
-		{huase:'heitao',dots:9,color:'black',classtype:1},
-		{huase:'hongtao',dots:9,color:'red',classtype:7},
-		{huase:'meihua',dots:9,color:'black',classtype:1},
-		{huase:'fangkuai',dots:9,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:9,color:'black',img_code:1},new Sha()),
+		new Card({huase:'hongtao',dots:9,color:'red',img_code:7},new Sha()),
+		new Card({huase:'meihua',dots:9,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:9,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:9,color:'black',classtype:4},
-		{huase:'hongtao',dots:9,color:'red',classtype:2},
-		{huase:'meihua',dots:9,color:'black',classtype:4},
-		{huase:'fangkuai',dots:9,color:'red',classtype:4},
+		new Card({huase:'heitao',dots:9,color:'black',img_code:4},new Sha()),
+		new Card({huase:'hongtao',dots:9,color:'red',img_code:2},new Sha()),
+		new Card({huase:'meihua',dots:9,color:'black',img_code:4},new Sha()),
+		new Card({huase:'fangkuai',dots:9,color:'red',img_code:4},new Sha()),
 
-		{huase:'heitao',dots:10,color:'black',classtype:1},
-		{huase:'hongtao',dots:10,color:'red',classtype:1},
-		{huase:'meihua',dots:10,color:'black',classtype:1},
-		{huase:'fangkuai',dots:10,color:'red',classtype:1},
+		new Card({huase:'heitao',dots:10,color:'black',img_code:1},new Sha()),
+		new Card({huase:'hongtao',dots:10,color:'red',img_code:1},new Sha()),
+		new Card({huase:'meihua',dots:10,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:10,color:'red',img_code:1},new Sha()),
 
-		{huase:'heitao',dots:10,color:'black',classtype:1},
-		{huase:'hongtao',dots:10,color:'red',classtype:1},
-		{huase:'meihua',dots:10,color:'black',classtype:1},
-		{huase:'fangkuai',dots:10,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:10,color:'black',img_code:1},new Sha()),
+		new Card({huase:'hongtao',dots:10,color:'red',img_code:1},new Sha()),
+		new Card({huase:'meihua',dots:10,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:10,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:10,color:'black',classtype:20},
-		{huase:'hongtao',dots:10,color:'red',classtype:11},
-		{huase:'meihua',dots:10,color:'black',classtype:18},
-		{huase:'fangkuai',dots:10,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:10,color:'black',img_code:20},new Sha()),
+		new Card({huase:'hongtao',dots:10,color:'red',img_code:11},new Sha()),
+		new Card({huase:'meihua',dots:10,color:'black',img_code:18},new Sha()),
+		new Card({huase:'fangkuai',dots:10,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:11,color:'black',classtype:6},
-		{huase:'hongtao',dots:11,color:'red',classtype:1},
-		{huase:'meihua',dots:11,color:'black',classtype:1},
-		{huase:'fangkuai',dots:11,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:11,color:'black',img_code:6},new Sha()),
+		new Card({huase:'hongtao',dots:11,color:'red',img_code:1},new Sha()),
+		new Card({huase:'meihua',dots:11,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:11,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:11,color:'black',classtype:16},
-		{huase:'hongtao',dots:11,color:'red',classtype:7},
-		{huase:'meihua',dots:11,color:'black',classtype:1},
-		{huase:'fangkuai',dots:11,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:11,color:'black',img_code:16},new Sha()),
+		new Card({huase:'hongtao',dots:11,color:'red',img_code:7},new Sha()),
+		new Card({huase:'meihua',dots:11,color:'black',img_code:1},new Sha()),
+		new Card({huase:'fangkuai',dots:11,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:11,color:'black',classtype:18},
-		{huase:'hongtao',dots:11,color:'red',classtype:2},
-		{huase:'meihua',dots:11,color:'black',classtype:18},
-		{huase:'fangkuai',dots:11,color:'red',classtype:2},
+		new Card({huase:'heitao',dots:11,color:'black',img_code:18},new Sha()),
+		new Card({huase:'hongtao',dots:11,color:'red',img_code:2},new Sha()),
+		new Card({huase:'meihua',dots:11,color:'black',img_code:18},new Sha()),
+		new Card({huase:'fangkuai',dots:11,color:'red',img_code:2},new Sha()),
 
-		{huase:'heitao',dots:12,color:'black',classtype:5},
-		{huase:'hongtao',dots:12,color:'red',classtype:3},
-		{huase:'meihua',dots:12,color:'black',classtype:9},
-		{huase:'fangkuai',dots:12,color:'red',classtype:3},
+		new Card({huase:'heitao',dots:12,color:'black',img_code:5},new Sha()),
+		new Card({huase:'hongtao',dots:12,color:'red',img_code:3},new Sha()),
+		new Card({huase:'meihua',dots:12,color:'black',img_code:9},new Sha()),
+		new Card({huase:'fangkuai',dots:12,color:'red',img_code:3},new Sha()),
 
-		{huase:'heitao',dots:12,color:'black',classtype:268},
-		{huase:'hongtao',dots:12,color:'red',classtype:5},
-		{huase:'meihua',dots:12,color:'black',classtype:16},
-		{huase:'fangkuai',dots:12,color:'red',classtype:269},
+		new Card({huase:'heitao',dots:12,color:'black',img_code:268},new Sha()),
+		new Card({huase:'hongtao',dots:12,color:'red',img_code:5},new Sha()),
+		new Card({huase:'meihua',dots:12,color:'black',img_code:16},new Sha()),
+		new Card({huase:'fangkuai',dots:12,color:'red',img_code:269},new Sha()),
 
-		{huase:'heitao',dots:12,color:'black',classtype:18},
-		{huase:'hongtao',dots:12,color:'red',classtype:2},
-		{huase:'meihua',dots:12,color:'black',classtype:18},
-		{huase:'fangkuai',dots:12,color:'red',classtype:17},
+		new Card({huase:'heitao',dots:12,color:'black',img_code:18},new Sha()),
+		new Card({huase:'hongtao',dots:12,color:'red',img_code:2},new Sha()),
+		new Card({huase:'meihua',dots:12,color:'black',img_code:18},new Sha()),
+		new Card({huase:'fangkuai',dots:12,color:'red',img_code:17},new Sha()),
 
-		{huase:'hongtao',dots:12,color:'red',classtype:21},
-		{huase:'fangkuai',dots:12,color:'red',classtype:16},
+		new Card({huase:'hongtao',dots:12,color:'red',img_code:21},new Sha()),
+		new Card({huase:'fangkuai',dots:12,color:'red',img_code:16},new Sha()),
 
-		{huase:'heitao',dots:13,color:'black',classtype:14},
-		{huase:'hongtao',dots:13,color:'red',classtype:2},
-		{huase:'meihua',dots:13,color:'black',classtype:9},
-		{huase:'fangkuai',dots:13,color:'red',classtype:1},
+		new Card({huase:'heitao',dots:13,color:'black',img_code:14},new Sha()),
+		new Card({huase:'hongtao',dots:13,color:'red',img_code:2},new Sha()),
+		new Card({huase:'meihua',dots:13,color:'black',img_code:9},new Sha()),
+		new Card({huase:'fangkuai',dots:13,color:'red',img_code:1},new Sha()),
 
-		{huase:'heitao',dots:13,color:'black',classtype:252},
-		{huase:'hongtao',dots:13,color:'red',classtype:243},
-		{huase:'meihua',dots:13,color:'black',classtype:16},
-		{huase:'fangkuai',dots:13,color:'red',classtype:253},
+		new Card({huase:'heitao',dots:13,color:'black',img_code:252},new Sha()),
+		new Card({huase:'hongtao',dots:13,color:'red',img_code:243},new Sha()),
+		new Card({huase:'meihua',dots:13,color:'black',img_code:16},new Sha()),
+		new Card({huase:'fangkuai',dots:13,color:'red',img_code:253},new Sha()),
 
-		{huase:'heitao',dots:13,color:'black',classtype:16},
-		{huase:'hongtao',dots:13,color:'red',classtype:16},
-		{huase:'meihua',dots:13,color:'black',classtype:18},
-		{huase:'fangkuai',dots:13,color:'red',classtype:244}
+		new Card({huase:'heitao',dots:13,color:'black',img_code:16},new Sha()),
+		new Card({huase:'hongtao',dots:13,color:'red',img_code:16},new Sha()),
+		new Card({huase:'meihua',dots:13,color:'black',img_code:18},new Sha()),
+		new Card({huase:'fangkuai',dots:13,color:'red',img_code:244},new Sha())
 
 		];
-		//classtype:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺 273金火罐炮 241绝影 242的卢 243爪黄飞电 244骅骝 251赤兔 252大宛 253紫驹
+		//img_code:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺 273金火罐炮 241绝影 242的卢 243爪黄飞电 244骅骝 251赤兔 252大宛 253紫驹
 	}
 }

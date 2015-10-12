@@ -125,6 +125,9 @@
         get_i_now : function(){
             return this.i_now;
         },
+        get_cur_seat : function(){
+            return this.a_seat[this.i_now];
+        },
         bind : function(){
             var _this = this;
             //点击弃牌按钮
@@ -145,7 +148,7 @@
             });
 
             //牌区中的每张牌点击的时候
-            $('.paiqu').delegate('.cardul > li', {
+            $('.paiqu').delegate('.cardul > li:not(.card_disable)', {
                 'click':function(){
                     //这里应该加一个判断，如果用户点击时，与当前i_now不一致，就直接返回
                     var s = $('.seat').index($('.seat.me'));

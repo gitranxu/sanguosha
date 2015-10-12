@@ -286,6 +286,8 @@ Seat.prototype = {
 		}
 
 		var pai_for_out = this.pai_list.splice(index,1);
+		this.staff.get_card_manager().get_drop_cards().push(pai_for_out[0]);//将牌放到弃牌堆
+		pai_for_out[0].set_hero_name();//出牌后要显示英雄名
 		$('.log .cards .cardul').append(pai_for_out[0].get_div());
 	},
 	remove_pai : function(){
@@ -296,7 +298,7 @@ Seat.prototype = {
 		});
 	},
 	chu_pai : function(){
-		$('.log .cards .cardul').empty();//清空展示区的牌
+		$('.log .cards .cardul').empty();//清空展示区的牌,将牌先放到展示堆
 		this.remove_pai();
 		this.cards_to_cardzone_me();
 		this.staff.get_card_manager().layout_log_cards();

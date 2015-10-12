@@ -11,6 +11,8 @@ Step.prototype = {
         //可能都需要在出牌阶段开始时暂停，出牌阶段结束时继续
         //console.log(this.name+'回合开始');
         this.staff.set_$log(this.name+'回合开始');
+        //判断牌是否可用
+        this.staff.get_card_manager().cards_can_use();//判断牌是否可用
         this.is_me = this.seat.get_div().hasClass('me');
         this.seat.get_div().addClass('active');//设置当前座位类div，加上active类
         this.staff.pause();
