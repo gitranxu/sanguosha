@@ -50,27 +50,73 @@ Sha.prototype.can_use = function(can_use_opt){
     }
 }
 
+function Shan(){
+    this.name = '闪';
+}
+Shan.prototype = new CardAction();
+Shan.prototype.can_use = function(can_use_opt){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    if(can_use_opt.can_all || can_use_opt.can_shan){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }
+}
+
+function Tao(){
+    this.name = '桃';
+}
+Tao.prototype = new CardAction();
+Tao.prototype.can_use = function(can_use_opt){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    if(can_use_opt.can_all || can_use_opt.can_tao){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }
+}
+
+function Jiu(){
+    this.name = '酒';
+}
+Jiu.prototype = new CardAction();
+Jiu.prototype.can_use = function(can_use_opt){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    if(can_use_opt.can_all || can_use_opt.can_jiu){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }
+}
+
+
+function Celue(){}
+Celue.prototype = new CardAction();
+Celue.prototype.can_use = function(can_use_opt){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    if(can_use_opt.can_all || can_use_opt.can_celue){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }
+}
 
 function Juedou(){
 	this.name = '决斗';
 }
 
-Juedou.prototype = new CardAction();
+Juedou.prototype = new Celue();
 Juedou.prototype.can_use = function(can_use_opt){
 	//如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    if(can_use_opt.can_all || can_use_opt.can_juedou){
-    	if(can_use_opt.jinyan){ //如果英雄的状态为禁言，则不能使用
-    		this.card.get_div().addClass('card_disable');
-    	}else{
-    		this.card.get_div().removeClass('card_disable');
-    	}
-    }else{
-    	this.card.get_div().addClass('card_disable');
-    }
+    //这里如何先调用一下父类中的方法，然后再继续调用自己的方法
+
+
+
+    
 }
 
 
-
+//img_code:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺 273金火罐炮 241绝影 242的卢 243爪黄飞电 244骅骝 251赤兔 252大宛 253紫驹
 
 
 
