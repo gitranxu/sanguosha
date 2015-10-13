@@ -73,7 +73,7 @@ CardManager.prototype = {
 	fapai : function(){
 		var a_seat = this.staff.get_a_seat();
 		for(var i = 0,j = a_seat.length;i < j;i++){
-			this.aftermepai(4,a_seat[i]);
+			this.aftermepai(8,a_seat[i]);
 			//如果是自己的座位，则需要将牌显示到牌区中
 			var is_me = a_seat[i].get_div().hasClass('me');
 			if(is_me){
@@ -112,12 +112,11 @@ CardManager.prototype = {
 		console.log('取了'+result.length+'张牌!');
 		return result;
 	},
-	cards_can_use : function(){
-		//这里要得到禁，麻情况
+	cards_can_use : function(opt){
 		var mabi = true;
 		var pai_list = this.staff.get_cur_seat().get_pai_list();
 		for(var i = 0,j = pai_list.length;i < j;i++){
-			pai_list[i].get_card_action().can_use({can_sha:true,can_nanman:true,mabi:mabi});
+			pai_list[i].get_card_action().can_use(opt);
 		}
 	},
 	test : function($lis){

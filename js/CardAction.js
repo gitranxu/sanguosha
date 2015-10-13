@@ -57,11 +57,15 @@ CardAction.prototype = {
     },
     can_all : function(){
         //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-        console.log('CardAction根类中的can_use');
-        if(this.can_use_opt.can_all){
-            this.card.get_div().removeClass('card_disable');
-        }else{
-            this.card.get_div().addClass('card_disable');
+        console.log('CardAction根类中的can_all');
+        if(this.can_use_opt.can_all!=undefined){
+            if(this.can_use_opt.can_all){
+                console.log('CardAction根类中的can_all  true');
+                this.card.get_div().removeClass('card_disable');
+            }else{
+                console.log('CardAction根类中的can_all  false');
+                this.card.get_div().addClass('card_disable');
+            }
         }
     },
     can_base : function(){
@@ -90,11 +94,15 @@ function Celue(){
 }
 Celue.prototype = new CardAction();
 Celue.prototype.can_celue = function(){
-    console.log('Celue类中的can_celue');
-    if(this.can_use_opt.can_celue){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
+    console.log('策略类中的can_celue');//如果有禁言，则不能用
+    if(this.can_use_opt.can_celue!=undefined){
+        if(this.can_use_opt.can_celue){
+            console.log('策略类中的can_celue true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('策略类中的can_celue false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 
@@ -102,11 +110,15 @@ Celue.prototype.can_celue = function(){
 function Base(){}
 Base.prototype = new CardAction();
 Base.prototype.can_base = function(){
-    console.log('Base类中的can_base');
-    if(this.can_use_opt.can_base){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
+    console.log('基础牌类中的can_base');
+    if(this.can_use_opt.can_base!=undefined){
+        if(this.can_use_opt.can_base){
+            console.log('基础牌类中的can_base true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('基础牌类中的can_base false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 
@@ -117,16 +129,21 @@ function Sha(){
     this.name = '杀';
 }
 Sha.prototype = new Base();
-Sha.prototype.can_use = function(can_use_opt){
+Sha.prototype.can_danpai = function(){
 	//如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    if(can_use_opt.can_all || can_use_opt.can_base || can_use_opt.can_sha){
-    	if(can_use_opt.mabi){ //如果英雄的状态为麻木，则不能使用
-    		this.card.get_div().addClass('card_disable');
-    	}else{
-    		this.card.get_div().removeClass('card_disable');
-    	}
-    }else{
-    	this.card.get_div().addClass('card_disable');
+    if(this.can_use_opt.can_sha!=undefined){
+        if(this.can_use_opt.can_sha){
+            console.log('【'+this.name+'】类中的can_danpai  true');
+            this.card.get_div().removeClass('card_disable');
+            /*if(this.can_use_opt.mabi){ //如果英雄的状态为麻木，则不能使用,这个麻木状态应该是自己求得
+                this.card.get_div().addClass('card_disable');
+            }else{
+                this.card.get_div().removeClass('card_disable');
+            }*/
+        }else{
+            console.log('【'+this.name+'】类中的can_danpai  false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 
@@ -145,12 +162,16 @@ function Shan(){
     this.name = '闪';
 }
 Shan.prototype = new CardAction();
-Shan.prototype.can_use = function(can_use_opt){
+Shan.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    if(can_use_opt.can_all || can_use_opt.can_shan){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
+    if(this.can_use_opt.can_shan!=undefined){
+        if(this.can_use_opt.can_shan){
+            console.log('【闪】类中的can_danpai  true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('【闪】类中的can_danpai  false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 
@@ -158,12 +179,16 @@ function Tao(){
     this.name = '桃';
 }
 Tao.prototype = new CardAction();
-Tao.prototype.can_use = function(can_use_opt){
+Tao.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    if(can_use_opt.can_all || can_use_opt.can_tao){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
+    if(this.can_use_opt.can_tao!=undefined){
+        if(this.can_use_opt.can_tao){
+            console.log('【桃】类中的can_danpai  true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('【桃】类中的can_danpai  false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 
@@ -171,12 +196,16 @@ function Jiu(){
     this.name = '酒';
 }
 Jiu.prototype = new CardAction();
-Jiu.prototype.can_use = function(can_use_opt){
+Jiu.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    if(can_use_opt.can_all || can_use_opt.can_jiu){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
+    if(this.can_use_opt.can_jiu!=undefined){
+        if(this.can_use_opt.can_jiu){
+            console.log('【酒】类中的can_danpai  true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('【酒】类中的can_danpai  false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 
@@ -188,58 +217,60 @@ function Juedou(){
 }
 
 Juedou.prototype = new Celue();
-Juedou.prototype.can_use_son = function(){
+Juedou.prototype.can_danpai = function(){
 	//如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('子类中的can_use_son');
+    console.log('【决斗】类中的can_danpai');
 }
 
 function Shandian(){
     this.name = '闪电';
 }
 Shandian.prototype = new Celue();
-Shandian.prototype.can_use_jineng = function(){
+Shandian.prototype.can_danpai = function(){
     //如果是黑色，并且是黑幕技能，则不能使用
-    if(this.can_use_opt.heimu&&!this.card.is_red()){
+    console.log('【闪电】类中的can_danpai');
+    //牌色及是否黑幕技能自己取得
+    /*if(this.can_use_opt.heimu&&!this.card.is_red()){
         this.card.get_div().removeClass('card_disable');
     }else{
         this.card.get_div().addClass('card_disable');
-    }
+    }*/
 }
 
 function Guohechaiqiao(){
     this.name = '过河拆桥';
 }
 Guohechaiqiao.prototype = new Celue();
-Guohechaiqiao.prototype.can_use_son = function(){
+Guohechaiqiao.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('过河拆桥类中的can_use_son');
+    console.log('【过河拆桥】类中的can_danpai');
 }
 
 function Shunshouqianyang(){
     this.name = '顺手牵羊';
 }
 Shunshouqianyang.prototype = new Celue();
-Shunshouqianyang.prototype.can_use_son = function(){
+Shunshouqianyang.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('顺手牵羊类中的can_use_son');
+    console.log('【顺手牵羊】类中的can_danpai');
 }
 
 function Wuzhongshengyou(){
     this.name = '无中生有';
 }
 Wuzhongshengyou.prototype = new Celue();
-Wuzhongshengyou.prototype.can_use_son = function(){
+Wuzhongshengyou.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('无中生有类中的can_use_son');
+    console.log('【无中生有】类中的can_danpai');
 }
 
 function Jiedaosharen(){
     this.name = '借刀杀人';
 }
 Jiedaosharen.prototype = new Celue();
-Jiedaosharen.prototype.can_use_son = function(){
+Jiedaosharen.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('借刀杀人类中的can_use_son');
+    console.log('【借刀杀人】类中的can_danpai');
 }
 
 
@@ -248,81 +279,90 @@ function Taoyuanjieyi(){
     this.name = '桃园结义';
 }
 Taoyuanjieyi.prototype = new Celue();
-Taoyuanjieyi.prototype.can_use_son = function(){
+Taoyuanjieyi.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('桃园结义类中的can_use_son');
+    console.log('【桃园结义】类中的can_danpai');
 }
 
 function Wugufengdeng(){
     this.name = '五谷丰登';
 }
 Wugufengdeng.prototype = new Celue();
-Wugufengdeng.prototype.can_use_son = function(){
+Wugufengdeng.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('五谷丰登类中的can_use_son');
+    console.log('【五谷丰登】类中的can_danpai');
 }
 
 function Nanmanruqin(){
     this.name = '南蛮入侵';
 }
 Nanmanruqin.prototype = new Celue();
-Nanmanruqin.prototype.can_use_son = function(){
+Nanmanruqin.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('南蛮入侵类中的can_use_son');
+    console.log('【南蛮入侵】类中的can_danpai');
 }
 
 function Wanjianqifa(){
     this.name = '万箭齐发';
 }
 Wanjianqifa.prototype = new Celue();
-Wanjianqifa.prototype.can_use_son = function(){
+Wanjianqifa.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('万箭齐发类中的can_use_son');
+    console.log('【万箭齐发】类中的can_danpai');
 }
 
 function Wuxiekeji(){
     this.name = '无懈可击';
 }
 Wuxiekeji.prototype = new Celue();
-Wuxiekeji.prototype.can_use_son = function(){
+Wuxiekeji.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('无懈可击类中的can_use_son');
+    console.log('【无懈可击】类中的can_danpai');
+    if(this.can_use_opt.can_wuxiekeji!=undefined){
+        if(this.can_use_opt.can_wuxiekeji){
+            console.log('【无懈可击】类中的can_danpai true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('【无懈可击】类中的can_danpai false');
+            this.card.get_div().addClass('card_disable');
+        }
+    } 
 }
 
 function Huogong(){
     this.name = '火攻';
 }
 Huogong.prototype = new Celue();
-Huogong.prototype.can_use_son = function(){
+Huogong.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('火攻类中的can_use_son');
+    console.log('【火攻】类中的can_danpai');
 }
 
 function Tiesuolianhuan(){
     this.name = '铁索连环';
 }
 Tiesuolianhuan.prototype = new Celue();
-Tiesuolianhuan.prototype.can_use_son = function(){
+Tiesuolianhuan.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('铁索连环类中的can_use_son');
+    console.log('【铁索连环】类中的can_danpai');
 }
 
 function Lebusishu(){
     this.name = '乐不思蜀';
 }
 Lebusishu.prototype = new Celue();
-Lebusishu.prototype.can_use_son = function(){
+Lebusishu.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('乐不思蜀类中的can_use_son');
+    console.log('【乐不思蜀】类中的can_danpai');
 }
 
 function Bingliangcunduan(){
     this.name = '兵粮寸断';
 }
 Bingliangcunduan.prototype = new Celue();
-Bingliangcunduan.prototype.can_use_son = function(){
+Bingliangcunduan.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    console.log('兵粮寸断类中的can_use_son');
+    console.log('【兵粮寸断】类中的can_danpai');
 }
 
 //--------------------------------------策略类--------end-----------------------------------------
@@ -331,22 +371,30 @@ Bingliangcunduan.prototype.can_use_son = function(){
 function Zhuangbei(){}
 Zhuangbei.prototype = new CardAction();
 Zhuangbei.prototype.can_zhuangbei = function(){
-    console.log('Zhuangbei类中的can_zhuangbei');
-    if(this.can_use_opt.can_zhuangbei){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
-    }
+    console.log('【装备】类中的can_zhuangbei');
+    if(this.can_use_opt.can_zhuangbei!=undefined){
+        if(this.can_use_opt.can_zhuangbei){
+            console.log('【装备】类中的can_zhuangbei true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('【装备】类中的can_zhuangbei false');
+            this.card.get_div().addClass('card_disable');
+        }
+    } 
 }
 
 function Fangju(){}
 Fangju.prototype = new Zhuangbei();
 Fangju.prototype.can_zhuangbei_son = function(){
-    console.log('Fangju类中的can_zhuangbei_son');
-    if(this.can_use_opt.can_zhuangbei_fangju){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
+    console.log('【防具】类中的can_zhuangbei_son');
+    if(this.can_use_opt.can_fangju!=undefined){
+        if(this.can_use_opt.can_fangju){
+            console.log('【防具】类中的can_zhuangbei_son true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('【防具】类中的can_zhuangbei_son false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 
@@ -380,11 +428,15 @@ Huangjinjia.prototype = new Fangju();
 function Weapon(){}
 Weapon.prototype = new Zhuangbei();
 Weapon.prototype.can_zhuangbei_son = function(){
-    console.log('Weapon类中的can_zhuangbei_son');
-    if(this.can_use_opt.can_zhuangbei_weapon){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
+    console.log('【武器】类中的can_zhuangbei_son');
+    if(this.can_use_opt.can_weapon!=undefined){
+        if(this.can_use_opt.can_weapon){
+            console.log('【武器】类中的can_zhuangbei_son true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('【武器】类中的can_zhuangbei_son false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 
@@ -455,11 +507,15 @@ Jinguanhuopao.prototype = new Weapon();
 function Zuoji(){}
 Zuoji.prototype = new Zhuangbei();
 Zuoji.prototype.can_zhuangbei_son = function(){
-    console.log('Zuoji类中的can_zhuangbei_son');
-    if(this.can_use_opt.can_zhuangbei_zuoji){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
+    console.log('【坐骑】类中的can_zhuangbei_son');
+    if(this.can_use_opt.can_zuoji!=undefined){
+        if(this.can_use_opt.can_zuoji){
+            console.log('【坐骑】类中的can_zhuangbei_son true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('【坐骑】类中的can_zhuangbei_son false');
+            this.card.get_div().addClass('card_disable');
+        }
     }
 }
 

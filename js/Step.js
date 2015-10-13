@@ -53,7 +53,7 @@ Step.prototype = {
     },
     chupai_step : function(){
         //判断牌是否可用是在出牌阶段才有必要去判定
-        this.staff.get_card_manager().cards_can_use();//判断牌是否可用
+        this.staff.get_card_manager().cards_can_use({can_all:true,can_shan:false,can_wuxiekeji:false});//判断牌是否可用
 
         this.staff.pause();//这里应该加一个暂停
         //中间还要区分是自动出牌（自动出牌方法最后加一个继续的方法以让游戏继续），还是手动出牌（手动出牌不需要加继续的方法，而是通过点击弃牌按钮手动触发）
