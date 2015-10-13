@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+
+	<script src="../js/jquery-1.9.1.min.js"></script>
+	<script>
+		$().ready(function(){
+			var gs1 = new GrandSon1();
+         	gs1.can_use();
+		});
+		function Parent(){}
+	    Parent.prototype = {
+	        constructor : Parent,
+	        can_use : function(){
+	            console.log('父类中的can_use');
+	            this.can_use_all();
+	        },
+	        can_use_all : function(){
+	            console.log('父类中的can_use_all');
+	            this.can_use_son();
+	        }
+	    }
+
+	    function Son1(){
+
+	    }
+	    Son1.prototype = new Parent();
+	    /*Son1.prototype.can_use_all = function(){
+	        console.log('son1子类中的can_use_all');
+	        this.can_use_son();
+	    }*/
+	    Son1.prototype.can_use_son = function(){
+	        console.log('son1子类中的can_use_son');
+	        this.can_use_grandson();
+	    }
+
+	    function GrandSon1(){}
+	    GrandSon1.prototype = new Son1();
+	    GrandSon1.prototype.can_use_all = function(){
+	        console.log('GrandSon1子类中的can_use_all');
+	        this.can_use_son();
+	    }
+	    GrandSon1.prototype.can_use_grandson = function(){
+	        console.log('GrandSon1子类中的can_use_grandson');
+	    }
+
+
+
+	    function Son2(){
+
+	    }
+	    Son2.prototype = new Parent();
+	    Son2.prototype.can_use_son = function(){
+	        console.log('son2子类中的can_use_son_1111');
+	    }
+
+	</script>
+</body>
+</html>

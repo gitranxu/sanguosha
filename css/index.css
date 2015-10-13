@@ -93,9 +93,11 @@ background: green;cursor: pointer;}
 .red_card{background: rgba(255,0,0,0.8);}
 .black_card{background: #7c7c7c;}
 .card.now{opacity: .92;}
-.huase{position: absolute;top: 0px;left: 4px;width: 12px;}
-.huase img{width: 12px;}
-.dots{position: absolute;top: 15px;left: 4px;width: 12px;height: 12px;line-height: 12px;text-align: center;font-size: 12px;font-weight: bold;}
+.huase_show{position: absolute;top: 0px;left: 4px;width: 12px;}
+.huase_show img{width: 12px;}
+.dots_show{position: absolute;top: 15px;left: 4px;width: 12px;height: 12px;line-height: 12px;text-align: center;font-size: 12px;font-weight: bold;}
+.dots_show.red_txt{color: red;}
+.dots_show.black_txt{color: black;}
 .name{position: absolute;top: 27px;left: 4px;line-height: 13px;width: 14px;font-size: 12px;color: #fff;text-align: center;}
 .user{position: absolute;top: 4px;right: 3px;line-height: 20px;background: rgb(162, 151, 151);text-align: center;font-size: 12px;color: #fff;}
 .status{width: 50px;float: left;}
@@ -114,6 +116,16 @@ background: green;cursor: pointer;}
 .c273{background-position: -388px -24px;}/*金火罐炮*/
 .c261{background-position: -441px -24px;}/*诸葛连弩*/
 
+.c276{background-position: -15px -99px;}/*李广之弓*/
+.c275{background-position: -68px -99px;}/*流星锤*/
+.c274{background-position: -122px -99px;}/*吕布之弓*/
+.c271{background-position: -175px -99px;}/*麒麟弓*/
+.c263{background-position: -228px -99px;}/*青红剑*/
+.c267{background-position: -282px -99px;}/*青龙偃月刀*/
+.c233{background-position: -335px -99px;}/*仁王盾*/
+.c231{background-position: -388px -99px;}/*白银狮子*/
+.c234{background-position: -441px -99px;}/*藤甲*/
+
 .c270{background-position: -15px -173px;}/*朱雀羽扇*/
 .c272{background-position: -68px -173px;}/*玉玺*/
 .c268{background-position: -122px -173px;}/*丈八蛇矛*/
@@ -124,6 +136,28 @@ background: green;cursor: pointer;}
 .c2{background-position: -388px -173px;}/*闪*/
 .c3{background-position: -441px -173px;}/*桃*/
 
+.c20{background-position: -15px -249px;}/*兵粮寸断*/
+.c5{background-position: -68px -249px;}/*过河拆桥*/
+.c17{background-position: -122px -249px;}/*火攻*/
+.c9{background-position: -175px -249px;}/*借刀杀人*/
+.c8{background-position: -228px -249px;}/*决斗*/
+.c19{background-position: -282px -249px;}/*乐不思蜀*/
+.c14{background-position: -335px -249px;}/*南蛮入侵*/
+.c21{background-position: -388px -249px;}/*闪电*/
+.c6{background-position: -441px -249px;}/*顺手牵羊*/
 
-.c111{background-position: -16px -23px;}/*八卦阵*/
-/*//classtype:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺 273金火罐炮 241绝影 242的卢 243爪黄飞电 244骅骝 251赤兔 252大宛 253紫驹*/
+.c10{background-position: -15px -324px;}/*桃园结义*/
+.c18{background-position: -68px -324px;}/*铁索连环*/
+.c15{background-position: -122px -324px;}/*万箭齐发*/
+.c13{background-position: -175px -324px;}/*五谷丰登*/
+.c16{background-position: -228px -324px;}/*无懈可击*/
+.c7{background-position: -282px -324px;}/*无中生有*/
+.c251{background-position: -335px -324px;}/*赤兔*/
+.c252{background-position: -388px -324px;}/*大宛马*/
+.c242{background-position: -441px -324px;}/*的卢*/
+
+.c244{background-position: -15px -399px;}/*骅骝*/
+.c241{background-position: -68px -399px;}/*绝影*/
+.c243{background-position: -122px -399px;}/*爪黄飞电*/
+.c253{background-position: -175px -399px;}/*紫驹*/
+/*img_code:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 241绝影 242的卢 243爪黄飞电 244骅骝 251赤兔 252大宛 253紫驹 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺 273金火罐炮 274吕布之弓 275流星锤 276李广之弓 */

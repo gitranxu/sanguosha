@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+
+	<script src="./js/jquery-1.9.1.min.js"></script>
+	<script>
+		$().ready(function(){
+			var ss = new Son2();
+         	ss.can_use_test();
+		});
+		function Parent(){}
+	    Parent.prototype = {
+	        constructor : Parent,
+	        can_use_parent : function(){
+	            console.log('父类中的can_use_parent');
+	        },
+	        can_use_son : function(){
+	            console.log('父类中的can_use_son');
+	        }
+	    }
+
+	    function Son1(){
+
+	    }
+	    Son1.prototype = new Parent();
+	    Son1.prototype.can_use_son = function(){
+	        console.log('son1子类中的can_use_son');
+	    }
+	    Son1.prototype.can_use_test = function(){
+	        this.can_use_parent();
+	        this.can_use_son();
+	    }
+
+	    function Son2(){
+
+	    }
+	    Son2.prototype = new Parent();
+	    Son2.prototype.can_use_test = function(){
+	        this.can_use_parent();
+	        this.can_use_son();
+	    }
+	</script>
+		
+</body>
+</html>

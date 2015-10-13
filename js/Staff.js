@@ -14,7 +14,6 @@
         this.i_now = 0;
         this.i_next = 0;
         this.i_count = 0;
-        //this.can_play = false;//英雄选择完毕就可以开始玩了
         this.$log = $('.log .content');//用于显示日志的div
         this.$log_left = $('.log_left .content');//用于显示日志的div
         this.$log_right = $('.log_right .content');//用于显示日志的div
@@ -28,10 +27,8 @@
             this.seat_init();//初始化座位信息
 
             this.card_manager.generate_cards();//生成所有的手牌，回头还要生成英雄牌
-            
-            //this.test();
+  
             this.card_manager.xipai();
-            //this.test1();
             this.card_manager.fapai();//每个座位类分到初始的4张牌
 
             //定位主公，将当前座位指定到公主所在座位
@@ -40,7 +37,6 @@
             this.hero_manager.chose_hero();//开始选择英雄
 
             this.bind();
-            //this.play();
         },
         test : function(){
             var cards = this.card_manager.get_cards();
@@ -59,13 +55,6 @@
                 $('#test1').append(cards[card].get_name()+':'+cards[card].get_huase()+':'+cards[card].get_dots()+',');
             }
         },
-        /*generate_heros : function(){
-            console.log('生成一个英雄列表，每次随机取出9个供选择，完事儿再放回去，再随机取9个，一直到完');
-        },
-        chose_hero : function(){
-            //这里先假定选的都是周瑜
-            this.a_seat[0].set_hero(new Zhouyu());
-        },*/
         play : function(){
             var _this = this;
             clearInterval(this.timer);

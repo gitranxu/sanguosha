@@ -1,15 +1,29 @@
 //牌的动作类，按先后顺序：是否可用，是否可出（如果可用），准备出牌（如果可用并点击后，此时被点击的牌高出一头）,放弃出牌（从高出一头到回到牌区,准备出牌时点击取消或者其他手牌时），出牌（准备出牌时点击确认）
 //,准备出牌时，放弃出牌时，出牌后，询问是否可用，是否可出
 //装备类动作放弃出牌与出牌后的动作不完全一样
+
+//玉玺，金火罐炮，黄金甲，李广之弓，流星锤，吕布之弓  没有
+
+/*can_use_opt包含的属性可能为:
+    can_all:代表所有牌可用
+    can_base:代表杀，闪，桃，酒可用
+    can_celue:代表策略牌可用,查找禁用状态,李广之弓杀中后状态
+    can_zhuangbei:代表装备牌可用
+    can_zuoji:代表坐骑牌可用
+    can_weapon:代表武器牌可用
+    can_fangju:代表防具牌可用
+    can_sha:代表杀可用,查找麻木状态,吕布之弓杀中后状态
+    can_shan:代表闪可用(这里自己可以定义一个迟钝状态，有这个状态则不能用闪)
+    can_tao:代表桃可用,当前血量小于最大血量或者有角色濒临死亡时可用，角色濒临死亡的状态放在staff类中，当英雄掉血为小于等于0时会改变这个值，当英雄吃桃或喝酒后血量大于1时也改变该值，适当的时候会调用方法this.staff.get_card_manager().cards_can_use({can_tao:true});//判断牌是否可用
+    can_jiu:代表酒可用,酒可以多喝，每喝一次，要么回复一滴血（一回合只能回复一次，在适当的时候），要么攻击值加1
+    heimu:代表是否有黑幕技能
+*/
 function CardAction(){
 	this.name = '动作';
 	this.card = null;
 }
 CardAction.prototype = {
 	constructor : CardAction,
-	can_use : function(){
-		//如果可用则将所属的card类去掉disable，如果不可用则加上disable
-	},
 	can_out : function(){
 		//如果可出则将.ok按钮去掉disable，如果不可用则加上disable
 	},
@@ -27,7 +41,73 @@ CardAction.prototype = {
 	},
 	set_card : function(card){
 		this.card = card;
-	}
+	},
+
+
+    can_use : function(can_use_opt){
+        //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+        this.can_use_opt = can_use_opt || {};
+        this.can_all();
+            this.can_base();
+            this.can_celue();
+            this.can_zhuangbei();
+                this.can_zhuangbei_son();//武器，防具，驴
+                this.can_danpai();
+                this.can_jineng();//最后还要看看技能判断情况，例如贾诩不能使用黑闪
+    },
+    can_all : function(){
+        //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+        console.log('CardAction根类中的can_use');
+        if(this.can_use_opt.can_all){
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            this.card.get_div().addClass('card_disable');
+        }
+    },
+    can_base : function(){
+        console.log('CardAction根类中的can_base');
+    },
+    can_celue : function(){
+        console.log('CardAction根类中的can_celue');
+    },
+    can_zhuangbei : function(){
+        console.log('CardAction根类中的can_zhuangbei');
+    },
+    can_zhuangbei_son : function(){
+        console.log('CardAction根类中的can_zhuangbei_son');
+    },
+    can_danpai : function(){
+        console.log('CardAction根类中的can_danpai');
+    },
+    can_jineng : function(){
+        console.log('CardAction根类中的can_jineng');
+    }
+}
+
+
+function Celue(){
+    this.can_use_opt = null;
+}
+Celue.prototype = new CardAction();
+Celue.prototype.can_celue = function(){
+    console.log('Celue类中的can_celue');
+    if(this.can_use_opt.can_celue){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }
+}
+
+
+function Base(){}
+Base.prototype = new CardAction();
+Base.prototype.can_base = function(){
+    console.log('Base类中的can_base');
+    if(this.can_use_opt.can_base){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }
 }
 
 
@@ -36,10 +116,10 @@ CardAction.prototype = {
 function Sha(){
     this.name = '杀';
 }
-Sha.prototype = new CardAction();
+Sha.prototype = new Base();
 Sha.prototype.can_use = function(can_use_opt){
 	//如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    if(can_use_opt.can_all || can_use_opt.can_sha){
+    if(can_use_opt.can_all || can_use_opt.can_base || can_use_opt.can_sha){
     	if(can_use_opt.mabi){ //如果英雄的状态为麻木，则不能使用
     		this.card.get_div().addClass('card_disable');
     	}else{
@@ -49,6 +129,17 @@ Sha.prototype.can_use = function(can_use_opt){
     	this.card.get_div().addClass('card_disable');
     }
 }
+
+function Huosha(){
+    this.name = '火杀';
+}
+Huosha.prototype = new Sha();
+
+function Leisha(){
+    this.name = '雷杀';
+}
+Leisha.prototype = new Sha();
+
 
 function Shan(){
     this.name = '闪';
@@ -90,154 +181,319 @@ Jiu.prototype.can_use = function(can_use_opt){
 }
 
 
-function Celue(){}
-Celue.prototype = new CardAction();
-Celue.prototype.can_use = function(can_use_opt){
-    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    if(can_use_opt.can_all || can_use_opt.can_celue){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
-    }
-}
+//-------------------------------------------------------------------------策略类---start-------
 
 function Juedou(){
 	this.name = '决斗';
 }
 
 Juedou.prototype = new Celue();
-Juedou.prototype.can_use = function(can_use_opt){
+Juedou.prototype.can_use_son = function(){
 	//如果可用则将所属的card类去掉disable，如果不可用则加上disable
-    //这里如何先调用一下父类中的方法，然后再继续调用自己的方法
-
-
-
-    
+    console.log('子类中的can_use_son');
 }
 
-
-//img_code:1杀 11火杀 12雷杀 2闪 3桃 4酒 5过河拆桥 6顺手牵羊 7无中生有 8决斗 9借刀杀人 10桃园结义 13五谷丰登 14南蛮入侵 15万箭齐发 16无懈可击 17火攻 18铁索连环 19乐不思蜀 20兵粮寸断 21闪电 26武器 23防具 24进攻马 25防守马 231白银狮子 232八卦阵 233仁王盾 234藤甲 235黄金甲 261诸葛连弩 262雌雄双股剑 263青红剑 264寒冰剑 265古锭刀 266贯石斧 267青龙偃月刀 268丈八蛇矛 269方天画戟 270朱雀羽扇 271麒麟弓 272玉玺 273金火罐炮 241绝影 242的卢 243爪黄飞电 244骅骝 251赤兔 252大宛 253紫驹
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//opt包含huase,dots,color,no这四个信息
-//杀，主动点击时，如果不是【制衡】，则会触发检查方法，该方法检查是否有满足条件的攻击对象，如果有继续等待满足条件的对象是否进一步满足出牌的条件，如果都满足了，则让确定按钮变的可用
-//被动点击情况【被决斗】【被南蛮】
-/*function Sha(opt,$card_div){
-    Card.call(this,opt,$card_div);
-    this.name = '杀';
-    this.img_code = 'c1';
-    this.init_div();
+function Shandian(){
+    this.name = '闪电';
 }
-Sha.prototype = new Card();
-Sha.prototype.can_use = function(hero){
-    //如果英雄的状态为麻木，则不能使用
-    if(hero.mamu_status){
-        this.$card_div.addClass('disable');
-    }
-}
-Sha.prototype.after_up = function(){
-    
-}
-
-function Huosha(opt,$card_div){
-    Card.call(this,opt,$card_div);
-    this.name = '火杀';
-    this.img_code = 'c11';
-    this.init_div();
-}
-Huosha.prototype = new Sha();
-Huosha.prototype.can_use = function(hero){
-    //如果英雄的状态为麻木，则不能使用
-    if(hero.mamu_status){
-        this.$card_div.addClass('disable');
+Shandian.prototype = new Celue();
+Shandian.prototype.can_use_jineng = function(){
+    //如果是黑色，并且是黑幕技能，则不能使用
+    if(this.can_use_opt.heimu&&!this.card.is_red()){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
     }
 }
 
-function Leisha(opt,$card_div){
-    Card.call(this,opt,$card_div);
-    this.name = '雷杀';
-    this.img_code = 'c12';
-    this.init_div();
+function Guohechaiqiao(){
+    this.name = '过河拆桥';
 }
-Leisha.prototype = new Sha();
-Leisha.prototype.can_use = function(hero){
-    //如果英雄的状态为麻木，则不能使用
-    if(hero.mamu_status){
-        this.$card_div.addClass('disable');
+Guohechaiqiao.prototype = new Celue();
+Guohechaiqiao.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('过河拆桥类中的can_use_son');
+}
+
+function Shunshouqianyang(){
+    this.name = '顺手牵羊';
+}
+Shunshouqianyang.prototype = new Celue();
+Shunshouqianyang.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('顺手牵羊类中的can_use_son');
+}
+
+function Wuzhongshengyou(){
+    this.name = '无中生有';
+}
+Wuzhongshengyou.prototype = new Celue();
+Wuzhongshengyou.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('无中生有类中的can_use_son');
+}
+
+function Jiedaosharen(){
+    this.name = '借刀杀人';
+}
+Jiedaosharen.prototype = new Celue();
+Jiedaosharen.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('借刀杀人类中的can_use_son');
+}
+
+
+
+function Taoyuanjieyi(){
+    this.name = '桃园结义';
+}
+Taoyuanjieyi.prototype = new Celue();
+Taoyuanjieyi.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('桃园结义类中的can_use_son');
+}
+
+function Wugufengdeng(){
+    this.name = '五谷丰登';
+}
+Wugufengdeng.prototype = new Celue();
+Wugufengdeng.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('五谷丰登类中的can_use_son');
+}
+
+function Nanmanruqin(){
+    this.name = '南蛮入侵';
+}
+Nanmanruqin.prototype = new Celue();
+Nanmanruqin.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('南蛮入侵类中的can_use_son');
+}
+
+function Wanjianqifa(){
+    this.name = '万箭齐发';
+}
+Wanjianqifa.prototype = new Celue();
+Wanjianqifa.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('万箭齐发类中的can_use_son');
+}
+
+function Wuxiekeji(){
+    this.name = '无懈可击';
+}
+Wuxiekeji.prototype = new Celue();
+Wuxiekeji.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('无懈可击类中的can_use_son');
+}
+
+function Huogong(){
+    this.name = '火攻';
+}
+Huogong.prototype = new Celue();
+Huogong.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('火攻类中的can_use_son');
+}
+
+function Tiesuolianhuan(){
+    this.name = '铁索连环';
+}
+Tiesuolianhuan.prototype = new Celue();
+Tiesuolianhuan.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('铁索连环类中的can_use_son');
+}
+
+function Lebusishu(){
+    this.name = '乐不思蜀';
+}
+Lebusishu.prototype = new Celue();
+Lebusishu.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('乐不思蜀类中的can_use_son');
+}
+
+function Bingliangcunduan(){
+    this.name = '兵粮寸断';
+}
+Bingliangcunduan.prototype = new Celue();
+Bingliangcunduan.prototype.can_use_son = function(){
+    //如果可用则将所属的card类去掉disable，如果不可用则加上disable
+    console.log('兵粮寸断类中的can_use_son');
+}
+
+//--------------------------------------策略类--------end-----------------------------------------
+
+
+function Zhuangbei(){}
+Zhuangbei.prototype = new CardAction();
+Zhuangbei.prototype.can_zhuangbei = function(){
+    console.log('Zhuangbei类中的can_zhuangbei');
+    if(this.can_use_opt.can_zhuangbei){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }
+}
+
+function Fangju(){}
+Fangju.prototype = new Zhuangbei();
+Fangju.prototype.can_zhuangbei_son = function(){
+    console.log('Fangju类中的can_zhuangbei_son');
+    if(this.can_use_opt.can_zhuangbei_fangju){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
     }
 }
 
 
-function Shan(opt,$card_div){
-    Card.call(this,opt,$card_div);
-    this.name = '闪';
-    this.img_code = 'c2';
-    this.init_div();
+function Baiyinshizi(){
+    this.name = '白银狮子';
 }
-Shan.prototype = new Card();
+Baiyinshizi.prototype = new Fangju();
 
-//桃在两种情况下可用，自己血不满或者有角色濒死
-function Peach(opt,$card_div){
-    Card.call(this,opt,$card_div);
-    this.name = '桃';
-    this.img_code = 'c3';
-    this.init_div();
+
+function Baguazhen(){
+    this.name = '八卦阵';
 }
-Peach.prototype = new Card();
-Peach.prototype.can_use = function(hero){
-    if(hero.get_cur_blood() >= hero.get_max_blood()){
-        this.$card_div.addClass('disable');
+Baguazhen.prototype = new Fangju();
+
+function Renwangdun(){
+    this.name = '仁王盾';
+}
+Renwangdun.prototype = new Fangju();
+
+function Tengjia(){
+    this.name = '藤甲';
+}
+Tengjia.prototype = new Fangju();
+
+function Huangjinjia(){
+    this.name = '黄金甲';
+}
+Huangjinjia.prototype = new Fangju();
+
+function Weapon(){}
+Weapon.prototype = new Zhuangbei();
+Weapon.prototype.can_zhuangbei_son = function(){
+    console.log('Weapon类中的can_zhuangbei_son');
+    if(this.can_use_opt.can_zhuangbei_weapon){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
     }
 }
 
-
-function Weapon(opt,$card_div){
-    Card.call(this,opt,$card_div);
-    this.attack_num = 1;//武器的攻击个数，默认为1，方天画戟在最后一张牌是杀的情况下，这个数字会变成3
-}
-Weapon.prototype = new Card();
-Weapon.prototype.get_attack_num = function(){
-    return this.attack_num;
-}
-Weapon.prototype.set_attack_num = function(attack_num){
-    this.attack_num = attack_num;
-}
-Weapon.prototype.use = function(seat){
-
-}
-
-
-function Yuxi(opt,$card_div){
-    Weapon.call(this,opt,$card_div);
-    this.name = '玉玺';
-    this.img_code = 'c272';
-    this.init_div();
-}
-Yuxi.prototype = new Weapon();
-Yuxi.prototype.can_use = function(hero){
-}
-
-function Zhugeliannu(opt,$card_div){
-    Weapon.call(this,opt,$card_div);
+function Zhugeliannu(){
     this.name = '诸葛连弩';
-    this.img_code = 'c261';
-    this.init_div();
 }
 Zhugeliannu.prototype = new Weapon();
-Zhugeliannu.prototype.can_use = function(hero){
-}*/
+
+function Cixiongshuanggujian(){
+    this.name = '雌雄双股剑';
+}
+Cixiongshuanggujian.prototype = new Weapon();
+
+function Qinghongjian(){
+    this.name = '青红剑';
+}
+Qinghongjian.prototype = new Weapon();
+
+function Hanbingjian(){
+    this.name = '寒冰剑';
+}
+Hanbingjian.prototype = new Weapon();
+
+function Gudingdao(){
+    this.name = '古锭刀';
+}
+Gudingdao.prototype = new Weapon();
+
+function Guanshifu(){
+    this.name = '贯石斧';
+}
+Guanshifu.prototype = new Weapon();
+
+function Qinglongyanyuedao(){
+    this.name = '青龙偃月刀';
+}
+Qinglongyanyuedao.prototype = new Weapon();
+
+function Zhangbashemao(){
+    this.name = '丈八蛇矛';
+}
+Zhangbashemao.prototype = new Weapon();
+
+function Fangtianhuaji(){
+    this.name = '方天画戟';
+}
+Fangtianhuaji.prototype = new Weapon();
+
+function Zhuqueyushan(){
+    this.name = '朱雀羽扇';
+}
+Zhuqueyushan.prototype = new Weapon();
+
+function Qilingong(){
+    this.name = '麒麟弓';
+}
+Qilingong.prototype = new Weapon();
+
+function Yuxi(){
+    this.name = '玉玺';
+}
+Yuxi.prototype = new Weapon();
+function Jinguanhuopao(){
+    this.name = '金火罐炮';
+}
+Jinguanhuopao.prototype = new Weapon();
+
+function Zuoji(){}
+Zuoji.prototype = new Zhuangbei();
+Zuoji.prototype.can_zhuangbei_son = function(){
+    console.log('Zuoji类中的can_zhuangbei_son');
+    if(this.can_use_opt.can_zhuangbei_zuoji){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }
+}
+
+function Jueying(){
+    this.name = '绝影';
+}
+Jueying.prototype = new Zuoji();
+
+function Dilu(){
+    this.name = '的卢';
+}
+Dilu.prototype = new Zuoji();
+
+function Zhuahuangfeidian(){
+    this.name = '爪黄飞电';
+}
+Zhuahuangfeidian.prototype = new Zuoji();
+
+function Hualiu(){
+    this.name = '骅骝';
+}
+Hualiu.prototype = new Zuoji();
+
+function Chitu(){
+    this.name = '赤兔';
+}
+Chitu.prototype = new Zuoji();
+
+function Dawan(){
+    this.name = '大宛';
+}
+Dawan.prototype = new Zuoji();
+
+function Ziju(){
+    this.name = '紫驹';
+}
+Ziju.prototype = new Zuoji();

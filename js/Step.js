@@ -11,8 +11,6 @@ Step.prototype = {
         //可能都需要在出牌阶段开始时暂停，出牌阶段结束时继续
         //console.log(this.name+'回合开始');
         this.staff.set_$log(this.name+'回合开始');
-        //判断牌是否可用
-        this.staff.get_card_manager().cards_can_use();//判断牌是否可用
         this.is_me = this.seat.get_div().hasClass('me');
         this.seat.get_div().addClass('active');//设置当前座位类div，加上active类
         this.staff.pause();
@@ -54,6 +52,9 @@ Step.prototype = {
         this.chupai_step();//出牌阶段
     },
     chupai_step : function(){
+        //判断牌是否可用是在出牌阶段才有必要去判定
+        this.staff.get_card_manager().cards_can_use();//判断牌是否可用
+
         this.staff.pause();//这里应该加一个暂停
         //中间还要区分是自动出牌（自动出牌方法最后加一个继续的方法以让游戏继续），还是手动出牌（手动出牌不需要加继续的方法，而是通过点击弃牌按钮手动触发）
         if(this.panding_zone.get_lebusishu_success()){
