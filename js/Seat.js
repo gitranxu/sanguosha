@@ -24,8 +24,10 @@ function Seat(staff,role){
 	this.no = null;//座位号，可以用这个来计算距离
 	this.can_attack_seats = [];//本座位可以攻击的其他座位的数组,主要用于电脑攻击分析
 	this.my_attack_seats = [];//我自己的攻击目标，主要是自己用
-	this.chu_pai_mult = false;//出牌时能否多选，默认不能
+	this.chu_pai_mult = true;//出牌时能否多选，默认不能
 	this.chu_pai_num = 1;//出牌数，在能够出牌多选的时候使用，用于判断可以同时出几张牌
+
+	this.out_for_log_cards = [];//打出的牌，准备在log中显示
 }
 Seat.prototype = {
 	constructor : Seat,
@@ -284,11 +286,9 @@ Seat.prototype = {
 				break;
 			}
 		}
-
 		var pai_for_out = this.pai_list.splice(index,1);
-		this.staff.get_card_manager().get_drop_cards().push(pai_for_out[0]);//将牌放到弃牌堆
-		pai_for_out[0].set_hero_name();//出牌后要显示英雄名
-		$('.log .cards .cardul').append(pai_for_out[0].get_div());
+		this.out_for_log_cards.push(pai_for_out[0]);
+		//$('.log .cards .cardul').append(pai_for_out[0].get_div());
 	},
 	remove_pai : function(){
 		var _this = this;
@@ -300,9 +300,21 @@ Seat.prototype = {
 	chu_pai : function(){
 		$('.log .cards .cardul').empty();//清空展示区的牌,将牌先放到展示堆
 		this.remove_pai();
-		this.cards_to_cardzone_me();
-		this.staff.get_card_manager().layout_log_cards();
+		this.cards_to_cardzone_me();	
+		this.out_for_log_cards_show();
+	},
+	out_for_log_cards_show : function(){
+		var html = [];
+		for(var i = 0,j = this.out_for_log_cards.length;i < j;i++){
+			this.out_for_log_cards[i].set_hero_name();
+			html.push(this.out_for_log_cards[i].get_div());
+		}
+		this.staff.get_card_manager().drop_cards_concat(this.out_for_log_cards);//将牌放到弃牌堆
+		//pai_for_out[0].set_hero_name();//出牌后要显示英雄名
 
+		$('.log .cards .cardul').empty().append(html);
+		this.out_for_log_cards = [];
+		this.staff.get_card_manager().layout_log_cards();
 	},
 	cards_to_cardzone_computer : function(){
 		if(this.pai_list){

@@ -63,19 +63,20 @@ PandingZone.prototype = {
         this.shandian_success = b;
     },
     lebusishu_show : function(){
-        this.seat.get_div().find('.lebusishu').show();
+        //this.seat.get_div().find('.lebusishu').show();
+        this.seat.get_div().find('.status').append('<div class="lebusishu">乐</div>');
         this.lebusishu_flag = true;//会进行乐不思蜀的判定
     },
     lebusishu_hide : function(){
-        this.seat.get_div().find('.lebusishu').hide();
+        this.seat.get_div().find('.status .lebusishu').remove();
         this.lebusishu_flag = false;//不会进行乐不思蜀的判定
     },
     bingliangcunduan_show : function(){
-        this.seat.get_div().find('.bingliangcunduan').show();
+        this.seat.get_div().find('.status').append('<div class="bingliangcunduan">断</div>');
         this.bingliangcunduan_flag = true;//会进行兵粮寸断的判定
     },
     bingliangcunduan_hide : function(){
-        this.seat.get_div().find('.bingliangcunduan').hide();
+        this.seat.get_div().find('.status .bingliangcunduan').remove();
         this.bingliangcunduan_flag = false;//不会进行兵粮寸断的判定
     },
     shandian_show : function(){

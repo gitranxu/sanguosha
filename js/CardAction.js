@@ -182,6 +182,7 @@ Tao.prototype = new CardAction();
 Tao.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
     if(this.can_use_opt.can_tao!=undefined){
+        //如果自己英雄的当前血量小于最大血量，可以用，如果有角色濒死状态，则可用
         if(this.can_use_opt.can_tao){
             console.log('【桃】类中的can_danpai  true');
             this.card.get_div().removeClass('card_disable');

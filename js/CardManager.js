@@ -12,6 +12,15 @@ CardManager.prototype = {
 	get_drop_cards : function(){
 		return this.drop_cards;
 	},
+	drop_cards_concat : function(cards){
+		console.log(cards.length+'---------------009');
+		console.log(this.drop_cards.length+'---------------019');
+		this.drop_cards.concat(cards);
+		console.log(this.drop_cards.length+'---------------029');
+		this.drop_cards.push(cards);
+		console.log(this.drop_cards.length+'---------------039');
+		$('#qipaidun_pai_num').text(this.drop_cards.length);
+	},
 	generate_cards : function(){
 		var a_data = this.get_init_data();
 		for(var i = 0,j = a_data.length;i < j;i++){

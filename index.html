@@ -13,12 +13,12 @@
                 <div class="bloodzone"></div>
                 <div class="rolename"></div>
                 <div class="status clear">
-                    <div class="lebusishu">乐</div>
+                    <!-- <div class="lebusishu">乐</div>
                     <div class="bingliangcunduan">断</div>
                     <div class="shandian">闪</div>
                     <div class="mabi">麻</div>
                     <div class="jinyan">禁</div>
-                    <div class="fanpai">翻</div>
+                    <div class="fanpai">翻</div> -->
                 </div>
                 <div class="zhuangbei zbzone"></div>
             </div>
@@ -134,6 +134,7 @@
                 <div class="btn fl pause">暂停</div>
                 <div class="btn fl help marginleft4">帮助</div>
                 <div id="leave_pai_num"></div>
+                <div id="qipaidun_pai_num"></div>
                 <div class="btn3">
                     <div class="btn next fr marginleft4">弃牌</div>
                     <div class="btn cancel fr marginleft4">取消</div>
@@ -230,12 +231,12 @@
         sanguosha.init();
 
         $('.lbss_t').click(function(){
-            staff1.a_seat[5].get_panding_zone().set_lebusishu_success(true);
-            staff1.a_seat[5].get_panding_zone().lebusishu_show();
+            //staff1.a_seat[5].get_panding_zone().set_lebusishu_success(true);
+            staff1.a_seat[0].get_panding_zone().lebusishu_show();
         });
         $('.lbss_f').click(function(){
-            staff1.a_seat[5].get_panding_zone().set_lebusishu_success(false);
-            staff1.a_seat[5].get_panding_zone().lebusishu_show();
+            //staff1.a_seat[5].get_panding_zone().set_lebusishu_success(false);
+            staff1.a_seat[0].get_panding_zone().lebusishu_hide();
         });
         $('.blcd_t').click(function(){
             staff1.a_seat[5].get_panding_zone().set_bingliangcunduan_success(true);
