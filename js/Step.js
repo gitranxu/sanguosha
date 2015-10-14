@@ -9,7 +9,7 @@ function Step(seat,staff){
 }
 Step.prototype = {
 	constructor : Step,
-	steps : function(index){
+	steps : function(){
         //可能都需要在出牌阶段开始时暂停，出牌阶段结束时继续
         //console.log(this.name+'回合开始');
         this.staff.set_$log(this.name+'回合开始');
@@ -42,13 +42,11 @@ Step.prototype = {
         if(this.panding_zone.get_bingliangcunduan_success()){
             this.staff.set_$log(this.name+'摸牌阶段开始');
             //英姿，英魂，再起等技能是否发动,这里应该是调用英雄的技能的摸牌阶段的方法，这个阶段的方法的返回值大概有三种情况，直接返回摸牌数量没有其他效果或多加一个让他们摸弃牌效果或再起效果
-//--继续先把英雄信息显示完整 
+
             if(this.is_me){
                 $('.myzone .btn3').show();//到我这儿出牌时，先把出牌按钮啥的显示出来
             }
-            var cards = this.card_manager.me_pai(2);
-            this.seat.cards_to_seat(cards);//这里还有点儿问题，因为这个方法里面只更新我自己的牌区
-            //准备做一次大改造
+            this.seat.mepai_to_paiqu(this.staff.get_i_now(),2);
 
             this.staff.set_$log(this.name+'摸牌阶段结束');
         }else{
@@ -94,7 +92,10 @@ Step.prototype = {
     auto_chupai_step : function(){
         var _this = this;
         this.staff.set_$log('自动出牌阶段思考'+this.auto_chupai_time+'秒钟...');
+        _this.seat.get_pai_list()[0].get_div().addClass('ready_to_out');//模拟自动出牌
         setTimeout(function(){
+            _this.seat.chu_pai();
+
             _this.qipai_step();//弃牌阶段
         },_this.auto_chupai_time);
     },

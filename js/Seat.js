@@ -3,6 +3,7 @@
 function Seat(staff,role){
 	this.staff = staff;//舞台类
 	this.role = role;//角色
+	this.card_manager = this.staff.get_card_manager();
 	this.hero = null;
 	this.panding_zone = new PandingZone(this,role);//判定区
 	this.step = new Step(this,staff);//阶段类
@@ -280,7 +281,8 @@ Seat.prototype = {
 	},
 	remove_pai : function(){
 		var _this = this;
-		$('.myzone .ready_to_out').each(function(){
+		//自动的决定出什么牌的时候，也会给其牌区中的牌加上ready_to_out类,停顿800毫秒，然后再打出
+		$('#paiqu'+this.staff.get_i_now()+' .ready_to_out').each(function(){
 			var id = $(this).attr('id');
 			_this.remove_pai_by_id(id);
 		});
@@ -288,7 +290,7 @@ Seat.prototype = {
 	chu_pai : function(){
 		$('.log .cards .cardul').empty();//清空展示区的牌
 		this.remove_pai();
-		this.cards_to_cardzone_me();	
+		this.mepai_to_paiqu(this.staff.get_i_now(),0);
 		this.out_for_log_cards_show();
 	},
 	cards_to_seat : function(cards){//将摸到的牌放到座位上
@@ -298,6 +300,33 @@ Seat.prototype = {
 	out_for_log_cards_show : function(){ 
 		this.staff.get_card_manager().chupai_to_log(this.out_for_log_cards);
 		this.out_for_log_cards = [];
+	},
+	//回头要改造，增加一个摸牌堆，每次摸的牌都放摸牌堆中，然后在牌区展示的时候，先将摸牌堆中的牌放到pai_list中去，然后$ul只是append摸牌堆中的牌，然后再将摸牌堆清空，这是摸牌流程
+	//还有出牌流程，从pai_list中去删除，根据删除的id去把展示区中相应的牌DIV去掉就行
+	//所以有摸牌到展示区及从展示区出牌的方法,还有就是展示区牌发生变化后的更新方法
+	mepai_to_paiqu : function(index,num){
+		this.aftermepai(num);
+		if(this.pai_list){
+			var $cards = $('#paiqu'+index+' .cards');
+			var $ul = $cards.find('.cardul');
+			$ul.empty();//先置空一下
+			for(var i = 0,j = this.pai_list.length;i < j;i++){
+				$ul.append(this.pai_list[i].get_div());
+			}
+			var $lis = $cards.find('.cardul > li');
+			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
+		}else{
+			console.log('this.pai_list为空me....');
+		}
+	},
+	aftermepai : function(num){//每次摸牌后，要合并座位的pai_list并更新牌数
+		this.set_pai_list(this.card_manager.get_a_pai(num));
+		this.update_div_pai_num();
+		this.card_manager.update_div_pai_count();//更新剩余的牌数
+	},
+	chupai_from_paiqu : function(index){
+
+		//layout
 	},
 	//将座位中的牌列表放到牌区中去(当然，基本上自动的不会用到，不过在测试的时候可以用用)
 	cards_to_cardzone_me : function(){

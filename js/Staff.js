@@ -60,7 +60,7 @@
             clearInterval(this.timer);
             this.timer = setInterval(function(){
                 _this.i_now = _this.i_count%8;
-                _this.a_seat[_this.i_now].get_step().steps(_this.i_now);//进入各阶段
+                _this.a_seat[_this.i_now].get_step().steps();//进入各阶段
                 _this.i_count++;
                 _this.i_next = _this.i_count%8;
             },1000);
@@ -137,7 +137,7 @@
             });
 
             //牌区中的每张牌点击的时候
-            $('.paiqu').delegate('.cardul > li:not(.card_disable)', {
+            $('.paiqu_zone').delegate('.cardul > li:not(.card_disable)', {
                 'click':function(){
                     //这里应该加一个判断，如果用户点击时，与当前i_now不一致，就直接返回
                     var s = $('.seat').index($('.seat.me'));
@@ -183,7 +183,7 @@
 
             //点击确定按钮时，会将选中的牌打入到弃牌区，同时将牌放入到弃牌堆，再调用一下layout_my_cards方法。确定按钮不管选中的牌能不能打出
             $('.myzone .btns .ok').click(function(){
-                _this.me_seat.chu_pai();
+                _this.me_seat.chu_pai();//电脑有个牌去出牌
                 //1.通过ID得到card对象
                 //2.将该对象从seat的pai_list中去除
                 //3.调用seat的cards_to_cardzone_me方法更新牌区中的牌

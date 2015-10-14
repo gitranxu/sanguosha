@@ -75,14 +75,15 @@ CardManager.prototype = {
 	fapai : function(){
 		var a_seat = this.staff.get_a_seat();
 		for(var i = 0,j = a_seat.length;i < j;i++){
-			this.aftermepai(4,a_seat[i]);
+			//this.aftermepai(4,a_seat[i]);
 			//如果是自己的座位，则需要将牌显示到牌区中
-			var is_me = a_seat[i].get_div().hasClass('me');
+			a_seat[i].mepai_to_paiqu(i,4);
+			/*var is_me = a_seat[i].get_div().hasClass('me');
 			if(is_me){
 				a_seat[i].cards_to_cardzone_me();
 			}else{
 				a_seat[i].cards_to_cardzone_computer();
-			}
+			}*/
 			
 		}
 	},
