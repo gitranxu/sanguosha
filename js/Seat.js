@@ -258,26 +258,14 @@ Seat.prototype = {
 	//两种情况，第一次时直接赋值，以后都是数组合并,注参数都是手牌数组
 	set_pai_list : function(pai_list){
 		if(this.pai_list){
-			this.pai_list.concat(pai_list);
+			tools.concat_two_arr(this.pai_list,pai_list);
 		}else{
 			this.pai_list = pai_list;
 		}
+		//这里，设置完后，要马上更新一下手牌数
+		this.update_div_pai_num();
 	},
-	//将座位中的牌列表放到牌区中去(当然，基本上自动的不会用到，不过在测试的时候可以用用)
-	cards_to_cardzone_me : function(){
-		if(this.pai_list){
-			var $cards = $('.myzone .cards');
-			var $ul = $cards.find('.cardul');
-			$ul.empty();//先置空一下
-			for(var i = 0,j = this.pai_list.length;i < j;i++){
-				$ul.append(this.pai_list[i].get_div());
-			}
-			var $lis = $cards.find('.cardul > li');
-			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
-		}else{
-			console.log('this.pai_list为空me....');
-		}
-	},
+	
 	remove_pai_by_id : function(id){
 		var index = -1;
 		for(var i = 0,j = this.pai_list.length;i < j;i++){
@@ -298,14 +286,33 @@ Seat.prototype = {
 		});
 	},
 	chu_pai : function(){
-		$('.log .cards .cardul').empty();//清空展示区的牌,将牌先放到展示堆
+		$('.log .cards .cardul').empty();//清空展示区的牌
 		this.remove_pai();
 		this.cards_to_cardzone_me();	
 		this.out_for_log_cards_show();
 	},
+	cards_to_seat : function(cards){//将摸到的牌放到座位上
+		this.set_pai_list(cards);//设置牌后会自动更新手牌数
+		this.cards_to_cardzone_me();//还要重新显示一下牌区
+	},
 	out_for_log_cards_show : function(){ 
 		this.staff.get_card_manager().chupai_to_log(this.out_for_log_cards);
 		this.out_for_log_cards = [];
+	},
+	//将座位中的牌列表放到牌区中去(当然，基本上自动的不会用到，不过在测试的时候可以用用)
+	cards_to_cardzone_me : function(){
+		if(this.pai_list){
+			var $cards = $('.myzone .cards');
+			var $ul = $cards.find('.cardul');
+			$ul.empty();//先置空一下
+			for(var i = 0,j = this.pai_list.length;i < j;i++){
+				$ul.append(this.pai_list[i].get_div());
+			}
+			var $lis = $cards.find('.cardul > li');
+			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
+		}else{
+			console.log('this.pai_list为空me....');
+		}
 	},
 	cards_to_cardzone_computer : function(){
 		if(this.pai_list){

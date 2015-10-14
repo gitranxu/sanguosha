@@ -3,6 +3,7 @@ function Step(seat,staff){
 	this.seat = seat;
 	this.staff = this.seat.get_staff();
 	this.panding_zone = this.seat.get_panding_zone();
+    this.card_manager = this.staff.get_card_manager();
 	this.name = seat.get_role().get_name();
     this.auto_chupai_time = 1000;//自动出牌模拟时间
 }
@@ -45,6 +46,9 @@ Step.prototype = {
             if(this.is_me){
                 $('.myzone .btn3').show();//到我这儿出牌时，先把出牌按钮啥的显示出来
             }
+            var cards = this.card_manager.me_pai(2);
+            this.seat.cards_to_seat(cards);//这里还有点儿问题，因为这个方法里面只更新我自己的牌区
+            //准备做一次大改造
 
             this.staff.set_$log(this.name+'摸牌阶段结束');
         }else{
@@ -54,7 +58,7 @@ Step.prototype = {
     },
     chupai_step : function(){
         //判断牌是否可用是在出牌阶段才有必要去判定
-        this.staff.get_card_manager().cards_can_use({can_all:true,can_shan:false,can_tao:false,can_wuxiekeji:false});//判断牌是否可用
+        this.card_manager.cards_can_use({can_all:true,can_shan:false,can_tao:false,can_wuxiekeji:false});//判断牌是否可用
 
         this.staff.pause();//这里应该加一个暂停
         //中间还要区分是自动出牌（自动出牌方法最后加一个继续的方法以让游戏继续），还是手动出牌（手动出牌不需要加继续的方法，而是通过点击弃牌按钮手动触发）

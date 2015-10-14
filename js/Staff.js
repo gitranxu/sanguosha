@@ -122,7 +122,7 @@
             //点击弃牌按钮
             $('.btns .next').click(function(){
                 //点击弃牌按钮后就进入弃牌阶段了
-                //_this.a_o_roles[_this.i_now].qipai_step();
+                _this.me_seat.get_step().qipai_step();
             });
 
             $('#xianyin').click(function(){

@@ -17,6 +17,8 @@ CardManager.prototype = {
 		for(var i = 0,j = a_data.length;i < j;i++){
 			var $card_div = this.create_div();
 			a_data[i].set_div($card_div);
+			a_data[i].set_no(i);
+			a_data[i].init_div();
 			this.cards.push(a_data[i]);
 		}
 	},
@@ -73,7 +75,7 @@ CardManager.prototype = {
 	fapai : function(){
 		var a_seat = this.staff.get_a_seat();
 		for(var i = 0,j = a_seat.length;i < j;i++){
-			this.aftermepai(8,a_seat[i]);
+			this.aftermepai(4,a_seat[i]);
 			//如果是自己的座位，则需要将牌显示到牌区中
 			var is_me = a_seat[i].get_div().hasClass('me');
 			if(is_me){
@@ -139,16 +141,13 @@ CardManager.prototype = {
 			cards[i].set_hero_name();//出牌后要显示英雄名
 			html.push(cards[i].get_div());
 		}
-		console.log(this.drop_cards.length+'---'+cards.length+'------888');
 		if(not_to_drop_cards==undefined || not_to_drop_cards==false){ 
-			console.log('-----怎么------');
 			this.drop_cards_concat(cards);//将牌放到弃牌堆
 		}
 		$('.log .cards .cardul').empty().append(html); 
 		this.layout_log_cards();
 	},
 	drop_cards_concat : function(cards){//将牌放到弃牌堆
-		console.log(this.drop_cards.length+'------'+cards.length);
 		tools.concat_two_arr(this.drop_cards,cards);
 		$('#qipaidun_pai_num').text(this.drop_cards.length);
 	},

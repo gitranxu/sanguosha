@@ -45,12 +45,14 @@ Card.prototype = {
     get_no : function(){
         return this.no;
     },
+    set_no : function(no){
+        this.no = no;
+    },
     get_div : function(){
         return this.$div;
     },
     set_div : function($div){
         this.$div = $div;
-        this.init_div();
     },
     is_red : function(){
         if(this.huase_value=='hongtao' || this.huase_value=='fangkuai'){
