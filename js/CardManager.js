@@ -12,15 +12,6 @@ CardManager.prototype = {
 	get_drop_cards : function(){
 		return this.drop_cards;
 	},
-	drop_cards_concat : function(cards){
-		console.log(cards.length+'---------------009');
-		console.log(this.drop_cards.length+'---------------019');
-		this.drop_cards.concat(cards);
-		console.log(this.drop_cards.length+'---------------029');
-		this.drop_cards.push(cards);
-		console.log(this.drop_cards.length+'---------------039');
-		$('#qipaidun_pai_num').text(this.drop_cards.length);
-	},
 	generate_cards : function(){
 		var a_data = this.get_init_data();
 		for(var i = 0,j = a_data.length;i < j;i++){
@@ -98,6 +89,11 @@ CardManager.prototype = {
 		seat.update_div_pai_num();
 		this.update_div_pai_count();//更新剩余的牌数
 	},
+	me_pai : function(num){//摸牌后更新剩余牌数,返回数组
+		var cards = this.get_a_pai(num);
+		this.update_div_pai_count();//更新剩余的牌数
+		return cards;
+	},
 	update_div_pai_count : function(){
 		$('#leave_pai_num').text(this.cards.length);
 		//console.log('剩余'+this.cards.length+'张牌');
@@ -120,6 +116,41 @@ CardManager.prototype = {
 		}
 		console.log('取了'+result.length+'张牌!');
 		return result;
+	},
+	/*
+		out_for_log_cards_show : function(){ 
+			var html = [];
+			for(var i = 0,j = this.out_for_log_cards.length;i < j;i++){
+				this.out_for_log_cards[i].set_hero_name();
+				html.push(this.out_for_log_cards[i].get_div());
+			}
+			this.staff.get_card_manager().drop_cards_concat(this.out_for_log_cards);//将牌放到弃牌堆
+			//pai_for_out[0].set_hero_name();//出牌后要显示英雄名
+
+			$('.log .cards .cardul').empty().append(html);
+			this.out_for_log_cards = [];
+			this.staff.get_card_manager().layout_log_cards();
+		},
+	*/
+	chupai_to_log : function(cards,not_to_drop_cards){//将出牌在log中显示出来
+		//not_to_drop_cards，如果打出牌而不将牌放到弃牌堆，可以传个true 
+		var html = [];
+		for(var i = 0,j = cards.length;i < j;i++){ 
+			cards[i].set_hero_name();//出牌后要显示英雄名
+			html.push(cards[i].get_div());
+		}
+		console.log(this.drop_cards.length+'---'+cards.length+'------888');
+		if(not_to_drop_cards==undefined || not_to_drop_cards==false){ 
+			console.log('-----怎么------');
+			this.drop_cards_concat(cards);//将牌放到弃牌堆
+		}
+		$('.log .cards .cardul').empty().append(html); 
+		this.layout_log_cards();
+	},
+	drop_cards_concat : function(cards){//将牌放到弃牌堆
+		console.log(this.drop_cards.length+'------'+cards.length);
+		tools.concat_two_arr(this.drop_cards,cards);
+		$('#qipaidun_pai_num').text(this.drop_cards.length);
 	},
 	cards_can_use : function(opt){
 		var mabi = true;

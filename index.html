@@ -232,11 +232,15 @@
 
         $('.lbss_t').click(function(){
             //staff1.a_seat[5].get_panding_zone().set_lebusishu_success(true);
-            staff1.a_seat[0].get_panding_zone().lebusishu_show();
+            //staff1.a_seat[0].get_panding_zone().bingliangcunduan_show();
+            var card = staff1.get_card_manager().me_pai(1)[0]; 
+            staff1.a_seat[0].get_panding_zone().bingliangcunduan_show(card); 
         });
         $('.lbss_f').click(function(){
             //staff1.a_seat[5].get_panding_zone().set_lebusishu_success(false);
-            staff1.a_seat[0].get_panding_zone().lebusishu_hide();
+            //staff1.a_seat[0].get_panding_zone().lebusishu_hide();
+            //staff1.a_seat[0].get_panding_zone().lebusishu_show();
+            staff1.a_seat[0].get_panding_zone().bingliangcunduan_validate();
         });
         $('.blcd_t').click(function(){
             staff1.a_seat[5].get_panding_zone().set_bingliangcunduan_success(true);

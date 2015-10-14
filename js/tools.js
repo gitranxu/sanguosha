@@ -1,4 +1,9 @@
 var tools = {
+    concat_two_arr : function(arrto,arrsource){
+        for(var i = 0,j = arrsource.length;i < j;i++){
+            arrto.push(arrsource[i]);
+        }
+    },
     get_rand_between_two_num : function(min,max){
         return parseInt(Math.random()*(max-min+1))+min;
     },

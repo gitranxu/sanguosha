@@ -15,7 +15,7 @@ ul{list-style: none;}
 .btn.marginleft10{margin-left: 10px;}
 .btn.marginbottom10{margin-bottom: 10px;}
 
-.container{width:600px;margin:130px auto;position: relative;}
+.container{width:600px;margin:130px auto 25px;position: relative;}
 .seat{height:116px;width:100px;border: 2px solid rgba(6, 32, 8, 0.35);background:orchid;margin-left: 20px;position: relative;overflow: hidden;}
 .seat.me{overflow: visible;}
 .can_attack{border: 2px solid #ff9900;}
@@ -36,6 +36,8 @@ ul{list-style: none;}
 #leave_pai_num,#qipaidun_pai_num{position: absolute;bottom: 4px;right: -33px;width: 30px;text-align: center;height: 18px;line-height: 18px;color: #fff;}
 #qipaidun_pai_num{right: -60px;color: rgb(144, 17, 17);}
 .content{position: absolute;top: 0;left: 0;width: 100%;}
+.log_puke_icon{width: 12px;}
+
 .log_right .content{top: -378px;}
 .log_left_ctr{position: absolute;top: 0;left: -190px;width: 170px;height: 100%;background: orange;display: none;}
 .log_right_ctr{position: absolute;top: 0;right: -190px;width: 170px;height: 100%;background: orange;display: none;}

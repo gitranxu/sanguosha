@@ -303,18 +303,9 @@ Seat.prototype = {
 		this.cards_to_cardzone_me();	
 		this.out_for_log_cards_show();
 	},
-	out_for_log_cards_show : function(){
-		var html = [];
-		for(var i = 0,j = this.out_for_log_cards.length;i < j;i++){
-			this.out_for_log_cards[i].set_hero_name();
-			html.push(this.out_for_log_cards[i].get_div());
-		}
-		this.staff.get_card_manager().drop_cards_concat(this.out_for_log_cards);//将牌放到弃牌堆
-		//pai_for_out[0].set_hero_name();//出牌后要显示英雄名
-
-		$('.log .cards .cardul').empty().append(html);
+	out_for_log_cards_show : function(){ 
+		this.staff.get_card_manager().chupai_to_log(this.out_for_log_cards);
 		this.out_for_log_cards = [];
-		this.staff.get_card_manager().layout_log_cards();
 	},
 	cards_to_cardzone_computer : function(){
 		if(this.pai_list){

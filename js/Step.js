@@ -4,6 +4,7 @@ function Step(seat,staff){
 	this.staff = this.seat.get_staff();
 	this.panding_zone = this.seat.get_panding_zone();
 	this.name = seat.get_role().get_name();
+    this.auto_chupai_time = 1000;//自动出牌模拟时间
 }
 Step.prototype = {
 	constructor : Step,
@@ -88,10 +89,10 @@ Step.prototype = {
     },
     auto_chupai_step : function(){
         var _this = this;
-        this.staff.set_$log('自动出牌阶段思考3秒钟...');
+        this.staff.set_$log('自动出牌阶段思考'+this.auto_chupai_time+'秒钟...');
         setTimeout(function(){
             _this.qipai_step();//弃牌阶段
-        },3000);
+        },_this.auto_chupai_time);
     },
     me_chupai_step : function(){
         //this.qipai_step();//弃牌阶段应该是点击取消按钮后手动触发
