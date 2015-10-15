@@ -13,10 +13,6 @@ var tools = {
     },
     trans_to_float : function($lis){
     	$lis.parent().removeClass('absoluteul').addClass('floatul');
-    	/*$lis.each(function(){//浮动时将index重置为0
-    		this.index = 0;
-    	});*/
-    	//console.log('trans_to_float');
     },
     trans_to_absolute : function($lis){
     	for(var i = $lis.length-1;i >= 0;i--){

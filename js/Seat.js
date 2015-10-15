@@ -293,10 +293,10 @@ Seat.prototype = {
 		this.mepai_to_paiqu(this.staff.get_i_now(),0);
 		this.out_for_log_cards_show();
 	},
-	cards_to_seat : function(cards){//将摸到的牌放到座位上
+	/*cards_to_seat : function(cards){//将摸到的牌放到座位上
 		this.set_pai_list(cards);//设置牌后会自动更新手牌数
 		this.cards_to_cardzone_me();//还要重新显示一下牌区
-	},
+	},*/
 	out_for_log_cards_show : function(){ 
 		this.staff.get_card_manager().chupai_to_log(this.out_for_log_cards);
 		this.out_for_log_cards = [];
@@ -327,34 +327,5 @@ Seat.prototype = {
 	chupai_from_paiqu : function(index){
 
 		//layout
-	},
-	//将座位中的牌列表放到牌区中去(当然，基本上自动的不会用到，不过在测试的时候可以用用)
-	cards_to_cardzone_me : function(){
-		if(this.pai_list){
-			var $cards = $('.myzone .cards');
-			var $ul = $cards.find('.cardul');
-			$ul.empty();//先置空一下
-			for(var i = 0,j = this.pai_list.length;i < j;i++){
-				$ul.append(this.pai_list[i].get_div());
-			}
-			var $lis = $cards.find('.cardul > li');
-			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
-		}else{
-			console.log('this.pai_list为空me....');
-		}
-	},
-	cards_to_cardzone_computer : function(){
-		if(this.pai_list){
-			var $cards = $('.computer .cards');
-			var $ul = $cards.find('.cardul');
-			$ul.empty();//在用之前把上一个的清空
-			for(var i = 0,j = this.pai_list.length;i < j;i++){
-				$ul.append(this.pai_list[i].get_div());
-			}
-			var $lis = $cards.find('.cardul > li');
-			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
-		}else{
-			console.log('this.pai_list为空auto....');
-		}
 	}
 }
