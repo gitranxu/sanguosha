@@ -64,12 +64,22 @@ CardManager.prototype = {
 		this.cards = [];
 		for(var i = 0,j = tmp.length;i < j;i++){
 			var card = tools.get_rand_from_arr(tmp)[0];
-			card.remove_hero_name();
+			card.div_reset();
 			this.cards.push(card);
 		}
 	},
 	re_xipai : function(){
 		console.log('这个功能需要在打出牌的功能写出后才能做...');
+		var tmp = this.drop_cards;
+		this.drop_cards = [];
+		for(var i = 0,j = tmp.length;i < j;i++){
+			var card = tools.get_rand_from_arr(tmp)[0];
+			card.div_reset();
+			this.drop_cards.push(card);
+		}
+		
+		this.cards = this.drop_cards;
+		this.drop_cards = [];//弃牌堆中的牌重新洗牌放到摸（发）牌堆后，要清空一下
 	},
 	//每个座位类分到初始的4张牌
 	fapai : function(){
@@ -106,16 +116,16 @@ CardManager.prototype = {
 		var result = [];
 		for(var i = 0;i < n;i++){
 			var pop_card = this.cards.pop();
-			pop_card.set_staff(this.staff);
 			if(pop_card){
 				console.log('成功取出牌');
-				result.push(pop_card);
 				console.log('还剩'+this.cards.length+'张牌');
 			}else{//如果数组为空了，这时候应该触发一个方法，将弃牌堆中的牌重新洗牌后放到this.cards中，然后再继续进行循环
 				console.log('牌不够了，重新洗牌..');
 				this.re_xipai();
-				//i--;//相当于这次循环不算,因为没取出牌来
+				pop_card = this.cards.pop();
 			}
+			pop_card.set_staff(this.staff);
+			result.push(pop_card);
 		}
 		console.log('取了'+result.length+'张牌!');
 		return result;
@@ -237,157 +247,8 @@ CardManager.prototype = {
 		new Card({huase_show:'meihua',dots_show:3,color:'black',img_code:4},new Jiu()),
 		new Card({huase_show:'fangkuai',dots_show:3,color:'red',img_code:3},new Tao()),
 
-		new Card({huase_show:'heitao',dots_show:4,color:'black',img_code:5},new Guohechaiqiao()),
-		new Card({huase_show:'hongtao',dots_show:4,color:'red',img_code:3},new Tao()),
-		new Card({huase_show:'meihua',dots_show:4,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:4,color:'red',img_code:2},new Shan()),
 
-		new Card({huase_show:'heitao',dots_show:4,color:'black',img_code:6},new Shunshouqianyang()),
-		new Card({huase_show:'hongtao',dots_show:4,color:'red',img_code:13},new Wugufengdeng()),
-		new Card({huase_show:'meihua',dots_show:4,color:'black',img_code:5},new Guohechaiqiao()),
-		new Card({huase_show:'fangkuai',dots_show:4,color:'red',img_code:6},new Shunshouqianyang()),
 
-		new Card({huase_show:'heitao',dots_show:4,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'hongtao',dots_show:4,color:'red',img_code:17},new Huogong()),
-		new Card({huase_show:'meihua',dots_show:4,color:'black',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'fangkuai',dots_show:4,color:'red',img_code:11},new Huosha()),
-
-		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:267},new Qinglongyanyuedao()),
-		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:271},new Qilingong()),
-		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:241},new Jueying()),
-		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:251},new Chitu()),
-		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:242},new Dilu()),
-		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:266},new Guanshifu()),
-
-		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:3},new Tao()),
-		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:11},new Huosha()),
-
-		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:19},new Lebusishu()),
-		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:3},new Tao()),
-		new Card({huase_show:'meihua',dots_show:6,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:6,color:'red',img_code:1},new Sha()),
-
-		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:263},new Qinghongjian()),
-		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:19},new Lebusishu()),
-		new Card({huase_show:'meihua',dots_show:6,color:'black',img_code:19},new Lebusishu()),
-		new Card({huase_show:'fangkuai',dots_show:6,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:3},new Tao()),
-		new Card({huase_show:'meihua',dots_show:6,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'fangkuai',dots_show:6,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:7,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'hongtao',dots_show:7,color:'red',img_code:3},new Tao()),
-		new Card({huase_show:'meihua',dots_show:7,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:7,color:'red',img_code:1},new Sha()),
-
-		new Card({huase_show:'heitao',dots_show:7,color:'black',img_code:14},new Nanmanruqin()),
-		new Card({huase_show:'hongtao',dots_show:7,color:'red',img_code:7},new Wuzhongshengyou()),
-		new Card({huase_show:'meihua',dots_show:7,color:'black',img_code:14},new Nanmanruqin()),
-		new Card({huase_show:'fangkuai',dots_show:7,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:7,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'hongtao',dots_show:7,color:'red',img_code:11},new Huosha()),
-		new Card({huase_show:'meihua',dots_show:7,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'fangkuai',dots_show:7,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:8,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'hongtao',dots_show:8,color:'red',img_code:3},new Tao()),
-		new Card({huase_show:'meihua',dots_show:8,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:8,color:'red',img_code:1},new Sha()),
-
-		new Card({huase_show:'heitao',dots_show:8,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'hongtao',dots_show:8,color:'red',img_code:7},new Wuzhongshengyou()),
-		new Card({huase_show:'meihua',dots_show:8,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:8,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:8,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'hongtao',dots_show:8,color:'red',img_code:2},new Shan()),
-		new Card({huase_show:'meihua',dots_show:8,color:'black',img_code:12},new Leisha()),
-		new Card({huase_show:'fangkuai',dots_show:8,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:9,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'hongtao',dots_show:9,color:'red',img_code:3},new Tao()),
-		new Card({huase_show:'meihua',dots_show:9,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:9,color:'red',img_code:1},new Sha()),
-
-		new Card({huase_show:'heitao',dots_show:9,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'hongtao',dots_show:9,color:'red',img_code:7},new Wuzhongshengyou()),
-		new Card({huase_show:'meihua',dots_show:9,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:9,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:9,color:'black',img_code:4},new Jiu()),
-		new Card({huase_show:'hongtao',dots_show:9,color:'red',img_code:2},new Shan()),
-		new Card({huase_show:'meihua',dots_show:9,color:'black',img_code:4},new Jiu()),
-		new Card({huase_show:'fangkuai',dots_show:9,color:'red',img_code:4},new Jiu()),
-
-		new Card({huase_show:'heitao',dots_show:10,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'hongtao',dots_show:10,color:'red',img_code:1},new Sha()),
-		new Card({huase_show:'meihua',dots_show:10,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:10,color:'red',img_code:1},new Sha()),
-
-		new Card({huase_show:'heitao',dots_show:10,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'hongtao',dots_show:10,color:'red',img_code:1},new Sha()),
-		new Card({huase_show:'meihua',dots_show:10,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:10,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:10,color:'black',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'hongtao',dots_show:10,color:'red',img_code:11},new Huosha()),
-		new Card({huase_show:'meihua',dots_show:10,color:'black',img_code:18},new Tiesuolianhuan()),
-		new Card({huase_show:'fangkuai',dots_show:10,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:11,color:'black',img_code:6},new Shunshouqianyang()),
-		new Card({huase_show:'hongtao',dots_show:11,color:'red',img_code:1},new Sha()),
-		new Card({huase_show:'meihua',dots_show:11,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:11,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:11,color:'black',img_code:16},new Wuxiekeji()),
-		new Card({huase_show:'hongtao',dots_show:11,color:'red',img_code:7},new Wuzhongshengyou()),
-		new Card({huase_show:'meihua',dots_show:11,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:11,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:11,color:'black',img_code:18},new Tiesuolianhuan()),
-		new Card({huase_show:'hongtao',dots_show:11,color:'red',img_code:2},new Shan()),
-		new Card({huase_show:'meihua',dots_show:11,color:'black',img_code:18},new Tiesuolianhuan()),
-		new Card({huase_show:'fangkuai',dots_show:11,color:'red',img_code:2},new Shan()),
-
-		new Card({huase_show:'heitao',dots_show:12,color:'black',img_code:5},new Guohechaiqiao()),
-		new Card({huase_show:'hongtao',dots_show:12,color:'red',img_code:3},new Tao()),
-		new Card({huase_show:'meihua',dots_show:12,color:'black',img_code:9},new Jiedaosharen()),
-		new Card({huase_show:'fangkuai',dots_show:12,color:'red',img_code:3},new Tao()),
-
-		new Card({huase_show:'heitao',dots_show:12,color:'black',img_code:268},new Zhangbashemao()),
-		new Card({huase_show:'hongtao',dots_show:12,color:'red',img_code:5},new Guohechaiqiao()),
-		new Card({huase_show:'meihua',dots_show:12,color:'black',img_code:16},new Wuxiekeji()),
-		new Card({huase_show:'fangkuai',dots_show:12,color:'red',img_code:269},new Fangtianhuaji()),
-
-		new Card({huase_show:'heitao',dots_show:12,color:'black',img_code:18},new Tiesuolianhuan()),
-		new Card({huase_show:'hongtao',dots_show:12,color:'red',img_code:2},new Shan()),
-		new Card({huase_show:'meihua',dots_show:12,color:'black',img_code:18},new Tiesuolianhuan()),
-		new Card({huase_show:'fangkuai',dots_show:12,color:'red',img_code:17},new Huogong()),
-
-		new Card({huase_show:'hongtao',dots_show:12,color:'red',img_code:21},new Shandian()),
-		new Card({huase_show:'fangkuai',dots_show:12,color:'red',img_code:16},new Wuxiekeji()),
-
-		new Card({huase_show:'heitao',dots_show:13,color:'black',img_code:14},new Nanmanruqin()),
-		new Card({huase_show:'hongtao',dots_show:13,color:'red',img_code:2},new Shan()),
-		new Card({huase_show:'meihua',dots_show:13,color:'black',img_code:9},new Jiedaosharen()),
-		new Card({huase_show:'fangkuai',dots_show:13,color:'red',img_code:1},new Sha()),
-
-		new Card({huase_show:'heitao',dots_show:13,color:'black',img_code:252},new Dawan()),
-		new Card({huase_show:'hongtao',dots_show:13,color:'red',img_code:243},new Zhuahuangfeidian()),
-		new Card({huase_show:'meihua',dots_show:13,color:'black',img_code:16},new Wuxiekeji()),
-		new Card({huase_show:'fangkuai',dots_show:13,color:'red',img_code:253},new Ziju()),
-
-		new Card({huase_show:'heitao',dots_show:13,color:'black',img_code:16},new Wuxiekeji()),
-		new Card({huase_show:'hongtao',dots_show:13,color:'red',img_code:16},new Wuxiekeji()),
-		new Card({huase_show:'meihua',dots_show:13,color:'black',img_code:18},new Tiesuolianhuan()),
 		new Card({huase_show:'fangkuai',dots_show:13,color:'red',img_code:244},new Hualiu())
 
 		];

@@ -111,6 +111,15 @@ Card.prototype = {
             this.$div.find('.user').text('');
         }
     },
+    remove_status_class : function(){
+        if(this.$div){
+            this.$div.removeClass('ready_to_out');
+        }
+    },
+    div_reset : function(){
+        this.remove_hero_name();
+        this.remove_status_class();
+    },
     set_staff : function(staff){
         this.staff = staff;
     },
