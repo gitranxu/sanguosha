@@ -35,6 +35,7 @@ Seat.prototype = {
 	constructor : Seat,
 	init : function(){
 		this.set_div_info();
+		this.role.set_seat(this);
 		//this.compute_distance();//计算当作座位与其他座位的距离
 	},
 	test : function(){
@@ -285,6 +286,8 @@ Seat.prototype = {
 		}
 		var pai_for_out = this.pai_list.splice(index,1);
 		this.out_for_log_cards.push(pai_for_out[0]);
+
+		pai_for_out[0].chupai();
 		//$('.log .cards .cardul').append(pai_for_out[0].get_div());
 	},
 	remove_pai : function(){
@@ -295,7 +298,7 @@ Seat.prototype = {
 			_this.remove_pai_by_id(id);
 		});
 	},
-	chu_pai : function(){
+	chu_pai : function(){//出牌的过程大概为将ready_to_out的牌从当前seat的pai_list中移出，更新牌区，并决定是否放到弃牌堆
 		$('.log .cards .cardul').empty();//清空展示区的牌
 		this.remove_pai();
 		this.mepai_to_paiqu(this.staff.get_i_now(),0);//加0的意思是不用摸牌但需要这个方法的更新牌区的功能

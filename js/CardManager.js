@@ -127,32 +127,36 @@ CardManager.prototype = {
 		var result = [];
 		for(var i = 0;i < n;i++){
 			var pop_card = this.cards.pop();
-			if(pop_card){
-				console.log('成功取出牌');
-				console.log('还剩'+this.cards.length+'张牌');
-			}else{//如果数组为空了，这时候应该触发一个方法，将弃牌堆中的牌重新洗牌后放到this.cards中，然后再继续进行循环
-				console.log('牌不够了，重新洗牌..');
+			if(!pop_card){
 				this.re_xipai();
 				pop_card = this.cards.pop();
 			}
 			pop_card.set_staff(this.staff);
 			result.push(pop_card);
 		}
-		console.log('取了'+result.length+'张牌!');
+		//console.log('取了'+result.length+'张牌!');
 		return result;
 	},
-	chupai_to_log : function(cards,not_to_drop_cards){//将出牌在log中显示出来
+	chupai_to_log : function(cards){//将出牌在log中显示出来
 		//not_to_drop_cards，如果打出牌而不将牌放到弃牌堆，可以传个true 
 		var html = [];
 		for(var i = 0,j = cards.length;i < j;i++){ 
 			cards[i].when_out();//到牌被打出时一些操作
 			html.push(cards[i].get_div());
 		}
-		if(not_to_drop_cards==undefined || not_to_drop_cards==false){ 
-			this.drop_cards_concat(cards);//将牌放到弃牌堆
-		}
+
+		this.to_drop_cards(cards);//判断是否将牌放到弃牌区
+
 		$('.log .cards .cardul').empty().append(html); 
 		this.layout_log_cards();
+	},
+	to_drop_cards : function(cards){
+		//如果是装备牌，则出牌时不能放到弃牌堆，这里还假定，如果cards大于1张，则肯定会放到弃牌堆，例如制衡，蛇矛
+		if(cards.length==1 && cards[0].get_card_type()=='zhuangbei'){
+			console.log('装备牌，不放到弃牌堆...');
+		}else{
+			this.drop_cards_concat(cards);//将牌放到弃牌堆
+		}
 	},
 	drop_cards_concat : function(cards){//将牌放到弃牌堆
 		tools.concat_two_arr(this.drop_cards,cards);

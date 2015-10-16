@@ -90,10 +90,8 @@ Step.prototype = {
     auto_chupai_step : function(){
         var _this = this;
         this.staff.set_$log('自动出牌阶段思考'+this.auto_chupai_time+'秒钟...');
-        _this.seat.get_pai_list()[0].get_div().addClass('ready_to_out');//模拟自动出牌
         setTimeout(function(){
-            _this.seat.chu_pai();
-
+            _this.seat.get_role().chupai();//角色来出牌
             _this.qipai_step();//弃牌阶段
         },_this.auto_chupai_time);
     },

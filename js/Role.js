@@ -6,6 +6,7 @@ function Role(name,flag,code){
     this.name = name;
     this.flag = flag;
     this.code = code;
+    this.seat = null;
 }
 Role.prototype = {
     constructor : Role,
@@ -17,6 +18,17 @@ Role.prototype = {
     },
     get_code : function(){
         return this.code;
+    },
+    get_seat : function(){
+        return this.seat;
+    },
+    set_seat : function(seat){
+        this.seat = seat;
+    },
+    chupai : function(){
+        this.seat.get_pai_list()[0].get_div().addClass('ready_to_out');//模拟自动出牌
+        console.log('角色出牌过程....');
+        this.seat.chu_pai();//角色来出牌
     }
 }
 

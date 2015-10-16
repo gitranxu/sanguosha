@@ -42,7 +42,13 @@ CardAction.prototype = {
 	set_card : function(card){
 		this.card = card;
 	},
+    get_type : function(){
+        return this.type;
+    },
 
+    chupai : function(){
+        console.log('------CardAction----chupai');
+    },
 
     can_use : function(can_use_opt){
         //如果可用则将所属的card类去掉disable，如果不可用则加上disable
@@ -90,6 +96,7 @@ CardAction.prototype = {
 
 
 function Celue(){
+    this.type = 'celue';
     this.can_use_opt = null;
 }
 Celue.prototype = new CardAction();
@@ -105,9 +112,14 @@ Celue.prototype.can_celue = function(){
         }
     }
 }
+Celue.prototype.chupai = function(){
+        console.log('------Celue----chupai');
+}
 
 
-function Base(){}
+function Base(){
+    this.type = 'base';
+}
 Base.prototype = new CardAction();
 Base.prototype.can_base = function(){
     console.log('基础牌类中的can_base');
@@ -120,6 +132,9 @@ Base.prototype.can_base = function(){
             this.card.get_div().addClass('card_disable');
         }
     }
+}
+Base.prototype.chupai = function(){
+    console.log('------Base----chupai');
 }
 
 
@@ -369,7 +384,9 @@ Bingliangcunduan.prototype.can_danpai = function(){
 //--------------------------------------策略类--------end-----------------------------------------
 
 
-function Zhuangbei(){}
+function Zhuangbei(){
+    this.type = 'zhuangbei';
+}
 Zhuangbei.prototype = new CardAction();
 Zhuangbei.prototype.can_zhuangbei = function(){
     console.log('【装备】类中的can_zhuangbei');
@@ -383,8 +400,12 @@ Zhuangbei.prototype.can_zhuangbei = function(){
         }
     } 
 }
+Zhuangbei.prototype.chupai = function(){
+    console.log('------Zhuangbei----chupai');
+}
 
-function Fangju(){}
+function Fangju(){
+}
 Fangju.prototype = new Zhuangbei();
 Fangju.prototype.can_zhuangbei_son = function(){
     console.log('【防具】类中的can_zhuangbei_son');
@@ -397,6 +418,10 @@ Fangju.prototype.can_zhuangbei_son = function(){
             this.card.get_div().addClass('card_disable');
         }
     }
+}
+Fangju.prototype.chupai = function(){
+    //防具的出牌效果，两个，修改装备区DIV，修改seat的fangju_obj
+    console.log('------Zhuangbei----chupai');
 }
 
 

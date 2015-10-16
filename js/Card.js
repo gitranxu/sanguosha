@@ -18,6 +18,12 @@ function Card(opt,card_action){
 //can_use方法是判断牌本身是否可用，can_out方法是判断点击牌后确认按钮是否可用
 Card.prototype = {
     constructor : Card,
+    chupai : function(){
+        this.card_action.chupai();//出牌
+    },
+    get_card_type : function(){//得到牌的类型，只有基础，策略及装备三种
+        return this.card_action.get_type();
+    },
     get_huase_show : function(){
         return this.huase_show;
     },
