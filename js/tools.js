@@ -32,8 +32,8 @@ var tools = {
     	$lis.each(function(index){
     		if(index!=0){
     			var i_total_cuowei = Math.abs($(this).position().left-i_cuowei*index);
-    			$(this).css({left:i_total_cuowei});//常规效果
-    			//$(this).animate({left: i_total_cuowei},15*index);//效果爽到爆,动画有待改善
+    			//$(this).css({left:i_total_cuowei});//常规效果
+    			$(this).animate({left: i_total_cuowei},35*index);//效果爽到爆,动画有待改善
     		}
     	});
     }

@@ -100,11 +100,19 @@ Card.prototype = {
             //$('#test').append(this.$div);
         }
     },
+    //当牌被打出时，显示英雄名，去掉card_disable ready_to_out等这些中间加工出现的类名
+    when_out : function(){
+        this.set_hero_name();//出牌后要显示英雄名
+        this.remove_all_class();
+    },
     set_hero_name : function(){
         var cur_seat = this.staff.get_cur_seat();
         if(this.$div){
             this.$div.find('.user').text(cur_seat.get_hero().get_name());
         }
+    },
+    remove_all_class : function(){
+        this.$div.removeClass();//一张牌刚摸上来的时候，没有任何类名，所以出去时，要把所有类名也去掉
     },
     remove_hero_name : function(){
         if(this.$div){

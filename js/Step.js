@@ -5,7 +5,7 @@ function Step(seat,staff){
 	this.panding_zone = this.seat.get_panding_zone();
     this.card_manager = this.staff.get_card_manager();
 	this.name = seat.get_role().get_name();
-    this.auto_chupai_time = 1000;//自动出牌模拟时间
+    this.auto_chupai_time = 3000;//自动出牌模拟时间
 }
 Step.prototype = {
 	constructor : Step,
@@ -69,6 +69,9 @@ Step.prototype = {
         
     },
     qipai_step : function(){
+        //弃牌阶段一开始，先要把所有的牌的类名全部去掉（因为刚摸上来的牌没有任何类名）
+        this.seat.reset_card_div();
+
         if(this.panding_zone.get_skipqipai()){
             this.staff.set_$log('跳过弃牌阶段','yellow');
         }else{

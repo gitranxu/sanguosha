@@ -16,6 +16,7 @@ function Seat(staff,role){
 	this.jin_status = false;//默认不禁
 	this.fan_status = false;//默认不翻
 	this.pai_list = null;//手牌列表
+	this.mepai_list = null;//摸牌列表
 	//this.distance = null;
 	this.attack_distance = 0;//攻击距离默认为0
 	this.defense_distance = 0;//防御距离默认为0
@@ -214,9 +215,6 @@ Seat.prototype = {
 	get_defense_distance : function(){
 		return this.defense_distance;
 	},
-	get_pai_list : function(){
-		return this.pai_list;
-	},
 	get_skill_defense_distance : function(){
 		return this.skill_defense_distance;
 	},
@@ -256,6 +254,9 @@ Seat.prototype = {
 	chu_pai_num : function(chu_pai_num){
 		this.chu_pai_num = chu_pai_num;
 	},
+	get_pai_list : function(){
+		return this.pai_list;
+	},
 	//两种情况，第一次时直接赋值，以后都是数组合并,注参数都是手牌数组
 	set_pai_list : function(pai_list){
 		if(this.pai_list){
@@ -265,6 +266,13 @@ Seat.prototype = {
 		}
 		//这里，设置完后，要马上更新一下手牌数
 		this.update_div_pai_num();
+	},
+
+	get_mepai_list : function(){
+		return this.mepai_list;
+	},
+	set_mepai_list : function(mepai_list){
+		this.mepai_list = mepai_list;
 	},
 	
 	remove_pai_by_id : function(id){
@@ -290,13 +298,9 @@ Seat.prototype = {
 	chu_pai : function(){
 		$('.log .cards .cardul').empty();//清空展示区的牌
 		this.remove_pai();
-		this.mepai_to_paiqu(this.staff.get_i_now(),0);
+		this.mepai_to_paiqu(this.staff.get_i_now(),0);//加0的意思是不用摸牌但需要这个方法的更新牌区的功能
 		this.out_for_log_cards_show();
 	},
-	/*cards_to_seat : function(cards){//将摸到的牌放到座位上
-		this.set_pai_list(cards);//设置牌后会自动更新手牌数
-		this.cards_to_cardzone_me();//还要重新显示一下牌区
-	},*/
 	out_for_log_cards_show : function(){ 
 		this.staff.get_card_manager().chupai_to_log(this.out_for_log_cards);
 		this.out_for_log_cards = [];
@@ -309,23 +313,31 @@ Seat.prototype = {
 		if(this.pai_list){
 			var $cards = $('#paiqu'+index+' .cards');
 			var $ul = $cards.find('.cardul');
-			$ul.empty();//先置空一下
-			for(var i = 0,j = this.pai_list.length;i < j;i++){
-				$ul.append(this.pai_list[i].get_div());
+
+			$ul.find('.ready_to_out').remove();//先将ready_to_out的牌从牌区移除（如果是摸牌时调用该方法，这时不会有ready_to_out类的牌，如果是出牌时调用该方法，说明ready_to_out类的牌就是要移除的牌）
+
+			for(var i = 0,j = this.mepai_list.length;i < j;i++){
+				$ul.append(this.mepai_list[i].get_div());
 			}
 			var $lis = $cards.find('.cardul > li');
+			console.log('li_length:'+$lis.length);
 			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
 		}else{
 			console.log('this.pai_list为空me....');
 		}
 	},
 	aftermepai : function(num){//每次摸牌后，要合并座位的pai_list并更新牌数
-		this.set_pai_list(this.card_manager.get_a_pai(num));
+		var mepai_cards = this.card_manager.get_a_pai(num);
+		this.set_mepai_list(mepai_cards);
+		this.set_pai_list(mepai_cards);
 		this.update_div_pai_num();
 		this.card_manager.update_div_pai_count();//更新剩余的牌数
 	},
-	chupai_from_paiqu : function(index){
-
-		//layout
+	reset_card_div : function(){//把所有的牌的类名全部去掉
+		if(this.pai_list){
+			for(var i = 0;i < this.pai_list.length;i++){
+				this.pai_list[i].remove_all_class();
+			}
+		}
 	}
 }

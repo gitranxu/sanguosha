@@ -101,9 +101,7 @@ background: green;cursor: pointer;}
 .cards{margin: 29px 20px 0 20px;overflow: hidden;}
 .log .cards{margin: 0 20px 0 20px;}
 .cardul{position: relative;width: 1200px;height: 87px;padding-top: 10px;}
-.cardul > li{border: 1px solid #884499;}
-.floatul > li{float: left;}
-.absoluteul > li{position: absolute;}
+.cardul > li{border: 1px solid #884499;position: absolute;}
 .ready_to_out{top: 0;}
 .card_disable .bg3{opacity: .5;}
 .card{height: 85px;width: 57px;position: relative;background: rgb(205, 205, 82);}

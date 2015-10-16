@@ -50,8 +50,30 @@ CardManager.prototype = {
 		}
 	},
 	layout_paiqu_cards : function($cards,$lis){//自己牌区一屏最多显示10张，加减自己牌区的牌都调用
-        this.show_cards($cards,$lis);
+        //this.show_cards($cards,$lis);
+        var pianyi_positions = this.get_pianyi_positions($cards,$lis);
+        var length = $lis.length;
+        $lis.each(function(index){
+        	$(this).css({zIndex:index+2}).animate({left: pianyi_positions[index]},800*(length-index));//效果爽到爆
+    	});
 	},
+
+	//得到偏移目标位置，分两种情况，每次计算前都要先判断一下是哪种情况
+	get_pianyi_positions:function($cards,$lis){
+		var result = [];
+		var cards_width = $cards.width();
+		var li_width = $lis.width();
+		var li_length = $lis.length;
+		var pai_ju = li_width;//默认牌距就是一张牌的距离
+		if(li_width * li_length > cards_width){//需要叠加
+			pai_ju = (cards_width - li_width) / (li_length-1);
+		}
+		for(var i = 0;i < li_length;i++){
+			result.push(pai_ju*i);
+		}
+		return result;
+	},
+
 	layout_log_cards : function(){//显示区中的牌20张也是一屏显示,这个方法是点击确定将li放到log中后再调用
 		var $cards = $('.log .cards');
         var $lis = $cards.find('.cardul > li');
@@ -69,7 +91,6 @@ CardManager.prototype = {
 		}
 	},
 	re_xipai : function(){
-		console.log('这个功能需要在打出牌的功能写出后才能做...');
 		var tmp = this.drop_cards;
 		this.drop_cards = [];
 		for(var i = 0,j = tmp.length;i < j;i++){
@@ -100,7 +121,6 @@ CardManager.prototype = {
 	},
 	update_div_pai_count : function(){
 		$('#leave_pai_num').text(this.cards.length);
-		//console.log('剩余'+this.cards.length+'张牌');
 	},
 	//从牌堆顶部顺序取得n张牌，并返回该数组
 	get_a_pai : function(n){
@@ -125,7 +145,7 @@ CardManager.prototype = {
 		//not_to_drop_cards，如果打出牌而不将牌放到弃牌堆，可以传个true 
 		var html = [];
 		for(var i = 0,j = cards.length;i < j;i++){ 
-			cards[i].set_hero_name();//出牌后要显示英雄名
+			cards[i].when_out();//到牌被打出时一些操作
 			html.push(cards[i].get_div());
 		}
 		if(not_to_drop_cards==undefined || not_to_drop_cards==false){ 
