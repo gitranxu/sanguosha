@@ -21,6 +21,9 @@ Card.prototype = {
     chupai : function(){
         this.card_action.chupai();//出牌
     },
+    get_add_attack_num : function(){
+        return this.card_action.get_add_attack_num();
+    },
     get_card_type : function(){//得到牌的类型，只有基础，策略及装备三种
         return this.card_action.get_type();
     },
@@ -28,6 +31,15 @@ Card.prototype = {
         return this.huase_show;
     },
     get_dots_show : function(){
+        if(this.dots_show==11){
+            return 'J';
+        }
+        if(this.dots_show==12){
+            return 'Q';
+        }
+        if(this.dots_show==13){
+            return 'K';
+        }
         return this.dots_show;
     },
     get_huase_value : function(){
@@ -100,7 +112,7 @@ Card.prototype = {
             this.$div.attr('id',this.no);
             this.$div.find('.card').addClass(this.color+'_card');
             this.$div.find('.huase_show img').attr('src','./img/v'+this.huase_show+'.png');
-            this.$div.find('.dots_show').text(this.dots_show).addClass(this.color+'_txt');
+            this.$div.find('.dots_show').text(this.get_dots_show()).addClass(this.color+'_txt');
             this.$div.find('.bg').addClass('c'+this.img_code);
             this.$div.find('.name').text(this.card_action.get_name());
             //$('#test').append(this.$div);
@@ -136,6 +148,9 @@ Card.prototype = {
     },
     set_staff : function(staff){
         this.staff = staff;
+    },
+    get_staff : function(){
+        return this.staff;
     },
     get_card_action : function(){
         return this.card_action;

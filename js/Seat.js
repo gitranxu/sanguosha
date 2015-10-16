@@ -7,6 +7,10 @@ function Seat(staff,role){
 	this.hero = null;
 	this.panding_zone = new PandingZone(this,role);//判定区
 	this.step = new Step(this,staff);//阶段类
+
+	this.zhuangbei_zone = new ZhuangbeiZone(this);
+	this.seat_status = new SeatStatus(); 
+
 	this.weapon_equip = null;//武器装备区
 	this.weapon_distance = 1;//武器的攻击距离,即使没有武器，攻击距离至少也是1
 	this.shield_equip = null;//盾牌装备区
@@ -19,15 +23,15 @@ function Seat(staff,role){
 	this.mepai_list = null;//摸牌列表
 	//this.distance = null;
 	this.attack_distance = 0;//攻击距离默认为0
-	this.defense_distance = 0;//防御距离默认为0
+	this.defense_distance = 0;//防御距离默认为0 
 	this.skill_attack_distance = 0;//技能攻击距离
 	this.skill_defense_distance = 0;//技能防御距离
 	this.$div = null;//座位类对应的div
 	this.no = null;//座位号，可以用这个来计算距离
 	this.can_attack_seats = [];//本座位可以攻击的其他座位的数组,主要用于电脑攻击分析
 	this.my_attack_seats = [];//我自己的攻击目标，主要是自己用
-	this.chu_pai_mult = true;//出牌时能否多选，默认不能
-	this.chu_pai_num = 1;//出牌数，在能够出牌多选的时候使用，用于判断可以同时出几张牌
+	this.chu_pai_mult = false;//出牌时能否多选，默认不能，这个用于测试
+	this.chu_pai_num = 1;//出牌数，在能够出牌多选的时候使用，用于判断可以同时出几张牌 
 
 	this.out_for_log_cards = [];//打出的牌，准备在log中显示
 }
@@ -48,7 +52,7 @@ Seat.prototype = {
 	set_div_info : function(){
         this.$div.find('.rolename').text(this.role.get_flag()).attr('no',this.no);
         //加入装备区html结构
-        this.$div.find('.zbzone').html(this.html.get_zhuangbei_zone());
+        this.$div.find('.zbzone').html(this.html.get_zhuangbei_zone_html());
 	},
 	update_div_pai_num : function(){
 		this.$div.find('.card_num').text(this.pai_list.length);
@@ -62,7 +66,7 @@ Seat.prototype = {
 		this.$div.find('.bloodzone').html(this.html.get_blood_zone(max_blood,cur_blood));
 	},
 	html : {
-		get_zhuangbei_zone : function(){
+		get_zhuangbei_zone_html : function(){
 			//<img src="img/vmeihua.png" alt="梅花">＋－
 			var html = '<div class="bg1"></div><div class="vaiqu"><img src="img/vaiqu.gif" alt=""></div><ul class="aiquul"><li class="wuqi"><i class="huase_zb"></i><span class="dots_zb"></span><span class="name_zb"></span><span class="shecheng_zb"></span></li><li class="fangju"><i class="huase_zb"></i><span class="dots_zb"></span><span class="name_zb"></span><span class="shecheng_zb"></span></li><li class="fangyuma"><i class="huase_zb"></i><span class="dots_zb"></span><span class="name_zb"></span><span class="shecheng_zb ma"></span></li><li class="jingongma"><i class="huase_zb"></i><span class="dots_zb"></span><span class="name_zb"></span><span class="shecheng_zb ma"></span></li></ul><div class="card_num"></div>';
 			return html;
@@ -323,7 +327,6 @@ Seat.prototype = {
 				$ul.append(this.mepai_list[i].get_div());
 			}
 			var $lis = $cards.find('.cardul > li');
-			console.log('li_length:'+$lis.length);
 			this.staff.get_card_manager().layout_paiqu_cards($cards,$lis);
 		}else{
 			console.log('this.pai_list为空me....');
@@ -342,5 +345,14 @@ Seat.prototype = {
 				this.pai_list[i].remove_all_class();
 			}
 		}
+	},
+	get_seat_status : function(){
+		return this.seat_status;
+	},
+	set_seat_status : function(seat_status){
+		this.seat_status = seat_status;
+	},
+	get_zhuangbei_zone : function(){
+		return this.zhuangbei_zone;
 	}
 }

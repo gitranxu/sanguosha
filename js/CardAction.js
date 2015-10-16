@@ -19,7 +19,8 @@
     heimu:代表是否有黑幕技能
 */
 function CardAction(){
-	this.name = '动作';
+	//this.name = '动作';
+    //this.short_name = this.name;
 	this.card = null;
 }
 CardAction.prototype = {
@@ -39,6 +40,12 @@ CardAction.prototype = {
 	get_name : function(){
 		return this.name;
 	},
+    get_short_name : function(){
+        if(this.short_name){
+            return this.short_name;
+        }
+        return this.name;
+    },
 	set_card : function(card){
 		this.card = card;
 	},
@@ -421,23 +428,26 @@ Fangju.prototype.can_zhuangbei_son = function(){
 }
 Fangju.prototype.chupai = function(){
     //防具的出牌效果，两个，修改装备区DIV，修改seat的fangju_obj
-    console.log('------Zhuangbei----chupai');
+    console.log('------Fangju----chupai');
 }
 
 
 function Baiyinshizi(){
     this.name = '白银狮子';
+    this.short_name = '白银';
 }
 Baiyinshizi.prototype = new Fangju();
 
 
 function Baguazhen(){
     this.name = '八卦阵';
+    this.short_name = '八卦';
 }
 Baguazhen.prototype = new Fangju();
 
 function Renwangdun(){
     this.name = '仁王盾';
+    this.short_name = '仁王';
 }
 Renwangdun.prototype = new Fangju();
 
@@ -448,10 +458,15 @@ Tengjia.prototype = new Fangju();
 
 function Huangjinjia(){
     this.name = '黄金甲';
+    this.short_name = '黄金';
 }
 Huangjinjia.prototype = new Fangju();
 
-function Weapon(){}
+
+//武器类应该有一个攻击加成的属性，攻击为4的话，攻击加成为3
+function Weapon(){
+    this.add_attack_num = 1;//默认武器的加成距离为1
+}
 Weapon.prototype = new Zhuangbei();
 Weapon.prototype.can_zhuangbei_son = function(){
     console.log('【武器】类中的can_zhuangbei_son');
@@ -465,59 +480,83 @@ Weapon.prototype.can_zhuangbei_son = function(){
         }
     }
 }
+Weapon.prototype.get_add_attack_num = function(){
+    return this.add_attack_num;
+}
+Weapon.prototype.chupai = function(){
+    this.card.get_staff().get_cur_seat().get_zhuangbei_zone().up_weapon_obj(this.card);
+}
 
 function Zhugeliannu(){
     this.name = '诸葛连弩';
+    this.short_name = '诸葛';
+    this.add_attack_num = 0;
 }
 Zhugeliannu.prototype = new Weapon();
 
 function Cixiongshuanggujian(){
     this.name = '雌雄双股剑';
+    this.short_name = '雌雄';
 }
 Cixiongshuanggujian.prototype = new Weapon();
 
 function Qinghongjian(){
     this.name = '青红剑';
+    this.short_name = '青红';
 }
 Qinghongjian.prototype = new Weapon();
 
 function Hanbingjian(){
     this.name = '寒冰剑';
+    this.short_name = '寒冰';
 }
 Hanbingjian.prototype = new Weapon();
 
 function Gudingdao(){
     this.name = '古锭刀';
+    this.short_name = '古锭';
 }
 Gudingdao.prototype = new Weapon();
 
 function Guanshifu(){
     this.name = '贯石斧';
+    this.short_name = '贯石';
+    this.add_attack_num = 2;
 }
 Guanshifu.prototype = new Weapon();
 
 function Qinglongyanyuedao(){
     this.name = '青龙偃月刀';
+    this.short_name = '青龙';
+    this.add_attack_num = 2;
 }
 Qinglongyanyuedao.prototype = new Weapon();
 
 function Zhangbashemao(){
     this.name = '丈八蛇矛';
+    this.short_name = '丈八';
+    this.add_attack_num = 2;
 }
 Zhangbashemao.prototype = new Weapon();
 
 function Fangtianhuaji(){
     this.name = '方天画戟';
+    this.short_name = '方天';
+    this.add_attack_num = 3;
 }
 Fangtianhuaji.prototype = new Weapon();
 
 function Zhuqueyushan(){
     this.name = '朱雀羽扇';
+    this.short_name = '朱雀';
+    this.add_attack_num = 3;
 }
 Zhuqueyushan.prototype = new Weapon();
 
 function Qilingong(){
     this.name = '麒麟弓';
+    this.short_name = '麒麟';
+    this.add_attack_num = 4;
 }
 Qilingong.prototype = new Weapon();
 
@@ -527,6 +566,7 @@ function Yuxi(){
 Yuxi.prototype = new Weapon();
 function Jinguanhuopao(){
     this.name = '金火罐炮';
+    this.short_name = '金火';
 }
 Jinguanhuopao.prototype = new Weapon();
 
@@ -557,6 +597,7 @@ Dilu.prototype = new Zuoji();
 
 function Zhuahuangfeidian(){
     this.name = '爪黄飞电';
+    this.short_name = '爪黄';
 }
 Zhuahuangfeidian.prototype = new Zuoji();
 

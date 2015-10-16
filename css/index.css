@@ -82,11 +82,12 @@ background: green;cursor: pointer;}
 .seat .zhuangbei{position: absolute;top:56px;left: 0px;height: 60px;width: 100%;z-index: 2;}
 .seat .zhuangbei.myzb{top: -2px;left: -497px;height:120px;width: 100%;background: #7c7c7c;}
 
-.zhuangbei.zbzone li{font-size: 12px;line-height: 15px;padding-left: 16px;}
+.zhuangbei.zbzone li,.myzbzone li{font-size: 12px;line-height: 15px;padding-left: 16px;}
+
 .myzbzone{position: absolute;left: 0;bottom: 0;width: 100%;}
-.zhuangbei.myzb li{font-size: 12px;}
+/* .zhuangbei.myzb li{font-size: 12px;} */
 .huase_zb img{height: 10px;}
-.dots_zb{margin-left: -2px;}
+.dots_zb{margin-left: 1px;margin-right: 2px;}
 .shecheng_zb{margin-left: -1px;}
 .shecheng_zb.ma{margin-left: -4px;}
 .vaiqu{position: absolute;top: 0px;left: 0px;z-index: 4;}
