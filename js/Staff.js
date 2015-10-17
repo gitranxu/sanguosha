@@ -129,10 +129,10 @@
                 var ishide = $('#log_left_ctr').is(':hidden');
                 if(ishide){
                     $(this).text('隐');
-                    $('#log_left_ctr,#log_right_ctr').show();
+                    $('#log_left_ctr').show();
                 }else{
                     $(this).text('显');
-                    $('#log_left_ctr,#log_right_ctr').hide();
+                    $('#log_left_ctr').hide();
                 }
             });
 
@@ -231,26 +231,30 @@
             if(color){
                 msg = '<font color="'+color+'">'+msg+'</font>';
             }
+            //this.$log.append(msg);
+            
 
             $('#log_tmp').show().html(msg);
             var log_tmp_height = $('#log_tmp').height();
             $('#log_tmp').html('').hide();
             var log_tmp_rows = log_tmp_height/14; //得到中间每条日志的行数
 
-            $('#log_left_tmp').show().html(msg);
+            /*$('#log_left_tmp').show().html(msg);
             var log_left_tmp_height = $('#log_left_tmp').height();
             $('#log_left_tmp').html('').hide();
-            var log_left_tmp_rows = log_left_tmp_height/14;//得到左右两边每条日志行数
+            var log_left_tmp_rows = log_left_tmp_height/14;//得到左右两边每条日志行数*/
 
             this.$log.html(html+msg+'<br>');
-            this.$log_left.html(html+msg+'<br>');
-            this.$log_right.html(html+msg+'<br>');
+            /*this.$log_left.html(html+msg+'<br>');
+            this.$log_right.html(html+msg+'<br>');*/
             var log_top = this.$log.position().top;
             var log_height = this.$log.height();
             if(log_height>=84){ //84=14*(5+1),显示5行文字,line-height为14
                 this.$log.css({top:log_top-14*log_tmp_rows});
             }
-            var log_left_top = this.$log_left.position().top;
+
+            $('#log_left_ctr .content').append(msg+'<br>');
+            /*var log_left_top = this.$log_left.position().top;
             var log_left_height = this.$log_left.height();
             if(log_left_height>=756){ //392*2=14*27*2,显示27行文字,line-height为14
                 this.$log_left.css({top:log_left_top-14*log_left_tmp_rows});
@@ -260,7 +264,7 @@
             var log_right_height = this.$log_right.height();
             if(log_right_height>=756){ //392=14*27*2,显示27行文字,line-height为14
                 this.$log_right.css({top:log_right_top-14*log_left_tmp_rows});
-            }
+            }*/
         }
     }
 

@@ -45,7 +45,8 @@ Step.prototype = {
 
             this.staff.set_$log(this.name+'摸牌阶段结束');
         }else{
-            this.staff.set_$log('兵粮寸断判定为假，跳过摸牌阶段','yellow');
+            this.panding_zone.set_bingliangcunduan_success(true);//恢复默认值
+            this.staff.set_$log(this.name+'对断判定成功，跳过摸牌阶段','yellow');
         }
         this.chupai_step();//出牌阶段
     },
@@ -63,7 +64,8 @@ Step.prototype = {
                 this.auto_chupai_step();
             }
         }else{
-            this.staff.set_$log('乐不思蜀判定为假，跳过出牌阶段','yellow');
+            this.panding_zone.set_lebusishu_success(true);//这次判定不成功后要马上把值恢复为初始值，以便下次重新判定
+            this.staff.set_$log(this.name+'对乐判定成功，跳过出牌阶段','yellow');
             this.qipai_step();
         }
         
@@ -79,7 +81,6 @@ Step.prototype = {
             this.staff.set_$log(this.name+'弃牌阶段结束');
         }
         
-        this.panding_zone.reset();//回合结束前将这次的判定条件重置一下,以备下次开始之前重新判定
         this.staff.set_$log(this.name+'回合结束');
         this.seat.get_div().removeClass('active');//设置当前座位类div，去掉active类
         if(this.is_me){

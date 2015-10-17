@@ -102,28 +102,6 @@ CardAction.prototype = {
 }
 
 
-function Celue(){
-    this.type = 'celue';
-    this.can_use_opt = null;
-}
-Celue.prototype = new CardAction();
-Celue.prototype.can_celue = function(){
-    console.log('策略类中的can_celue');//如果有禁言，则不能用
-    if(this.can_use_opt.can_celue!=undefined){
-        if(this.can_use_opt.can_celue){
-            console.log('策略类中的can_celue true');
-            this.card.get_div().removeClass('card_disable');
-        }else{
-            console.log('策略类中的can_celue false');
-            this.card.get_div().addClass('card_disable');
-        }
-    }
-}
-Celue.prototype.chupai = function(){
-        console.log('------Celue----chupai');
-}
-
-
 function Base(){
     this.type = 'base';
 }
@@ -234,6 +212,26 @@ Jiu.prototype.can_danpai = function(){
 
 
 //-------------------------------------------------------------------------策略类---start-------
+function Celue(){
+    this.type = 'celue';
+    this.can_use_opt = null;
+}
+Celue.prototype = new CardAction();
+Celue.prototype.can_celue = function(){
+    console.log('策略类中的can_celue');//如果有禁言，则不能用
+    if(this.can_use_opt.can_celue!=undefined){
+        if(this.can_use_opt.can_celue){
+            console.log('策略类中的can_celue true');
+            this.card.get_div().removeClass('card_disable');
+        }else{
+            console.log('策略类中的can_celue false');
+            this.card.get_div().addClass('card_disable');
+        }
+    }
+}
+Celue.prototype.chupai = function(){
+        console.log('------Celue----chupai');
+}
 
 function Juedou(){
 	this.name = '决斗';
@@ -243,21 +241,6 @@ Juedou.prototype = new Celue();
 Juedou.prototype.can_danpai = function(){
 	//如果可用则将所属的card类去掉disable，如果不可用则加上disable
     console.log('【决斗】类中的can_danpai');
-}
-
-function Shandian(){
-    this.name = '闪电';
-}
-Shandian.prototype = new Celue();
-Shandian.prototype.can_danpai = function(){
-    //如果是黑色，并且是黑幕技能，则不能使用
-    console.log('【闪电】类中的can_danpai');
-    //牌色及是否黑幕技能自己取得
-    /*if(this.can_use_opt.heimu&&!this.card.is_red()){
-        this.card.get_div().removeClass('card_disable');
-    }else{
-        this.card.get_div().addClass('card_disable');
-    }*/
 }
 
 function Guohechaiqiao(){
@@ -370,22 +353,45 @@ Tiesuolianhuan.prototype.can_danpai = function(){
     console.log('【铁索连环】类中的can_danpai');
 }
 
+function Yanchicelue(){
+    this.type = 'yanchicelue';
+}
+Yanchicelue.prototype = new Celue();
+
 function Lebusishu(){
     this.name = '乐不思蜀';
 }
-Lebusishu.prototype = new Celue();
+Lebusishu.prototype = new Yanchicelue();
 Lebusishu.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
     console.log('【乐不思蜀】类中的can_danpai');
+}
+Lebusishu.prototype.chupai = function(){
+    this.card.get_staff().get_cur_seat().get_panding_zone().lebusishu_show(this.card);
 }
 
 function Bingliangcunduan(){
     this.name = '兵粮寸断';
 }
-Bingliangcunduan.prototype = new Celue();
+Bingliangcunduan.prototype = new Yanchicelue();
 Bingliangcunduan.prototype.can_danpai = function(){
     //如果可用则将所属的card类去掉disable，如果不可用则加上disable
     console.log('【兵粮寸断】类中的can_danpai');
+}
+
+function Shandian(){
+    this.name = '闪电';
+}
+Shandian.prototype = new Yanchicelue();
+Shandian.prototype.can_danpai = function(){
+    //如果是黑色，并且是黑幕技能，则不能使用
+    console.log('【闪电】类中的can_danpai');
+    //牌色及是否黑幕技能自己取得
+    /*if(this.can_use_opt.heimu&&!this.card.is_red()){
+        this.card.get_div().removeClass('card_disable');
+    }else{
+        this.card.get_div().addClass('card_disable');
+    }*/
 }
 
 //--------------------------------------策略类--------end-----------------------------------------
@@ -393,6 +399,8 @@ Bingliangcunduan.prototype.can_danpai = function(){
 
 function Zhuangbei(){
     this.type = 'zhuangbei';
+    this.add_attack_num = 0;//默认装备攻击加成距离为0;
+    this.add_defense_num = 0;//默认装备的防御加成距离为0
 }
 Zhuangbei.prototype = new CardAction();
 Zhuangbei.prototype.can_zhuangbei = function(){
@@ -409,6 +417,12 @@ Zhuangbei.prototype.can_zhuangbei = function(){
 }
 Zhuangbei.prototype.chupai = function(){
     console.log('------Zhuangbei----chupai');
+}
+Zhuangbei.prototype.get_add_attack_num = function(){
+    return this.add_attack_num;
+}
+Zhuangbei.prototype.get_add_defense_num = function(){
+    return this.add_defense_num;
 }
 
 function Fangju(){
@@ -427,8 +441,7 @@ Fangju.prototype.can_zhuangbei_son = function(){
     }
 }
 Fangju.prototype.chupai = function(){
-    //防具的出牌效果，两个，修改装备区DIV，修改seat的fangju_obj
-    console.log('------Fangju----chupai');
+    this.card.get_staff().get_cur_seat().get_zhuangbei_zone().up_fangju_obj(this.card);
 }
 
 
@@ -465,7 +478,8 @@ Huangjinjia.prototype = new Fangju();
 
 //武器类应该有一个攻击加成的属性，攻击为4的话，攻击加成为3
 function Weapon(){
-    this.add_attack_num = 1;//默认武器的加成距离为1
+    this.add_attack_num = 1;//默认武器的攻击加成距离为1
+    this.add_defense_num = 0;//默认武器的防御加成距离为0
 }
 Weapon.prototype = new Zhuangbei();
 Weapon.prototype.can_zhuangbei_son = function(){
@@ -480,9 +494,7 @@ Weapon.prototype.can_zhuangbei_son = function(){
         }
     }
 }
-Weapon.prototype.get_add_attack_num = function(){
-    return this.add_attack_num;
-}
+
 Weapon.prototype.chupai = function(){
     this.card.get_staff().get_cur_seat().get_zhuangbei_zone().up_weapon_obj(this.card);
 }
@@ -585,38 +597,57 @@ Zuoji.prototype.can_zhuangbei_son = function(){
     }
 }
 
+function Fangyuma(){
+    this.add_defense_num = 1;
+}
+Fangyuma.prototype = new Zuoji();
+Fangyuma.prototype.chupai = function(){
+    this.card.get_staff().get_cur_seat().get_zhuangbei_zone().up_fangyuma_obj(this.card);
+}
+
 function Jueying(){
     this.name = '绝影';
 }
-Jueying.prototype = new Zuoji();
+Jueying.prototype = new Fangyuma();
 
 function Dilu(){
     this.name = '的卢';
 }
-Dilu.prototype = new Zuoji();
+Dilu.prototype = new Fangyuma();
 
 function Zhuahuangfeidian(){
     this.name = '爪黄飞电';
     this.short_name = '爪黄';
 }
-Zhuahuangfeidian.prototype = new Zuoji();
+Zhuahuangfeidian.prototype = new Fangyuma();
 
 function Hualiu(){
     this.name = '骅骝';
+    this.add_defense_num = 1;
 }
-Hualiu.prototype = new Zuoji();
+Hualiu.prototype = new Fangyuma();
+
+
+function Jingongma(){
+    this.add_attack_num = 1;
+}
+Jingongma.prototype = new Zuoji();
+Jingongma.prototype.chupai = function(){
+    this.card.get_staff().get_cur_seat().get_zhuangbei_zone().up_jingongma_obj(this.card);
+}
+
 
 function Chitu(){
     this.name = '赤兔';
 }
-Chitu.prototype = new Zuoji();
+Chitu.prototype = new Jingongma();
 
 function Dawan(){
     this.name = '大宛';
 }
-Dawan.prototype = new Zuoji();
+Dawan.prototype = new Jingongma();
 
 function Ziju(){
     this.name = '紫驹';
 }
-Ziju.prototype = new Zuoji();
+Ziju.prototype = new Jingongma();

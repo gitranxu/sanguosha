@@ -24,7 +24,10 @@ Card.prototype = {
     get_add_attack_num : function(){
         return this.card_action.get_add_attack_num();
     },
-    get_card_type : function(){//得到牌的类型，只有基础，策略及装备三种
+    get_add_defense_num : function(){
+        return this.card_action.get_add_defense_num();
+    },
+    get_card_type : function(){//得到牌的类型，基础，策略,延迟策略，装备
         return this.card_action.get_type();
     },
     get_huase_show : function(){

@@ -39,10 +39,10 @@ ul{list-style: none;}
 .log_puke_icon{width: 12px;}
 
 .log_right .content{top: -378px;}
-.log_left_ctr{position: absolute;top: 0;left: -190px;width: 170px;height: 100%;background: orange;display: none;}
-.log_right_ctr{position: absolute;top: 0;right: -190px;width: 170px;height: 100%;background: orange;display: none;}
-.log_left{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;}
-.log_right{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;}
+.log_left_ctr{position: absolute;top: 0;left: -190px;width: 170px;height: 100%;background: orange;display: none;z-index: 8;}
+.log_right_ctr{position: absolute;top: 0;right: -190px;width: 170px;height: 100%;background: orange;display: none;z-index: 8;}
+.log_left{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: auto;font-size: 12px;line-height: 14px;color: #fffccc;}
+/* .log_right{position: absolute;top: 10px;left: 5px;width: 160px;height: 378px;overflow: hidden;font-size: 12px;line-height: 14px;color: #fffccc;} */
 .computer{position: absolute;top: -145px;left: 102px;width: 392px;display: none;}
 
 .paiqu_zone{position: absolute;top: 0;left: 0;width: 100%;}

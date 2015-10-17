@@ -152,8 +152,9 @@ CardManager.prototype = {
 	},
 	to_drop_cards : function(cards){
 		//如果是装备牌，则出牌时不能放到弃牌堆，这里还假定，如果cards大于1张，则肯定会放到弃牌堆，例如制衡，蛇矛
-		if(cards.length==1 && cards[0].get_card_type()=='zhuangbei'){
-			console.log('装备牌，不放到弃牌堆...');
+		var card_type = cards[0].get_card_type();
+		if(cards.length==1 && (card_type=='zhuangbei' || card_type=='yanchicelue')){
+			console.log('装备牌，延迟策略牌，不放到弃牌堆...');
 		}else{
 			this.drop_cards_concat(cards);//将牌放到弃牌堆
 		}
@@ -170,6 +171,85 @@ CardManager.prototype = {
 		}
 	},
 	get_init_data : function(){
+		return [new Card({huase_show:'heitao',dots_show:1,color:'black',img_code:8},new Juedou()),
+		new Card({huase_show:'hongtao',dots_show:1,color:'red',img_code:15},new Wanjianqifa()),
+		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:8},new Juedou()),
+		new Card({huase_show:'fangkuai',dots_show:1,color:'red',img_code:8},new Juedou()),
+
+		new Card({huase_show:'heitao',dots_show:1,color:'black',img_code:21},new Shandian()),
+		new Card({huase_show:'hongtao',dots_show:1,color:'red',img_code:10},new Taoyuanjieyi()),
+		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:261},new Zhugeliannu()),
+		new Card({huase_show:'fangkuai',dots_show:1,color:'red',img_code:261},new Zhugeliannu()),
+		
+		new Card({huase_show:'heitao',dots_show:1,color:'black',img_code:265},new Gudingdao()),
+		new Card({huase_show:'hongtao',dots_show:1,color:'red',img_code:16},new Wuxiekeji()),
+		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:231},new Baiyinshizi()),
+		new Card({huase_show:'fangkuai',dots_show:1,color:'red',img_code:270},new Zhuqueyushan()),
+
+		new Card({huase_show:'heitao',dots_show:2,color:'black',img_code:232},new Baguazhen()),
+		new Card({huase_show:'hongtao',dots_show:2,color:'red',img_code:2},new Shan()),
+		new Card({huase_show:'meihua',dots_show:2,color:'black',img_code:1},new Sha()),
+		new Card({huase_show:'fangkuai',dots_show:2,color:'red',img_code:2},new Shan()),
+
+		
+
+		
+
+		new Card({huase_show:'heitao',dots_show:4,color:'black',img_code:6},new Shunshouqianyang()),
+		new Card({huase_show:'hongtao',dots_show:4,color:'red',img_code:13},new Wugufengdeng()),
+		new Card({huase_show:'meihua',dots_show:4,color:'black',img_code:5},new Guohechaiqiao()),
+		new Card({huase_show:'fangkuai',dots_show:4,color:'red',img_code:6},new Shunshouqianyang()),
+
+		new Card({huase_show:'heitao',dots_show:4,color:'black',img_code:12},new Leisha()),
+		new Card({huase_show:'hongtao',dots_show:4,color:'red',img_code:17},new Huogong()),
+		new Card({huase_show:'meihua',dots_show:4,color:'black',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'fangkuai',dots_show:4,color:'red',img_code:11},new Huosha()),
+
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:267},new Qinglongyanyuedao()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:271},new Qilingong()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:1},new Sha()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:2},new Shan()),
+
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:19},new Lebusishu()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:19},new Lebusishu()),
+
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:19},new Lebusishu()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:19},new Lebusishu()),
+
+		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:19},new Lebusishu()),
+		new Card({huase_show:'meihua',dots_show:6,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'fangkuai',dots_show:6,color:'red',img_code:19},new Lebusishu()),
+
+		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:19},new Lebusishu()),
+		new Card({huase_show:'meihua',dots_show:6,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'fangkuai',dots_show:6,color:'red',img_code:19},new Lebusishu()),
+
+		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:19},new Lebusishu()),
+		new Card({huase_show:'meihua',dots_show:6,color:'black',img_code:19},new Lebusishu()),
+		new Card({huase_show:'fangkuai',dots_show:6,color:'red',img_code:19},new Lebusishu()),
+
+	
+
+
+
+	
+
+
+		new Card({huase_show:'heitao',dots_show:13,color:'black',img_code:16},new Wuxiekeji()),
+		new Card({huase_show:'hongtao',dots_show:13,color:'red',img_code:16},new Wuxiekeji()),
+		new Card({huase_show:'meihua',dots_show:13,color:'black',img_code:18},new Tiesuolianhuan()),
+		new Card({huase_show:'fangkuai',dots_show:13,color:'red',img_code:244},new Hualiu())
+
+		];
+	},
+	get_init_data1 : function(){
 		return [new Card({huase_show:'heitao',dots_show:1,color:'black',img_code:8},new Juedou()),
 		new Card({huase_show:'hongtao',dots_show:1,color:'red',img_code:15},new Wanjianqifa()),
 		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:8},new Juedou()),

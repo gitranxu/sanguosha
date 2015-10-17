@@ -21,7 +21,8 @@ function PandingZone(seat,role){
 PandingZone.prototype = {
     constructor : PandingZone,
     validate : function(){
-        //如果兵粮寸断的标志为true，则说明判定区有兵粮寸断，需要判定,根据判定结果，将兵粮寸断是否判定成功的标志进行改写，如果判定成功，则可以进入摸牌阶段，否则不可以。判定成功标志默认是成功的 
+        //如果兵粮寸断的标志为true，则说明判定区有兵粮寸断，需要判定,根据判定结果，将兵粮寸断是否判定成功的标志进行改写，如果判定成功，则可以进入摸牌阶段，否则不可以。判定成功标志默认是成功的
+        console.log(this.seat.get_role().get_name()+'------------------lebusishu-----'+this.lebusishu_flag); 
         if(this.lebusishu_flag){
             this.lebusishu_validate();
         }
@@ -103,8 +104,10 @@ PandingZone.prototype = {
         this.staff.set_$log('英雄名对断的判定牌为(<img class="log_puke_icon" src="./img/v'+cards[0].get_huase_show()+'.png"></img>'+cards[0].get_dots_value()+'的'+cards[0].get_card_action().get_name()+')','#447788');
         if(cards[0].get_huase_value()=='meihua'){
             this.staff.set_$log(this.role.get_name()+'对断判定不成功，可以摸牌','green');
+            this.bingliangcunduan_success = true;
         }else{
             this.staff.set_$log(this.role.get_name()+'对断判定成功，不能摸牌','red');
+            this.bingliangcunduan_success = false;
         }
         //不管判定是否成功，最后都要将这个小图标隐藏掉
         this.bingliangcunduan_hide();
@@ -115,8 +118,11 @@ PandingZone.prototype = {
         this.staff.set_$log('英雄名对乐的判定牌为(<img class="log_puke_icon" src="./img/v'+cards[0].get_huase_show()+'.png"></img>'+cards[0].get_dots_value()+'的'+cards[0].get_card_action().get_name()+')','#447788');
         if(cards[0].get_huase_value()=='hongtao'){//判定成功
             this.staff.set_$log(this.role.get_name()+'对乐判定不成功，可以出牌','green');
+            this.lebusishu_success = true;
         }else{
             this.staff.set_$log(this.role.get_name()+'对乐判定成功，不能出牌','red');
+            this.lebusishu_success = false;
+
         }
         //不管判定是否成功，最后都要将这个小图标隐藏掉
         this.lebusishu_hide();
