@@ -176,20 +176,20 @@ CardManager.prototype = {
 		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:8},new Juedou()),
 		new Card({huase_show:'fangkuai',dots_show:1,color:'red',img_code:8},new Juedou()),
 
-		new Card({huase_show:'heitao',dots_show:1,color:'black',img_code:21},new Shandian()),
-		new Card({huase_show:'hongtao',dots_show:1,color:'red',img_code:10},new Taoyuanjieyi()),
-		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:261},new Zhugeliannu()),
-		new Card({huase_show:'fangkuai',dots_show:1,color:'red',img_code:261},new Zhugeliannu()),
-		
-		new Card({huase_show:'heitao',dots_show:1,color:'black',img_code:265},new Gudingdao()),
-		new Card({huase_show:'hongtao',dots_show:1,color:'red',img_code:16},new Wuxiekeji()),
-		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:231},new Baiyinshizi()),
-		new Card({huase_show:'fangkuai',dots_show:1,color:'red',img_code:270},new Zhuqueyushan()),
+		new Card({huase_show:'heitao',dots_show:4,color:'black',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'hongtao',dots_show:4,color:'red',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'meihua',dots_show:4,color:'black',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'fangkuai',dots_show:4,color:'red',img_code:20},new Bingliangcunduan()),
 
-		new Card({huase_show:'heitao',dots_show:2,color:'black',img_code:232},new Baguazhen()),
-		new Card({huase_show:'hongtao',dots_show:2,color:'red',img_code:2},new Shan()),
-		new Card({huase_show:'meihua',dots_show:2,color:'black',img_code:1},new Sha()),
-		new Card({huase_show:'fangkuai',dots_show:2,color:'red',img_code:2},new Shan()),
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:20},new Bingliangcunduan()),
+
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:20},new Bingliangcunduan()),
 
 		
 

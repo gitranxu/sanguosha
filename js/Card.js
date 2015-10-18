@@ -19,7 +19,7 @@ function Card(opt,card_action){
 Card.prototype = {
     constructor : Card,
     chupai : function(){
-        this.card_action.chupai();//出牌
+        this.card_action.chupai_all();//出牌
     },
     ready_to_out : function(){
         this.card_action.ready_to_out();
@@ -38,6 +38,9 @@ Card.prototype = {
     },
     get_card_type : function(){//得到牌的类型，基础，策略,延迟策略，装备
         return this.card_action.get_type();
+    },
+    get_selected_attack_seats_num : function(){
+        return this.card_action.get_selected_attack_seats_num();
     },
     get_huase_show : function(){
         return this.huase_show;

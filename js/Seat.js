@@ -31,6 +31,7 @@ function Seat(staff,role){
 	this.no = null;//座位号，可以用这个来计算距离
 	this.can_attack_seats = [];//本座位可以攻击的其他座位的数组
 	this.selected_attack_seats = [];//选中的准备攻击的座位数组
+	
 
 	this.my_attack_seats = [];//我自己的攻击目标，主要是自己用
 	this.chu_pai_mult = false;//出牌时能否多选，默认不能，这个用于测试
@@ -54,10 +55,23 @@ Seat.prototype = {
 			}
 		}
 	},
-	selected_attack_seats_fn : function(index){//index是选中的座位的索引，一方面是我自己在点击can_attack类时触发，另一方面电脑会在适当的时候调用这个方法，这个方法有两个功能，1将选中的seat放到selected_attack_seats中去，另一方面，要调用card_action对象的can_queren方法用于控制确认按钮是否可用
-		var selected_attack_seat = this.staff.get_a_seat()[index];
-		this.selected_attack_seats.push(selected_attack_seat);
-		console.log(index+'-----------index');
+	selected_attack_seats_fn : function(index,$seat){//index是选中的座位的索引，一方面是我自己在点击can_attack类时触发，另一方面电脑会在适当的时候调用这个方法，这个方法有两个功能，1将选中的seat放到selected_attack_seats中去，另一方面，要调用card_action对象的can_queren方法用于控制确认按钮是否可用
+		//应该根据允不允许选择多个来进行限制 selected_attack_seat_num
+		var selected_attack_seats_num = this.ready_to_out_list[0].get_selected_attack_seats_num();
+		if(this.selected_attack_seats.length < selected_attack_seats_num && selected_attack_seats_num > 1){//多选
+			var selected_attack_seat = this.staff.get_a_seat()[index];
+			this.selected_attack_seats.push(selected_attack_seat);
+			$seat.addClass('attack_selected');
+		}else if(this.selected_attack_seats.length <= selected_attack_seats_num && selected_attack_seats_num == 1){//单选
+			var selected_attack_seat = this.staff.get_a_seat()[index];
+			this.selected_attack_seats = [];//选清空上一次的
+			this.selected_attack_seats.push(selected_attack_seat);
+			$seat.parents('.container').find('.seat').removeClass('attack_selected');
+			$seat.addClass('attack_selected');
+		}else{
+			console.log('应该不会出现的第三种情况....');
+		}
+		
 		this.ready_to_out_list[0].can_queren();
 
 	},

@@ -191,12 +191,15 @@
             //当can_attack被点击的时候,加上attack_selected类，加这个类的时候，还要判断是否可以确认按钮好使了 
             $('.container').delegate('.can_attack', 'click', function(event) {
                 var index = $('.seat').index($(this));
-                $(this).addClass('attack_selected');
-                _this.get_cur_seat().selected_attack_seats_fn(index);//加入准备攻击对象数组中
+                //$(this).addClass('attack_selected');
+                _this.get_cur_seat().selected_attack_seats_fn(index,$(this));//加入准备攻击对象数组中
             });
 
             //点击确定按钮时，会将选中的牌打入到弃牌区，同时将牌放入到弃牌堆，再调用一下layout_my_cards方法。确定按钮不管选中的牌能不能打出
             $('.myzone .btns .ok').click(function(){
+                if($(this).hasClass('disable')){
+                    return;
+                }
                 _this.me_seat.chu_pai();//电脑有个牌去出牌
                 //1.通过ID得到card对象
                 //2.将该对象从seat的pai_list中去除
