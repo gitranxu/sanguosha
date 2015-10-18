@@ -73,20 +73,26 @@ Step.prototype = {
     qipai_step : function(){
         //弃牌阶段一开始，先要把所有的牌的类名全部去掉（因为刚摸上来的牌没有任何类名）
         this.seat.reset_card_div();
-
+        var _this = this;
         if(this.panding_zone.get_skipqipai()){
             this.staff.set_$log('跳过弃牌阶段','yellow');
+            this.staff.play();//最后加一个继续
         }else{
             this.staff.set_$log(this.name+'弃牌阶段开始');
-            this.staff.set_$log(this.name+'弃牌阶段结束');
+
+            //这里就简单的认为弃牌就是直接从pai_list中pop出来(不考虑优先弃什么牌)，然后打到log中，放到弃牌堆
+            this.seat.qi_pai(function(){
+                _this.staff.set_$log(_this.name+'弃牌阶段结束');
+                _this.staff.set_$log(_this.name+'回合结束');
+                _this.seat.get_div().removeClass('active');//设置当前座位类div，去掉active类
+                if(_this.is_me){
+                    $('.myzone .btn3').hide();//出完牌后把我出牌的按钮隐藏
+                }
+                _this.staff.play();//最后加一个继续
+            });
         }
         
-        this.staff.set_$log(this.name+'回合结束');
-        this.seat.get_div().removeClass('active');//设置当前座位类div，去掉active类
-        if(this.is_me){
-            $('.myzone .btn3').hide();//出完牌后把我出牌的按钮隐藏
-        }
-        this.staff.play();//最后加一个继续
+        
     },
     auto_chupai_step : function(){
         var _this = this;

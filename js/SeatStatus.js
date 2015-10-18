@@ -10,6 +10,8 @@ function SeatStatus(){
 	this.attack_distance = 1;//攻击默认距离,武器装卸，坐骑装卸，距离相关武将技开关，都会改变该值
 	this.defense_distance = 1;//默认防御距离
 	this.chu_pai_num = 1;//出牌数，在能够出牌多选的时候使用，用于判断可以同时出几张牌【蛇矛只能允许2张】
+
+	this.extra_chipai_num = 0;//额外的持牌数，默认为0
 }
 
 SeatStatus.prototype = {
@@ -61,5 +63,11 @@ SeatStatus.prototype = {
 	},
 	set_chu_pai_num : function(chu_pai_num){
 		this.chu_pai_num = chu_pai_num;
+	},
+	get_extra_chipai_num : function(){
+		return this.extra_chipai_num;
+	},
+	set_extra_chipai_num : function(extra_chipai_num){
+		this.extra_chipai_num = extra_chipai_num;
 	}
 }

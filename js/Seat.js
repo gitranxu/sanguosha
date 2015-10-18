@@ -335,8 +335,27 @@ Seat.prototype = {
 		this.mepai_to_paiqu(this.staff.get_i_now(),0);//加0的意思是不用摸牌但需要这个方法的更新牌区的功能
 		this.out_for_log_cards_show();
 	},
-	out_for_log_cards_show : function(){ 
-		this.staff.get_card_manager().chupai_to_log(this.out_for_log_cards);
+	qi_pai : function(fn){
+		if(this.pai_list){
+			var s = this.pai_list.length;
+			var chi_pai_max = this.hero.get_cur_blood() - 0 + this.seat_status.get_extra_chipai_num();
+			if(chi_pai_max < this.pai_list.length){//如果持牌上限小于当前牌数，则需要弃牌
+				var qi_num = this.pai_list.length - chi_pai_max;
+				for(var i = 0;i < qi_num;i++){
+					var card = this.pai_list.pop();
+					this.out_for_log_cards.push(card);
+				}
+				$('.log .cards .cardul').empty();//清空展示区的牌
+				this.mepai_to_paiqu(this.staff.get_i_now(),0);//加0的意思是不用摸牌但需要这个方法的更新牌区的功能
+			}
+			this.out_for_log_cards_show(fn);
+		}else{
+			console.log('都没有牌，就不用弃了...');
+		}
+		
+	},
+	out_for_log_cards_show : function(fn){ 
+		this.staff.get_card_manager().chupai_to_log(this.out_for_log_cards,fn);
 		this.out_for_log_cards = [];
 	},
 	//回头要改造，增加一个摸牌堆，每次摸的牌都放摸牌堆中，然后在牌区展示的时候，先将摸牌堆中的牌放到pai_list中去，然后$ul只是append摸牌堆中的牌，然后再将摸牌堆清空，这是摸牌流程

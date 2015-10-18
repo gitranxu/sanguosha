@@ -32,25 +32,7 @@ CardManager.prototype = {
 					'</div></li>';
 		return $(html);
 	},
-	/*算法，根据$cards的宽度，li的个数，
-		当li宽度乘以个数小于等于$cards宽度时，先为float布局，再转为absolute布局
-		当大于时为absolute布局，这时候有错位，第一张牌left值不变，后面的牌left值向左错
-		的位置为：(li.length*li.width-$cards.width)/(li.length-1) 
-		$cards显示区的宽度*/
-	show_cards : function($cards,$lis){
-		var cards_width = $cards.width();
-		var li_width = $lis.width();
-		var li_length = $lis.length;
-		tools.trans_to_float($lis);
-		tools.trans_to_absolute($lis);
-		if(li_width * li_length > cards_width){
-			var i_cuowei = (li_length * li_width - cards_width)/(li_length-1);
-			var i_last_cuowei = (li_width - i_cuowei)/(li_length-1);
-			tools.adjust_position($lis,i_cuowei+i_last_cuowei);
-		}
-	},
 	layout_paiqu_cards : function($cards,$lis){//自己牌区一屏最多显示10张，加减自己牌区的牌都调用
-        //this.show_cards($cards,$lis);
         var pianyi_positions = this.get_pianyi_positions($cards,$lis);
         var length = $lis.length;
         $lis.each(function(index){
@@ -77,7 +59,7 @@ CardManager.prototype = {
 	layout_log_cards : function(){//显示区中的牌20张也是一屏显示,这个方法是点击确定将li放到log中后再调用
 		var $cards = $('.log .cards');
         var $lis = $cards.find('.cardul > li');
-        this.show_cards($cards,$lis);
+        this.layout_paiqu_cards($cards,$lis);
 	},
 
 	//洗牌，将牌堆中的牌打乱，同时将牌的所属英雄名去掉
@@ -137,18 +119,36 @@ CardManager.prototype = {
 		//console.log('取了'+result.length+'张牌!');
 		return result;
 	},
-	chupai_to_log : function(cards){//将出牌在log中显示出来
-		//not_to_drop_cards，如果打出牌而不将牌放到弃牌堆，可以传个true 
+	chupai_to_log : function(cards,fn){//将出牌在log中显示出来,这个回头得改，出牌跟弃牌要分开，虽然里面的代码基本上一样
+		var $cardul = $('.log .cards .cardul');
+		$cardul.empty();
+
 		var html = [];
-		for(var i = 0,j = cards.length;i < j;i++){ 
-			cards[i].when_out();//到牌被打出时一些操作
-			html.push(cards[i].get_div());
+		this.staff.pause();//暂停
+		var _this = this;
+		if(cards.length > 0){
+			for(var i = 0,j = cards.length;i < j;i++){ 
+				(function(k){
+					setTimeout(function(){
+						cards[k].when_out();//到牌被打出时一些操作
+						$cardul.append(cards[k].get_div());
+						_this.to_drop_cards(cards);//判断是否将牌放到弃牌区
+						_this.layout_log_cards();
+						if(k==cards.length-1){//如果是最后一个了，再停止暂停
+							console.log('弃最后一张牌的时候能看到....');
+							if(fn&&typeof fn == 'function'){
+								fn.call();
+							}
+						}
+					},5000*k);
+				})(i);
+			}
+		}else{
+			if(fn&&typeof fn == 'function'){
+				fn.call();
+			}
 		}
-
-		this.to_drop_cards(cards);//判断是否将牌放到弃牌区
-
-		$('.log .cards .cardul').empty().append(html); 
-		this.layout_log_cards();
+		
 	},
 	to_drop_cards : function(cards){
 		//如果是装备牌，则出牌时不能放到弃牌堆，这里还假定，如果cards大于1张，则肯定会放到弃牌堆，例如制衡，蛇矛
