@@ -68,6 +68,12 @@ PandingZone.prototype = {
     set_shandian_success : function(b){
         this.shandian_success = b;
     },
+    get_lebusishu_flag : function(){//通过这个方法用来判断某个座位是否已经被加上乐不思蜀的标志了
+        return this.lebusishu_flag;
+    },
+    get_bingliangcunduan_flag : function(){//通过这个方法用来判断某个座位是否已经被加上兵粮寸断的标志了
+        return this.bingliangcunduan_flag;
+    },
     lebusishu_show : function(card){//作为乐不思蜀的牌
         this.lebusishu_obj = card;
         this.seat.get_div().find('.status').append('<div class="lebusishu">乐</div>');

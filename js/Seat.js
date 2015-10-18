@@ -21,6 +21,7 @@ function Seat(staff,role){
 	this.fan_status = false;//默认不翻
 	this.pai_list = null;//手牌列表
 	this.mepai_list = null;//摸牌列表
+	this.ready_to_out_list = null;//准备出牌的列表
 	//this.distance = null;
 	this.attack_distance = 0;//攻击距离默认为0
 	this.defense_distance = 0;//防御距离默认为0 
@@ -28,7 +29,9 @@ function Seat(staff,role){
 	this.skill_defense_distance = 0;//技能防御距离
 	this.$div = null;//座位类对应的div
 	this.no = null;//座位号，可以用这个来计算距离
-	this.can_attack_seats = [];//本座位可以攻击的其他座位的数组,主要用于电脑攻击分析
+	this.can_attack_seats = [];//本座位可以攻击的其他座位的数组
+	this.selected_attack_seats = [];//选中的准备攻击的座位数组
+
 	this.my_attack_seats = [];//我自己的攻击目标，主要是自己用
 	this.chu_pai_mult = false;//出牌时能否多选，默认不能，这个用于测试
 	this.chu_pai_num = 1;//出牌数，在能够出牌多选的时候使用，用于判断可以同时出几张牌 
@@ -42,11 +45,21 @@ Seat.prototype = {
 		this.role.set_seat(this);
 		//this.compute_distance();//计算当作座位与其他座位的距离
 	},
-	test : function(){
-		console.log(this.my_attack_seats.length);
-		for(var i = 0,j = this.my_attack_seats.length;i < j;i++){
-			this.my_attack_seats[i].get_div().html('test');
+	get_card_by_id : function(id){//如果找不到，则会返回undefined，这种情况正常情况下不会出现
+		if(this.pai_list){
+			for(var i = 0,j = this.pai_list.length;i < j;i++){
+				if(this.pai_list[i].get_no() == id){
+					return this.pai_list[i];
+				}
+			}
 		}
+	},
+	selected_attack_seats_fn : function(index){//index是选中的座位的索引，一方面是我自己在点击can_attack类时触发，另一方面电脑会在适当的时候调用这个方法，这个方法有两个功能，1将选中的seat放到selected_attack_seats中去，另一方面，要调用card_action对象的can_queren方法用于控制确认按钮是否可用
+		var selected_attack_seat = this.staff.get_a_seat()[index];
+		this.selected_attack_seats.push(selected_attack_seat);
+		console.log(index+'-----------index');
+		this.ready_to_out_list[0].can_queren();
+
 	},
 	//初始化座位所属DIV信息
 	set_div_info : function(){
@@ -354,5 +367,28 @@ Seat.prototype = {
 	},
 	get_zhuangbei_zone : function(){
 		return this.zhuangbei_zone;
+	},
+	set_can_attack_seats : function(can_attack_seats){
+		this.can_attack_seats = can_attack_seats;
+	},
+	get_can_attack_seats : function(){
+		return this.can_attack_seats;
+	},
+	set_selected_attack_seats : function(selected_attack_seats){
+		this.selected_attack_seats = selected_attack_seats;
+	},
+	get_selected_attack_seats : function(){
+		return this.selected_attack_seats;
+	},
+	set_ready_to_out_list : function(ready_to_out_list){
+		//这个方法根据允许不允许会有不同的处理方式   _this.get_cur_seat().get_chu_pai_mult()
+		if(this.chu_pai_mult){//允许出多牌
+			tools.concat_two_arr(this.ready_to_out_list,ready_to_out_list);
+		}else{//不允许出多张，保留最新的准备要出的牌
+			this.ready_to_out_list = ready_to_out_list;
+		}
+	},
+	get_ready_to_out_list : function(){
+		return this.ready_to_out_list;
 	}
 }

@@ -21,6 +21,15 @@ Card.prototype = {
     chupai : function(){
         this.card_action.chupai();//出牌
     },
+    ready_to_out : function(){
+        this.card_action.ready_to_out();
+    },
+    cancel_out : function(){
+        this.card_action.cancel_out();
+    },
+    can_queren : function(){
+        this.card_action.can_queren();
+    },
     get_add_attack_num : function(){
         return this.card_action.get_add_attack_num();
     },

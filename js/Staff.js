@@ -148,9 +148,16 @@
                     
                     if($(this).hasClass('ready_to_out')){
                         $(this).removeClass('ready_to_out');
+                        var id = $(this).attr('id');//根据id去找牌，在当前seat的pai_list中
+                        var card = _this.get_cur_seat().get_card_by_id(id);
+                        card.cancel_out();
                     }else{
                         $(this).addClass('ready_to_out');
-                        if(!_this.a_seat[_this.i_now].get_chu_pai_mult()){//如果不允许多选
+                        var id = $(this).attr('id');//根据id去找牌，在当前seat的pai_list中
+                        var card = _this.get_cur_seat().get_card_by_id(id);
+                        card.ready_to_out();//在这里将这个card加进seat里
+                        _this.get_cur_seat().set_ready_to_out_list([card]);//这个方法根据允许不允许会有不同的处理方式
+                        if(!_this.get_cur_seat().get_chu_pai_mult()){//如果不允许多选
                             $(this).siblings().removeClass('ready_to_out');
                         }
                     }
@@ -176,9 +183,16 @@
             });
 
             //当can_attack的座位被点击的时候，就将其加入我的攻击目标中
-            $('.container').delegate('.can_attack', 'click', function(event) {
+            /*$('.container').delegate('.can_attack', 'click', function(event) {
                 //这里需要取到武器的攻击个数
                 _this.a_seat[_this.i_now].can_attack_click($(this));
+            });*/
+
+            //当can_attack被点击的时候,加上attack_selected类，加这个类的时候，还要判断是否可以确认按钮好使了 
+            $('.container').delegate('.can_attack', 'click', function(event) {
+                var index = $('.seat').index($(this));
+                $(this).addClass('attack_selected');
+                _this.get_cur_seat().selected_attack_seats_fn(index);//加入准备攻击对象数组中
             });
 
             //点击确定按钮时，会将选中的牌打入到弃牌区，同时将牌放入到弃牌堆，再调用一下layout_my_cards方法。确定按钮不管选中的牌能不能打出

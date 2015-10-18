@@ -22,17 +22,48 @@ function CardAction(){
 	//this.name = '动作';
     //this.short_name = this.name;
 	this.card = null;
+    this.is_query = false;//默认都不查找攻击目标，其中基本牌除杀外，装备牌都不需要查找
 }
 CardAction.prototype = {
 	constructor : CardAction,
+    get_cur_seat : function(){
+        return this.card.get_staff().get_cur_seat();
+    },
 	can_out : function(){
 		//如果可出则将.ok按钮去掉disable，如果不可用则加上disable
 	},
 	ready_to_out : function(){
+        this.cancel_out();
 		//准备出牌,【杀】这个动作会在这个时候计算攻击范围并将满足条件的座位类标红
+        if(this.is_query){
+            console.log('该牌【需要1】查找攻击目标');//查找目标满足条件时确认按钮才能用
+            this.query_targets();//查找攻击目标
+
+        }else{
+            console.log('该牌【不用】查找攻击目标');//确认按钮可用
+        }
 	},
+    query_targets : function(){
+        //完成两个任务，将满足的目标加入can_attack_seats中，然后给对应的座位类加上can_attack类
+        console.log('查找攻击目标');
+    },
+    //顺手牵羊，过河拆桥，决斗等这些需要查找攻击目标的事后应该触发这个方法用来判断何时确认按钮可用
+    can_queren : function(){
+        //就是当加XX类的时候调用该方法
+        console.log('需要那些查找目标的调用来判断是否满足确认按钮可用');
+        //$('.attack_selected').click()的时候
+    },
 	cancel_out : function(){
 		//放弃出牌，这时候需要将准备出牌时加的一些效果啥的还原
+        //这里应该是每次放弃出牌时，统一置空seat的can_attack_seats，同时将所有seat的can_attack类,attack_selected类去掉
+        //将确认按钮恢复成不可用状态（初始状态）
+        var can_attack_seats = this.get_cur_seat().get_can_attack_seats();
+        for(var i = 0,j = can_attack_seats.length;i < j;i++){
+            can_attack_seats[i].get_div().removeClass('can_attack attack_selected');
+        }
+        this.get_cur_seat().set_can_attack_seats([]);
+        this.get_cur_seat().set_selected_attack_seats([]);
+        console.log('放弃出牌，还原效果');
 	},
 	ok_out : function(){
 		//成功出牌,这时需要显示牌的打出者是谁,card_manager应该有发牌堆，弃牌堆及展示堆，打出牌后先是放到展示堆（只放一次性打出的牌），在由展示堆放到弃牌堆时需要将上面的打出者名字去掉
@@ -55,6 +86,10 @@ CardAction.prototype = {
 
     chupai : function(){
         console.log('------CardAction----chupai');
+    },
+
+    get_is_query : function(){
+        return this.is_query;
     },
 
     can_use : function(can_use_opt){
@@ -127,6 +162,7 @@ Base.prototype.chupai = function(){
 //被动点击情况【被决斗】【被南蛮】
 function Sha(){
     this.name = '杀';
+    this.is_query = true;
 }
 Sha.prototype = new Base();
 Sha.prototype.can_danpai = function(){
@@ -235,6 +271,7 @@ Celue.prototype.chupai = function(){
 
 function Juedou(){
 	this.name = '决斗';
+    this.is_query = true;
 }
 
 Juedou.prototype = new Celue();
@@ -245,6 +282,7 @@ Juedou.prototype.can_danpai = function(){
 
 function Guohechaiqiao(){
     this.name = '过河拆桥';
+    this.is_query = true;
 }
 Guohechaiqiao.prototype = new Celue();
 Guohechaiqiao.prototype.can_danpai = function(){
@@ -254,6 +292,7 @@ Guohechaiqiao.prototype.can_danpai = function(){
 
 function Shunshouqianyang(){
     this.name = '顺手牵羊';
+    this.is_query = true;
 }
 Shunshouqianyang.prototype = new Celue();
 Shunshouqianyang.prototype.can_danpai = function(){
@@ -272,6 +311,7 @@ Wuzhongshengyou.prototype.can_danpai = function(){
 
 function Jiedaosharen(){
     this.name = '借刀杀人';
+    this.is_query = true;
 }
 Jiedaosharen.prototype = new Celue();
 Jiedaosharen.prototype.can_danpai = function(){
@@ -337,6 +377,7 @@ Wuxiekeji.prototype.can_danpai = function(){
 
 function Huogong(){
     this.name = '火攻';
+    this.is_query = true;
 }
 Huogong.prototype = new Celue();
 Huogong.prototype.can_danpai = function(){
@@ -360,6 +401,7 @@ Yanchicelue.prototype = new Celue();
 
 function Lebusishu(){
     this.name = '乐不思蜀';
+    this.is_query = true;
 }
 Lebusishu.prototype = new Yanchicelue();
 Lebusishu.prototype.can_danpai = function(){
@@ -369,9 +411,25 @@ Lebusishu.prototype.can_danpai = function(){
 Lebusishu.prototype.chupai = function(){
     this.card.get_staff().get_cur_seat().get_panding_zone().lebusishu_show(this.card);
 }
+Lebusishu.prototype.query_targets = function(){
+    //完成两个任务，将满足的目标加入can_attack_seats中，然后给对应的座位类加上can_attack类
+    //对判定区未有乐不思蜀的可以
+    var cur_seat = this.card.get_staff().get_cur_seat();
+    var seats = this.card.get_staff().get_a_seat();
+   
+    for(var i = 0,j = seats.length;i < j;i++){
+        var lebusishu_flag = seats[i].get_panding_zone().get_lebusishu_flag();
+        if(lebusishu_flag==false&&seats[i]!=cur_seat){//不是自己同时没有被乐不思蜀（直白的写法容易维护）
+            cur_seat.get_can_attack_seats().push(seats[i]);
+            seats[i].get_div().addClass('can_attack');
+        }
+    }
+    console.log('查找攻击目标');
+}
 
 function Bingliangcunduan(){
     this.name = '兵粮寸断';
+    this.is_query = true;
 }
 Bingliangcunduan.prototype = new Yanchicelue();
 Bingliangcunduan.prototype.can_danpai = function(){
