@@ -163,7 +163,7 @@
                     }
 
 
-                    _this.a_seat[_this.i_now].for_attack();//准备攻击,这里需要加上武器，加上攻击马然后进行测试
+                    //_this.a_seat[_this.i_now].for_attack();//准备攻击,这里需要加上武器，加上攻击马然后进行测试
 
 
 

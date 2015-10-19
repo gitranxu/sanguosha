@@ -28,7 +28,17 @@ Role.prototype = {
     chupai : function(){
         this.seat.get_pai_list()[0].get_div().addClass('ready_to_out');//模拟自动出牌
         console.log('角色出牌过程....');
+        //如果有杀，则用杀来杀我，如果没有则出第一张牌
+        //card(杀).get_div().addClass('ready_to_out');
+        //这里也不用判断我能不能被他们杀到，以后再判断
+        //var index = $('.seat').index($(this));  这里的这个$(this)代表我自己的seat
+        //$(this).addClass('attack_selected');
+       //_this.get_cur_seat().selected_attack_seats_fn(index,$(this));
+
         this.seat.chu_pai();//角色来出牌
+    },
+    defense : function(){
+        console.log('座位角色的防御方法...');
     }
 }
 

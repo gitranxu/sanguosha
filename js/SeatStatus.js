@@ -8,7 +8,7 @@ function SeatStatus(){
 
 	//装备假设攻击为4，则它的攻击加成为3 
 	this.attack_distance = 1;//攻击默认距离,武器装卸，坐骑装卸，距离相关武将技开关，都会改变该值
-	this.defense_distance = 1;//默认防御距离
+	this.defense_distance = 0;//默认加成防御距离
 	this.chu_pai_num = 1;//出牌数，在能够出牌多选的时候使用，用于判断可以同时出几张牌【蛇矛只能允许2张】
 
 	this.extra_chipai_num = 0;//额外的持牌数，默认为0

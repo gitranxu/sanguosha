@@ -134,7 +134,7 @@ CardManager.prototype = {
 						$cardul.append(cards[k].get_div());
 						_this.to_drop_cards(cards);//判断是否将牌放到弃牌区
 						_this.layout_log_cards();
-						_this.staff.set_$log('自动出牌阶段思考'+this.auto_chupai_time+'秒钟...');
+						//_this.staff.set_$log('自动出牌阶段思考'+this.auto_chupai_time+'秒钟...');
 						if(k==cards.length-1){//如果是最后一个了，再停止暂停
 							console.log('弃最后一张牌的时候能看到....');
 							if(fn&&typeof fn == 'function'){
@@ -177,20 +177,20 @@ CardManager.prototype = {
 		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:8},new Juedou()),
 		new Card({huase_show:'fangkuai',dots_show:1,color:'red',img_code:8},new Juedou()),
 
-		new Card({huase_show:'heitao',dots_show:4,color:'black',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'hongtao',dots_show:4,color:'red',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'meihua',dots_show:4,color:'black',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'fangkuai',dots_show:4,color:'red',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'heitao',dots_show:4,color:'black',img_code:242},new Dilu()),
+		new Card({huase_show:'hongtao',dots_show:4,color:'red',img_code:242},new Dilu()),
+		new Card({huase_show:'meihua',dots_show:4,color:'black',img_code:242},new Dilu()),
+		new Card({huase_show:'fangkuai',dots_show:4,color:'red',img_code:242},new Dilu()),
 
-		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:242},new Dilu()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:242},new Dilu()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:242},new Dilu()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:242},new Dilu()),
 
-		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:20},new Bingliangcunduan()),
-		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:20},new Bingliangcunduan()),
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:242},new Dilu()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:242},new Dilu()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:242},new Dilu()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:242},new Dilu()),
 
 		
 
@@ -211,20 +211,20 @@ CardManager.prototype = {
 		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:1},new Sha()),
 		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:2},new Shan()),
 
-		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:19},new Lebusishu()),
-		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:19},new Lebusishu()),
-		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:19},new Lebusishu()),
-		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:19},new Lebusishu()),
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:251},new Chitu()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:251},new Chitu()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:251},new Chitu()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:251},new Chitu()),
 
-		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:19},new Lebusishu()),
-		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:19},new Lebusishu()),
-		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:19},new Lebusishu()),
-		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:19},new Lebusishu()),
+		new Card({huase_show:'heitao',dots_show:5,color:'black',img_code:251},new Chitu()),
+		new Card({huase_show:'hongtao',dots_show:5,color:'red',img_code:251},new Chitu()),
+		new Card({huase_show:'meihua',dots_show:5,color:'black',img_code:251},new Chitu()),
+		new Card({huase_show:'fangkuai',dots_show:5,color:'red',img_code:251},new Chitu()),
 
-		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:19},new Lebusishu()),
-		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:19},new Lebusishu()),
-		new Card({huase_show:'meihua',dots_show:6,color:'black',img_code:19},new Lebusishu()),
-		new Card({huase_show:'fangkuai',dots_show:6,color:'red',img_code:19},new Lebusishu()),
+		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:251},new Chitu()),
+		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:251},new Chitu()),
+		new Card({huase_show:'meihua',dots_show:6,color:'black',img_code:251},new Chitu()),
+		new Card({huase_show:'fangkuai',dots_show:6,color:'red',img_code:251},new Chitu()),
 
 		new Card({huase_show:'heitao',dots_show:6,color:'black',img_code:19},new Lebusishu()),
 		new Card({huase_show:'hongtao',dots_show:6,color:'red',img_code:19},new Lebusishu()),

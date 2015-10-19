@@ -66,6 +66,7 @@ CardAction.prototype = {
         for(var i = 0,j = can_attack_seats.length;i < j;i++){
             can_attack_seats[i].get_div().removeClass('can_attack attack_selected');
         }
+        //$('.seat').removeClass('can_attack attack_selected');//这个代码比较生硬
         this.get_cur_seat().set_can_attack_seats([]);
         this.get_cur_seat().set_selected_attack_seats([]);
         $('.ok').addClass('disable');//确认按钮一开始就是不可用状态
@@ -195,6 +196,47 @@ Sha.prototype.can_danpai = function(){
             console.log('【'+this.name+'】类中的can_danpai  false');
             this.card.get_div().addClass('card_disable');
         }
+    }
+}
+Sha.prototype.chupai = function(){
+    var target_seat = this.card.get_staff().get_cur_seat().get_selected_attack_seats()[0];
+    if(target_seat){
+        target_seat.get_role().defense({sha:true});//调用被杀座位的角色，我这是杀的攻击，他需要杀的防御
+    }
+}
+Sha.prototype.query_targets = function(){
+    var cur_seat = this.get_cur_seat();
+    cur_seat.can_attack_seats = [];//先进行一下置空处理
+    var attack_dist = cur_seat.get_seat_status().get_attack_distance();
+
+    var a_seat = this.card.get_staff().get_a_seat();
+    for(var i = 0,j = a_seat.length;i < j;i++){
+        var other_no = a_seat[i].get_no();
+        if(other_no!=cur_seat.get_no()){
+            var dist = Math.abs(other_no - cur_seat.get_no());
+            if(dist > j/2){
+                dist = j - dist;
+            }
+            //到这一步，上面的dist得到的是固定距离
+
+            var d_distance = a_seat[i].get_seat_status().get_defense_distance();
+            var defense_dist = dist + d_distance;
+
+            if(attack_dist>=defense_dist){//如果可以攻击的话
+                a_seat[i].get_div().addClass('can_attack');//1标红
+                cur_seat.get_can_attack_seats().push(a_seat[i]);//2放到can_attack_seats中
+            }
+            
+        }
+    }
+}
+Sha.prototype.can_queren = function(){
+     //只要 selected_attack_seats 个数为1，就能出牌,有一个特殊情况就是方天画戟
+    var length = this.get_cur_seat().get_selected_attack_seats().length;
+    if(length==this.selected_attack_seats_num){
+        $('.ok').removeClass('disable');
+    }else{
+        $('.ok').addClass('disable');
     }
 }
 
