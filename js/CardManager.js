@@ -134,6 +134,7 @@ CardManager.prototype = {
 						$cardul.append(cards[k].get_div());
 						_this.to_drop_cards(cards);//判断是否将牌放到弃牌区
 						_this.layout_log_cards();
+						_this.staff.set_$log('自动出牌阶段思考'+this.auto_chupai_time+'秒钟...');
 						if(k==cards.length-1){//如果是最后一个了，再停止暂停
 							console.log('弃最后一张牌的时候能看到....');
 							if(fn&&typeof fn == 'function'){

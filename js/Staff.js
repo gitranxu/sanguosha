@@ -162,6 +162,12 @@
                         }
                     }
 
+
+                    _this.a_seat[_this.i_now].for_attack();//准备攻击,这里需要加上武器，加上攻击马然后进行测试
+
+
+
+
                     /*if(_this.a_seat[_this.i_now].get_chu_pai_mult()){//如果允许多选
 
                     }else{//只能单选

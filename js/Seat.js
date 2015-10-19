@@ -13,12 +13,12 @@ function Seat(staff,role){
 
 	this.weapon_equip = null;//武器装备区
 	this.weapon_distance = 1;//武器的攻击距离,即使没有武器，攻击距离至少也是1
-	this.shield_equip = null;//盾牌装备区
-	this.defense_horse = null;//防御马
-	this.attack_horse = null;//攻击马
-	this.ma_status = false;//默认不麻
-	this.jin_status = false;//默认不禁
-	this.fan_status = false;//默认不翻
+	//this.shield_equip = null;//盾牌装备区
+	//this.defense_horse = null;//防御马
+	//this.attack_horse = null;//攻击马
+	//this.ma_status = false;//默认不麻
+	//this.jin_status = false;//默认不禁
+	//this.fan_status = false;//默认不翻
 	this.pai_list = null;//手牌列表
 	this.mepai_list = null;//摸牌列表
 	this.ready_to_out_list = null;//准备出牌的列表
@@ -38,6 +38,7 @@ function Seat(staff,role){
 	this.chu_pai_num = 1;//出牌数，在能够出牌多选的时候使用，用于判断可以同时出几张牌 
 
 	this.out_for_log_cards = [];//打出的牌，准备在log中显示
+	//这里应该加一个准备放弃的牌，将其与打出的牌区分出来
 }
 Seat.prototype = {
 	constructor : Seat,
@@ -148,11 +149,15 @@ Seat.prototype = {
 	//该方法每次在杀点击要出牌时都要算一次，算的时候要综合考虑每个座位类的固定距离加是否有防御马加是否有技能加距的距离之和，并与自己当前的攻击距离（武器加攻击马加技能加距）进行比较，在攻击距离之内的座位类要被标红，如果点杀的时候是放弃出牌，则去掉标红
 	//当被杀标红时，点击座位，则把这个座位类放入攻击目标中，当放弃出牌或已出牌时，将攻击目标置空
 	//如果是我自己，则最后回标红，如果是电脑，不用标红
-	compute_distance: function(is_me){
+	compute_distance: function(){
 		//var result = {};
 		//计算的目的有两个，1标红，2放到can_attack_seats中
 		this.can_attack_seats = [];//先进行一下置空处理
-		var attack_dist = this.weapon_distance + this.attack_distance + this.skill_attack_distance;//攻击距离等于得到武器的攻击距离，得到攻击马距离，得到技能加成攻击距离
+		var attack_dist = this.seat_status.get_attack_distance();
+		var d_distance = this.seat_status.get_defense_distance();
+		console.log('现在的攻击距离为....'+attack_dist);
+		console.log('现在的防御距离为....'+d_distance);
+		//var attack_dist = this.weapon_distance + this.attack_distance + this.skill_attack_distance;//攻击距离等于得到武器的攻击距离，得到攻击马距离，得到技能加成攻击距离
 
 		var a_seat = this.staff.get_a_seat();
 		for(var i = 0,j = a_seat.length;i < j;i++){
@@ -163,18 +168,18 @@ Seat.prototype = {
 					dist = j - dist;
 				}
 				//到这一步，上面的dist得到的是固定距离
+
+
 				//防御马距离，直接得到座位类的防御马距离，这个属性座位类自己会随时更新
-				var fangyuma_dist = a_seat[i].get_defense_distance();
+				//var fangyuma_dist = a_seat[i].get_defense_distance();
 				//第三步，得到座位的技能防御距离
-				var skill_defense_distance = a_seat[i].get_skill_defense_distance();
-				var defense_dist = dist+fangyuma_dist+skill_defense_distance
+				//var skill_defense_distance = a_seat[i].get_skill_defense_distance();
+				//var defense_dist = dist+fangyuma_dist+skill_defense_distance
+				var defense_dist = dist + a_seat[i].get_seat_status().get_defense_distance();
 				//result[other_no] = defense_dist;
 				if(attack_dist>=defense_dist){//如果可以攻击的话
-					if(is_me){//如果是我自己，则满足条件的需要标红
-						a_seat[i].get_div().addClass('can_attack');
-					}else{//对于自动的来说，则将可以攻击的目标先保存起来，便于以后的分析攻击等
-						this.can_attack_seats.push(a_seat[i]);
-					}
+					a_seat[i].get_div().addClass('can_attack');//1标红
+					this.can_attack_seats.push(a_seat[i]);//2放到can_attack_seats中
 				}
 				
 			}
@@ -184,7 +189,7 @@ Seat.prototype = {
 	for_attack : function(){
 		this.compute_distance(true);
 	},
-	cancel_attack : function(){
+	/*cancel_attack : function(){
 		$('.seat').removeClass('can_attack attack_selected');//去掉标红等标记
 		this.my_attack_seats = [];//清空我自己的攻击目标
 
@@ -219,7 +224,7 @@ Seat.prototype = {
 				_this.my_attack_seats.push(_this.staff.get_a_seat()[index2]);
 			});
 		}
-	},
+	},*/
 	set_div : function($div){
 		this.$div = $div;
 	},
@@ -244,7 +249,7 @@ Seat.prototype = {
 	get_step : function(){
 		return this.step;
 	},
-	get_defense_distance : function(){
+	/*get_defense_distance : function(){
 		return this.defense_distance;
 	},
 	get_skill_defense_distance : function(){
@@ -264,7 +269,7 @@ Seat.prototype = {
 	},
 	set_weapon_distance : function(weapon_distance){
 		this.weapon_distance = weapon_distance;
-	},
+	},*/
 	get_hero : function(){
 		return this.hero;
 	},
