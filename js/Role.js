@@ -37,13 +37,14 @@ Role.prototype = {
                 card = _this.seat.get_pai_list()[0];//模拟自动出牌
             }
             card.get_div().addClass('ready_to_out');
-            _this.seat.set_ready_to_out_list([card]);
+            _this.seat.set_ready_to_out_list([card]);  
             //card(杀).get_div().addClass('ready_to_out');
             //这里也不用判断我能不能被他们杀到，以后再判断
             var $myseat = $('.myzone .seat');
             var index = $('.seat').index($myseat);  //这里的这个$(this)代表我自己的seat
             //$myseat.addClass('attack_selected');
-            _this.seat.selected_attack_seats_fn(index,$myseat);
+            auto_seats_can_attack();//加一个方法，传进一个座位去，要判断这个座位是否能够成为攻击目标（即，是否在攻击范围之内）
+            _this.seat.selected_attack_seats_fn(index,$myseat);  //这里应该要加一个判断，判断所选座位是否在攻击范围之内
 
             _this.seat.chu_pai();//角色来出牌
             setTimeout(function(){
@@ -52,6 +53,15 @@ Role.prototype = {
             },3000);
         },5000);
             
+            /*
+            
+                $('.container').delegate('.can_attack', 'click', function(event) {
+                    var index = $('.seat').index($(this));
+                    //$(this).addClass('attack_selected');
+                    _this.get_cur_seat().selected_attack_seats_fn(index,$(this));//加入准备攻击对象数组中
+                });
+
+             */
     },
     defense : function(){
         console.log('座位角色的防御方法...');
