@@ -56,6 +56,16 @@ Seat.prototype = {
 			}
 		}
 	},
+	//根据名字查找牌，如果有多个，则返回第一个
+	get_card_by_name : function(name){
+		if(this.pai_list){
+			for(var i = 0,j = this.pai_list.length;i < j;i++){
+				if(this.pai_list[i].get_card_action().get_name() == name){
+					return this.pai_list[i];
+				}
+			}
+		}
+	},
 	selected_attack_seats_fn : function(index,$seat){//index是选中的座位的索引，一方面是我自己在点击can_attack类时触发，另一方面电脑会在适当的时候调用这个方法，这个方法有两个功能，1将选中的seat放到selected_attack_seats中去，另一方面，要调用card_action对象的can_queren方法用于控制确认按钮是否可用
 		//应该根据允不允许选择多个来进行限制 selected_attack_seat_num
 		var selected_attack_seats_num = this.ready_to_out_list[0].get_selected_attack_seats_num();

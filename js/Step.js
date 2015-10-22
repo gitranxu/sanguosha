@@ -72,6 +72,7 @@ Step.prototype = {
     },
     qipai_step : function(){
         //弃牌阶段一开始，先要把所有的牌的类名全部去掉（因为刚摸上来的牌没有任何类名）
+        console.log('-------------3');
         this.seat.reset_card_div();
         var _this = this;
         if(this.panding_zone.get_skipqipai()){
@@ -95,12 +96,21 @@ Step.prototype = {
         
     },
     auto_chupai_step : function(){
-        var _this = this;
+        /*var _this = this;
         this.staff.set_$log('自动出牌阶段思考'+this.auto_chupai_time+'秒钟...');
+        console.log('---------------1');
         _this.seat.get_role().chupai();//角色来出牌
+        console.log('---------------3');
         setTimeout(function(){
             _this.qipai_step();//弃牌阶段
-        },_this.auto_chupai_time);
+        },_this.auto_chupai_time);*/
+        var _this = this;
+        this.staff.set_$log('自动出牌阶段思考'+this.auto_chupai_time+'秒钟111...');
+        this.seat.get_role().chupai(function(){
+            _this.qipai_step();//弃牌阶段
+        });//角色来出牌
+
+        //自动的进行出牌，出牌完事儿后再调用一个回调方法，回调方法就是让程序继续进行
     },
     me_chupai_step : function(){
         //this.qipai_step();//弃牌阶段应该是点击取消按钮后手动触发

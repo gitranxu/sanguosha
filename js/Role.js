@@ -25,17 +25,33 @@ Role.prototype = {
     set_seat : function(seat){
         this.seat = seat;
     },
-    chupai : function(){
-        this.seat.get_pai_list()[0].get_div().addClass('ready_to_out');//模拟自动出牌
+    chupai : function(fn){
+        var _this = this;
+        //this.seat.get_pai_list()[0].get_div().addClass('ready_to_out');//模拟自动出牌
         console.log('角色出牌过程....');
         //如果有杀，则用杀来杀我，如果没有则出第一张牌
-        //card(杀).get_div().addClass('ready_to_out');
-        //这里也不用判断我能不能被他们杀到，以后再判断
-        //var index = $('.seat').index($(this));  这里的这个$(this)代表我自己的seat
-        //$(this).addClass('attack_selected');
-       //_this.get_cur_seat().selected_attack_seats_fn(index,$(this));
+        setTimeout(function(){
+            console.log('-------------1');
+            var card = _this.seat.get_card_by_name('杀');
+            if(!card){
+                card = _this.seat.get_pai_list()[0];//模拟自动出牌
+            }
+            card.get_div().addClass('ready_to_out');
+            _this.seat.set_ready_to_out_list([card]);
+            //card(杀).get_div().addClass('ready_to_out');
+            //这里也不用判断我能不能被他们杀到，以后再判断
+            var $myseat = $('.myzone .seat');
+            var index = $('.seat').index($myseat);  //这里的这个$(this)代表我自己的seat
+            //$myseat.addClass('attack_selected');
+            _this.seat.selected_attack_seats_fn(index,$myseat);
 
-        this.seat.chu_pai();//角色来出牌
+            _this.seat.chu_pai();//角色来出牌
+            setTimeout(function(){
+                console.log('-------------2');
+                fn&&fn();
+            },3000);
+        },5000);
+            
     },
     defense : function(){
         console.log('座位角色的防御方法...');

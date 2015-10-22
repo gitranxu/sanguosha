@@ -171,7 +171,7 @@ CardManager.prototype = {
 			pai_list[i].get_card_action().can_use(opt);
 		}
 	},
-	get_init_data : function(){
+	get_init_data1 : function(){
 		return [new Card({huase_show:'heitao',dots_show:1,color:'black',img_code:8},new Juedou()),
 		new Card({huase_show:'hongtao',dots_show:1,color:'red',img_code:15},new Wanjianqifa()),
 		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:8},new Juedou()),
@@ -250,7 +250,7 @@ CardManager.prototype = {
 
 		];
 	},
-	get_init_data1 : function(){
+	get_init_data : function(){
 		return [new Card({huase_show:'heitao',dots_show:1,color:'black',img_code:8},new Juedou()),
 		new Card({huase_show:'hongtao',dots_show:1,color:'red',img_code:15},new Wanjianqifa()),
 		new Card({huase_show:'meihua',dots_show:1,color:'black',img_code:8},new Juedou()),
